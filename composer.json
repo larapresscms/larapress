@@ -20,7 +20,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "LaraPressVendor\\LaraPress\\": "packages/larapress/src/",
+            "LaraPressCMS\\LaraPress\\": "packages/larapress/src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

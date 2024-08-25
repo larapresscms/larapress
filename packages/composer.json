@@ -4,9 +4,7 @@
   "type": "library",
   "license": "MIT",
   "require": {
-        "php": "^8.2",
-        "laravel/framework": "^11.9",
-        "larapresscms/larapress": "dev-main"
+        "larapresscms/larapress": "1.0"
   },
   "autoload": {
     "psr-4": {
@@ -20,6 +18,6 @@
       ]
     }
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }
