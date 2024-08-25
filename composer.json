@@ -5,8 +5,7 @@
   "license": "MIT",
   "require": {
         "php": ">=8.0",
-        "laravel/framework": "^11.0",
-        "larapresscms/larapress": "^1.0"
+        "larapress/framework": "^11.0"
   },
   "scripts": {
         "post-install-cmd": [
@@ -28,6 +27,6 @@
       ]
     }
   },
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "minimum-stability": "beta",  
+    "prefer-stable": true
 }
