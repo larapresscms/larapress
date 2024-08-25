@@ -26,5 +26,7 @@
         "LaraPressCMS\\LaraPress\\LaraServiceProvider"
       ]
     }
-  }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
