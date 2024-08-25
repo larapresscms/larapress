@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Models;
+namespace LaraPressCMS\LaraPress\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

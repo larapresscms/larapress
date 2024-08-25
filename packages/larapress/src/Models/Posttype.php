@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Models;
+namespace LaraPressCMS\LaraPress\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

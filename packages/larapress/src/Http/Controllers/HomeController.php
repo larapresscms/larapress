@@ -1,21 +1,21 @@
 <?php
-namespace LaraPressVendor\LaraPress\Http\Controllers;
+namespace LaraPressCMS\LaraPress\Http\Controllers;
 
-use LaraPressVendor\LaraPress\Models\Feedback;
+use LaraPressCMS\LaraPress\Models\Feedback;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
-use LaraPressVendor\LaraPress\Models\Post;
-use LaraPressVendor\LaraPress\Models\Settings;
+use LaraPressCMS\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Models\Settings;
 use Artisan;
 use File;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailable;
 use Exception;
-use LaraPressVendor\LaraPress\Rules\Recaptcha;
-use LaraPressVendor\LaraPress\Models\Posttype;
-use LaraPressVendor\LaraPress\Models\Category;
-use LaraPressVendor\LaraPress\Models\Menu;
+use LaraPressCMS\LaraPress\Rules\Recaptcha;
+use LaraPressCMS\LaraPress\Models\Posttype;
+use LaraPressCMS\LaraPress\Models\Category;
+use LaraPressCMS\LaraPress\Models\Menu;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Http\Controllers;
+namespace LaraPressCMS\LaraPress\Http\Controllers;
 
 use Illuminate\Http\Request;
-use LaraPressVendor\LaraPress\Models\Post;
-use LaraPressVendor\LaraPress\Models\Settings;
-use LaraPressVendor\LaraPress\Models\Media;
-use LaraPressVendor\LaraPress\Models\Posttype;
+use LaraPressCMS\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Models\Settings;
+use LaraPressCMS\LaraPress\Models\Media;
+use LaraPressCMS\LaraPress\Models\Posttype;
 use DB;
 
 class SettingsController extends Controller

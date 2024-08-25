@@ -1,0 +1,91 @@
+[16-May-2024 12:04:51 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:04:55 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:19:12 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:19:16 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:21:17 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:22:17 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:25:24 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:25:28 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:26:42 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:27:00 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:27:04 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:27:18 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91
+[16-May-2024 12:27:19 Asia/Dhaka] PHP Fatal error:  Uncaught ErrorException: Undefined variable: menus in /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php:91
+Stack trace:
+#0 /skl/home/devail/public_html/elegant.com.bd/storage/framework/views/17d33943b95f2f51dda0abb30c2848759436b94b.php(91): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Undefined varia...', '/skl/home/devai...', 91, Array)
+#1 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(107): require('/skl/home/devai...')
+#2 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(108): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#3 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\Filesystem\Filesystem->getRequire('/skl/home/devai...', Array)
+#4 /skl/home/devail/public_html/elegant.com.bd/vendor/laravel/framework in /skl/home/devail/public_html/elegant.com.bd/resources/views/front/themes/elegant/layouts/master.blade.php on line 91

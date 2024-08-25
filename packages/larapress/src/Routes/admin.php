@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use LaraPressVendor\LaraPress\Http\Controllers\HomeController;
-use LaraPressVendor\LaraPress\Http\Controllers\CategoriesController;
-use LaraPressVendor\LaraPress\Http\Controllers\AuthController;
-use LaraPressVendor\LaraPress\Http\Controllers\AdminController;
-use LaraPressVendor\LaraPress\Http\Controllers\MediaController;
-use LaraPressVendor\LaraPress\Http\Controllers\SettingsController; 
-use LaraPressVendor\LaraPress\Http\Controllers\PosttypeController;
-use LaraPressVendor\LaraPress\Http\Controllers\FeedbacksController;
-use LaraPressVendor\LaraPress\Http\Controllers\MenuController;
+use LaraPressCMS\LaraPress\Http\Controllers\HomeController;
+use LaraPressCMS\LaraPress\Http\Controllers\CategoriesController;
+use LaraPressCMS\LaraPress\Http\Controllers\AuthController;
+use LaraPressCMS\LaraPress\Http\Controllers\AdminController;
+use LaraPressCMS\LaraPress\Http\Controllers\MediaController;
+use LaraPressCMS\LaraPress\Http\Controllers\SettingsController; 
+use LaraPressCMS\LaraPress\Http\Controllers\PosttypeController;
+use LaraPressCMS\LaraPress\Http\Controllers\FeedbacksController;
+use LaraPressCMS\LaraPress\Http\Controllers\MenuController;
 
 
 /*
