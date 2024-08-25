@@ -1,0 +1,46 @@
+GET https://localhost/larapress-packages/versioncontroll HTTP/1.1
+###
+GET http://127.0.0.1:8000/api/posts HTTP/1.1
+
+###
+
+POST http://laravelmy.com/public/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "6",
+    "category_id": "7",
+    "title": "My brand new title",
+    "content": "My brand new content",
+    "excerpt": "excerpt",
+    "thumbnail_path": "thumbnailpath",
+    "status": "1"
+ 
+}
+
+###
+
+PUT http://laravelmy.com/public/api/posts/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id": "5",
+    "category_id": "8",
+    "title": "My brand new title up",
+    "content": "My brand new content up",
+    "excerpt": "excerpt",
+    "thumbnail_path": "thumbnail_path",
+    "status": "1"
+}
+
+###
+
+DELETE http://laravelmy.com/public/api/posts/5
+
+###
+POST https://larapress.org/version-controll
+Content-Type: application/json
+
+{
+    "version": "ssasd" 
+}
