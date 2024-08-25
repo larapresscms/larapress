@@ -1,0 +1,18 @@
+{
+  "name": "larapressvendor/larapress",
+  "description": "Experience the future of content management with LaraPress, a powerful and intuitive CMS built on Laravel. Designed to bring simplicity and flexibility to your fingertips, LaraPress is perfect for developers, businesses, and content creators alike.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "LaraPressVendor\\LaraPress\\": "packages/larapress/src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "LaraPressVendor\\LaraPress\\LaraServiceProvider"
+      ]
+    }
+  }
+}
