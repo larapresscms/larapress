@@ -904,4 +904,4 @@ $("button[data-dismiss-modal=uploadmodal]").click(function () {
 
 </body>
 </html>
-<?php /**PATH F:\xamp\htdocs\git-packagist\larapress\packages\larapress\src\Resources\views/admin/layouts/master.blade.php ENDPATH**/ ?>
+<?php /**PATH F:\xamp\htdocs\git-packagist\larapress\packages\larapress\src\Resources\views\admin\layouts\master.blade.php ENDPATH**/ ?>
