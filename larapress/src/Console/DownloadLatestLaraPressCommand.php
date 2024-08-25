@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Console;
+namespace LaraPressCMS\LaraPress\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;

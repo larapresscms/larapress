@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use LaraPressVendor\LaraPress\Http\Controllers\HomeController;
+use LaraPressCMS\LaraPress\Http\Controllers\HomeController;
 Route::get('/migrate', [HomeController::class, 'migrate']);
 Route::get('/clear', function() {
     Artisan::call('cache:clear');

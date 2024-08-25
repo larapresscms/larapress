@@ -1,15 +1,15 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Http\Controllers;
+namespace LaraPressCMS\LaraPress\Http\Controllers;
 
 use Illuminate\Http\Request;
-use LaraPressVendor\LaraPress\Models\User;
+use LaraPressCMS\LaraPress\Models\User;
 use Config\auth;
-use LaraPressVendor\LaraPress\Models\Settings;
-use LaraPressVendor\LaraPress\Models\Posttype; 
+use LaraPressCMS\LaraPress\Models\Settings;
+use LaraPressCMS\LaraPress\Models\Posttype; 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
-use LaraPressVendor\LaraPress\LaraServiceProvider;
+use LaraPressCMS\LaraPress\LaraServiceProvider;
 
 class AuthController extends Controller
 {

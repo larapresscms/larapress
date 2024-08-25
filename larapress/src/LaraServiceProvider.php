@@ -1,15 +1,15 @@
 <?php
 
-namespace LaraPressVendor\LaraPress;
+namespace LaraPressCMS\LaraPress;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\File; // Example of a common import
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Http;
-use LaraPressVendor\LaraPress\Console\DownloadLatestLaraPressCommand;
+use LaraPressCMS\LaraPress\Console\DownloadLatestLaraPressCommand;
 use Illuminate\Http\Client\ConnectionException;
-use LaraPressVendor\LaraPress\Http\Controllers\Controller; 
+use LaraPressCMS\LaraPress\Http\Controllers\Controller; 
 
 class LaraServiceProvider extends ServiceProvider
 {

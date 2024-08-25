@@ -1,8 +1,8 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Http\Controllers;
+namespace LaraPressCMS\LaraPress\Http\Controllers;
 
-use LaraPressVendor\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Models\Post;
 use Illuminate\Http\Request;
 
 class PostApiController extends Controller

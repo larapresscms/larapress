@@ -1,14 +1,14 @@
 <?php
-namespace LaraPressVendor\LaraPress\Http\Controllers; 
+namespace LaraPressCMS\LaraPress\Http\Controllers; 
 use Illuminate\Http\Request;
-use LaraPressVendor\LaraPress\Models\Category;
+use LaraPressCMS\LaraPress\Models\Category;
 use Illuminate\Support\Str;
-use LaraPressVendor\LaraPress\Models\Settings;
-use LaraPressVendor\LaraPress\Models\Posttype;
-use LaraPressVendor\LaraPress\Models\Menu;
-use LaraPressVendor\LaraPress\Models\Post;
-use LaraPressVendor\LaraPress\Models\Page;
-use LaraPressVendor\LaraPress\Models\User;
+use LaraPressCMS\LaraPress\Models\Settings;
+use LaraPressCMS\LaraPress\Models\Posttype;
+use LaraPressCMS\LaraPress\Models\Menu;
+use LaraPressCMS\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Models\Page;
+use LaraPressCMS\LaraPress\Models\User;
 use DB;
 
 class MenuController extends Controller

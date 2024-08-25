@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use LaraPressVendor\LaraPress\Models\Post;
-use LaraPressVendor\LaraPress\Http\Controllers\PostApiController; 
+use LaraPressCMS\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Http\Controllers\PostApiController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes

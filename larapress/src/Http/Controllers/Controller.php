@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraPressVendor\LaraPress\Http\Controllers;
+namespace LaraPressCMS\LaraPress\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
