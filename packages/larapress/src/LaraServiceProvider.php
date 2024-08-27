@@ -62,7 +62,7 @@ class LaraServiceProvider extends ServiceProvider
 
             //new
             // Define the cache key and timeout
-            $cacheKey = 'key';
+            $cacheKey = 'larapress_version';
             $cacheTime = 60; // Time in minutes
             // Try to get the cached data
             $versionData = Cache::get($cacheKey);
