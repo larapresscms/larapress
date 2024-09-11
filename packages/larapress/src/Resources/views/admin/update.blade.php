@@ -82,7 +82,7 @@
     color: #00dd00;
     }
     a {
-        color: white;	
+        /* color: white;	 */
         text-decoration: none;	
     }
 

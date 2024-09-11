@@ -17,7 +17,7 @@ use LaraPressCMS\LaraPress\Models\Settings;
 class LaraServiceProvider extends ServiceProvider
 {
     // Static variable to hold the value
-    protected static $currentLaraVersion = '1.0.8';
+    protected static $currentLaraVersion = '1.0.9';
 
     public function boot()
     {        

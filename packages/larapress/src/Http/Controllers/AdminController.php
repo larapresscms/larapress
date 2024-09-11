@@ -288,8 +288,7 @@ class AdminController extends Controller
             $skipFiles = [
                 'resources',
                 'vendor',
-                'public',
-                'packages'
+                'public'                
                 // Add more paths as needed
             ];
 
