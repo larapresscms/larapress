@@ -265,13 +265,13 @@ class AdminController extends Controller
             $this->info('Downloading the latest version of LaraPress...');
 
             // Step 1: Download the latest LaraPress version
-            $zipFile = base_path('larapress-packages.zip');
-            file_put_contents($zipFile, fopen('https://larapress.org/latest/larapress-packages.zip', 'r'));
+            $zipFile = base_path('latest-larapress.zip');
+            file_put_contents($zipFile, fopen('https://larapress.org/latest/latest-larapress.zip', 'r'));
 
             $this->info('Extracting the downloaded LaraPress...');
 
             // Step 2: Extract the downloaded file
-            $extractPath = base_path('larapress-packages');
+            $extractPath = base_path('latest-larapress');
             $zip = new \ZipArchive;
             if ($zip->open($zipFile) === TRUE) {
                 $zip->extractTo($extractPath);
@@ -294,7 +294,7 @@ class AdminController extends Controller
             ];
 
             // Step 4: Replace LaraPress core files with skipping logic
-            $this->replaceCoreFiles($extractPath.'/larapress-packages', base_path(), $skipFiles);
+            $this->replaceCoreFiles($extractPath.'/latest-larapress', base_path(), $skipFiles);
 
             // Step 5: Clean up
             unlink($zipFile);

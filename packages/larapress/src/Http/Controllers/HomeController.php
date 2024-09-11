@@ -56,8 +56,9 @@ class HomeController extends Controller
         }
        // dd($themeName);
        if($homeUrl){
-            $page = Post::find($homeUrl);
-            return view('front.themes.'.$themeName.'.page',compact('page','posts','categories','menus'));
+            $page = Post::find($homeUrl);             
+            $post = Post::orderBy('position', 'ASC')->where('post_type', $page->post_type)->where('status', '1')->first();
+            return view('front.themes.'.$themeName.'.single',compact('posts','categories','menus','post'));
        }else{
             return view('front.themes.'.$themeName.'.index',compact('posts','categories','menus'));
        }
