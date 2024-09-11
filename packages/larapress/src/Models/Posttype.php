@@ -34,7 +34,8 @@ class Posttype extends Model
        'pt_content',
        'pt_content_css',
        'pt_thumbnail_path',
-       'paginate'
+       'paginate',
+       'template'
 
     ];
 }

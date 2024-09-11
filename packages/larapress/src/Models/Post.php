@@ -32,6 +32,7 @@ class Post extends Model
         'more_option_1',
         'more_option_2',
         'gallery_img',
-        'trash'
+        'trash',
+        'template'
     ];
 }

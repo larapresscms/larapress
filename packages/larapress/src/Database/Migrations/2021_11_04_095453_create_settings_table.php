@@ -26,6 +26,8 @@ class CreateSettingsTable extends Migration
                 $table->string('theme_url')->nullable(); 
                 $table->string('home_url')->nullable(); 
                 $table->string('editor')->nullable(); 
+                $table->string('header')->nullable(); 
+                $table->string('footer')->nullable(); 
                 $table->timestamps();
             });
         }

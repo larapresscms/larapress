@@ -119,3 +119,7 @@ Route::get('/dashboard/about', [AdminController::class, 'aboutLaraPress']);
 Route::get('/dashboard/update', [AdminController::class, 'updateLaraPress']);
 Route::get('/update-larapress', [AdminController::class, 'updateLarapressCore'])->name('update-larapress');
 Route::get('/update-status', [AdminController::class, 'getStatus']);
+
+//upload template
+Route::post('/dashboard/upload-template', [AdminController::class, 'uploadTemplate']);
+Route::get('/dashboard/delete-template/{foldername}', [AdminController::class, 'deleteTemplate']);

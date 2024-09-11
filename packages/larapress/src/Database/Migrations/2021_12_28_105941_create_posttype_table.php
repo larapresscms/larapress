@@ -40,7 +40,8 @@ class CreatePosttypeTable extends Migration
                 $table->string('in_menu_swh');            
                 $table->string('menu_icon')->nullable();   
                 $table->string('in_dashboard');    
-                $table->integer('paginate')->nullable();                       
+                $table->integer('paginate')->nullable();                 
+                $table->integer('template')->nullable();                       
                 $table->timestamps();
             });
         }

@@ -19,11 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['web'])->group(function () {
-Route::get('/posts', [PostApiController::class, 'index']);
-Route::post('/posts', [PostApiController::class, 'store']);
-Route::put('/posts/{post}', [PostApiController::class, 'update']);
-Route::delete('/posts/{post}', [PostApiController::class, 'destroy']);
+Route::middleware(['api'])->group(function () {
+    // Route::get('/posts', [PostApiController::class, 'index']);
+    // Route::post('/posts', [PostApiController::class, 'store']);
+    // Route::put('/posts/{post}', [PostApiController::class, 'update']);
+    // Route::delete('/posts/{post}', [PostApiController::class, 'destroy']);
 
-Route::get('/versioncontroll', [PostApiController::class, 'versionControll']);
+    Route::get('/versioncontroll', [PostApiController::class, 'versionControll']);
 });

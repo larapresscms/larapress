@@ -88,7 +88,8 @@ class PosttypeController extends Controller
            'pt_content' => '',
            'pt_content_css' => '',
            'pt_thumbnail_path' => '',
-           'paginate' => ''
+           'paginate' => '',
+           'template' => ''
        ]);
 
        //$slug = Str::slug($request->name, '-');
@@ -100,6 +101,7 @@ class PosttypeController extends Controller
        //check checkbox is empty
        $input['in_menu_swh'] = $request->in_menu_swh == null ? '0' : '1';
        $input['in_dashboard'] = $request->in_dashboard == null ? '0' : '1';
+       $input['template'] = $request->template == null ? '0' : '1';
 
        Posttype::create($input);
 
@@ -186,6 +188,7 @@ class PosttypeController extends Controller
        //check checkbox is empty
        $input['in_menu_swh'] = $request->in_menu_swh == null ? '0' : '1';
        $input['in_dashboard'] = $request->in_dashboard == null ? '0' : '1';
+       $input['template'] = $request->template == null ? '0' : '1';
 
        $posttypes->update($input);
 
@@ -200,9 +203,13 @@ class PosttypeController extends Controller
     * @return \Illuminate\Http\Response
     */
    public function destroy($id)
-   {
+   {    
+    
+       $posttype = Posttype::where('id',$id)->first();
+       Post::where('post_type', $posttype->slug)->delete();
+
        Posttype::destroy($id); 
-       session()->flash('messageDestroy','Data Delete successfully');
+       session()->flash('messageDestroy','All Delete successfully');
        return redirect('/dashboard/posttypes');
    }
    
@@ -228,7 +235,7 @@ class PosttypeController extends Controller
     }
     public function storeposttype(Request $request)
     { 
-        //dd($request);
+        
         $validated = $request->validate([            
             'user_id' => '',
             'position' => 'nullable',
@@ -246,15 +253,14 @@ class PosttypeController extends Controller
             'more_option_1' => 'nullable',
             'more_option_2' => 'nullable',
             'gallery_img'   => 'nullable',
-            'status' => '', 
+            'status' => '',
+            'template' => ''
         ]); 
 
         $validated = $request->all();
 
         $category_id = isset($request->category_id) && is_array($request->category_id) ? $request->category_id : [];
         $validated['category_id'] = implode(",",$category_id); 
-
-        //dd($validated['category_id']);
 
         //$slug = Str::slug($request->name, '-');
        $slug = $this->createSlugPost($request->title);
@@ -290,6 +296,8 @@ class PosttypeController extends Controller
             ];
             $user->update($data);
         }
+
+        //insertDummyData('shahin55',5);
 
         /* Store $imageName name in DATABASE from HERE */
         session()->flash('message',$request->post_type.' insert successfully');

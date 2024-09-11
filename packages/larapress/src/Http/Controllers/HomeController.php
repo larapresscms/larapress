@@ -62,24 +62,7 @@ class HomeController extends Controller
        }else{
             return view('front.themes.'.$themeName.'.index',compact('posts','categories','menus'));
        }
-    }
-    public function single($slug){ 
-        $post = Post::where('slug',$slug)->first();
-        $posts = Post::all();
-        $menus = Menu::orderBy('id','ASC')->get();
-        $categories = Category::all();   
-        //set as home page
-        $setting = Settings::all();
-        if($setting->count() == 0){
-            $themeName = "default";
-        }else{
-            foreach($setting as $sttingsVlue){
-                $themeName = $sttingsVlue->theme_url;
-            }
-        }
-        return view('front.themes.'.$themeName.'.single',compact('post','posts','menus','categories'));
-    }    
-    
+    } 
     public function handleDynamicRoute(Request $request)
     {
         try{
@@ -133,11 +116,18 @@ class HomeController extends Controller
                 $themeName = $sttingsVlue->theme_url;
                 $homeUrl = $sttingsVlue->home_url;
             }
+        }        
+        
+        // Check if a view file for the specific post type exists
+        $viewExists = View::exists('front.themes.' . $themeName . '.' . $post_type);
+    
+        // If the view for the specific post type exists, return it
+        if ($viewExists) {
+            return view('front.themes.'.$themeName.'.'.$post_type.'',compact('posts','posttype','categories','menus','postD'));   
+        } else {
+            return view('front.themes.'.$themeName.'.posts',compact('posts','posttype','categories','menus','postD'));   
         }
-       // dd($themeName); 
-        return view('front.themes.'.$themeName.'.'.$post_type.'',compact('posts','posttype','categories','menus','postD'));        
     }
-
     public function postTypeSingle($post_type, $slug){
         $post = Post::orderBy('id','DESC')->where('status','1')->where('post_type',$post_type)->where('slug',$slug)->first();        
         $posttype = Posttype::where('slug',$slug)->first();

@@ -124,9 +124,260 @@
                             <input type="text" name='fav_icon' value="{{ $settings->fav_icon}}" class="form-control form-control-user" id="floatingfevicon"
                             placeholder="Example: 12423223.jpg">
                         </div>
+
+                        <input type="hidden" name="header" value="{{ $settings->header}}" id="lp-orderInput">
+
+                        <input type="hidden" name="footer" value="{{ $settings->footer}}" id="lp-orderInput-footer">
+
+                    </div>        
+
+                
+
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Template</h6>                                      
+                            <a href="https://larapress.org/template"><h6 class="m-0 font-weight-bold text-primary">View More Template</h6> </a>
+                            <a href="{{url('/dashboard/about')}}"><h6 class="m-0 font-weight-bold text-primary">Upload Template</h6> </a>                
+                        </div>
+                        <div class="card-body scroll-design">
+                            <div class="form-group row">
+                                <div class="col-sm-12 mb-3 mb-sm-0"> 
+                                    <div id="lp-left-list" class="lp-list-container"> 
+                                        <?php
+                                        $folder_names = [];
+                                        $i = 0;  
+                                        // Define the paths
+                                        $mainResourceDir = resource_path('views/front/template');
+                                        $packageDir = base_path('packages/larapress/src/resources/views/front/template');
+
+                                        // Initialize an empty array to hold the merged directory list
+                                        $mergedDirList = [];
+
+                                        // Function to scan directories recursively
+                                        function scanDirectoryRecursively($dir) {
+                                            $result = [];
+                                            $items = scandir($dir);
+                                            foreach ($items as $item) {
+                                                if ($item == '.' || $item == '..') continue; // Skip current and parent directory references
+                                                $fullPath = $dir . '/' . $item;
+                                                if (is_dir($fullPath)) {
+                                                    // If it's a directory, recursively scan it
+                                                    $result[$item] = scanDirectoryRecursively($fullPath);
+                                                } else {
+                                                    // If it's a file, just add it to the result
+                                                    $result[] = $fullPath;
+                                                }
+                                            }
+                                            return $result;
+                                        }
+
+                                        // Function to extract comments from PHP file
+                                        function extractTemplateInfo($filePath) {
+                                            $templateInfo = [
+                                                'Template' => 'Unknown',
+                                                'Version' => 'Unknown'
+                                            ];
+
+                                            // Read the first 1024 bytes of the file to look for the comment block
+                                            $fileContent = file_get_contents($filePath, false, null, 0, 1024);
+                                            if (preg_match('/\/\*\s*Template Name:\s*(.+)\s*Version:\s*(.+?)\s*\*\//', $fileContent, $matches)) {
+                                                $templateInfo['Template'] = trim($matches[1]);
+                                                $templateInfo['Version'] = trim($matches[2]);
+                                            }
+
+                                            return $templateInfo;
+                                        }
+
+                                        // Function to find the screenshot (png) file in the directory
+                                        function findScreenshot($files) {
+                                            foreach ($files as $file) {
+                                                if (pathinfo($file, PATHINFO_EXTENSION) === 'png') {
+                                                    return $file; // Return the first PNG file found
+                                                }
+                                            }
+                                            return null; // Return null if no PNG is found
+                                        }
+
+                                        // Scan the main resource directory
+                                        if (is_dir($mainResourceDir)) {
+                                            $dirList = scandir($mainResourceDir);
+                                            foreach ($dirList as $value) {
+                                                if (strpos($value, '.') === false) {
+                                                    // Recursively get files inside the directory
+                                                    $mergedDirList[$value] = scanDirectoryRecursively($mainResourceDir . '/' . $value);
+                                                }
+                                            }
+                                        }
+
+                                        // Scan the package directory
+                                        if (is_dir($packageDir)) {
+                                            $dirList = scandir($packageDir);                                    
+                                            foreach ($dirList as $value) {
+                                                if (strpos($value, '.') === false) {
+                                                    // Recursively get files inside the directory
+                                                    $mergedDirList[$value] = scanDirectoryRecursively($packageDir . '/' . $value);
+                                                }
+                                            }
+                                        }
+
+                                        // Iterate through the merged directory list and output options
+                                        foreach ($mergedDirList as $dir => $files) {                                    
+                                            // Find the screenshot (png) file for background image
+                                            $screenshot = findScreenshot($files);
+                                            $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                            ?>
+                                            <div class="lp-item card" data-id="{{ $dir }}">
+                                                <img src="<?php echo $backgroundImage; ?>">
+                                                <div class="card-body">                                        
+                                                <?php
+                                                foreach ($files as $file) {
+                                                    // Check if the file is a PHP file
+                                                    if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                                                        // Extract template info from the PHP file comments
+                                                        $templateInfo = extractTemplateInfo($file);
+                                                        ?>                                                
+                                                            <?php //echo basename($file); ?>
+                                                            <strong>Template Name:</strong> <?php echo $templateInfo['Template']; ?> <br>
+                                                            <strong>Version:</strong> <?php echo $templateInfo['Version']; ?>  
+                                                            <p><a href="{{url('/dashboard/delete-template',$dir)}}" class="btn btn-danger">Delete</a></p>                                          
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                </div>                                        
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>                                
+                                        <!-- <div class="lp-item" data-id="4">Item 4</div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-xl-6">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Header Design</h6>                
+                            </div>
+                            <div class="card-body scroll-design">
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">                            
+                                        <div id="lp-right-list" class="lp-drop-container">
+
+                                            @php $tempate = explode(",",$settings->header); @endphp
+                                            @foreach($tempate as $tempateName)
+                                            @if($tempateName)
+                                            <?php
+                                            // Iterate through the merged directory list and output options
+                                            foreach ($mergedDirList as $dir => $files) { 
+
+                                                if($tempateName == $dir){
+
+                                                    // Find the screenshot (png) file for background image
+                                                    $screenshot = findScreenshot($files);
+                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                                    ?>
+                                                    <div class="lp-item card" data-id="{{ $dir }}">
+                                                        
+                                                        <img src="<?php echo $backgroundImage; ?>">
+                                                        <div class="card-body">                                        
+                                                        <?php
+                                                        foreach ($files as $file) {
+                                                            // Check if the file is a PHP file
+                                                            if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                                                                // Extract template info from the PHP file comments
+                                                                $templateInfo = extractTemplateInfo($file);
+                                                                ?>                                                
+                                                                    <?php //echo basename($file); ?>
+                                                                    <strong>Template Name:</strong> <?php echo $templateInfo['Template']; ?> <br>
+                                                                    <strong>Version:</strong> <?php echo $templateInfo['Version']; ?>                                                
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        </div>  
+                                                        <button class="close-btn">×</button>                                       
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                            ?> 
+                                            @endif
+                                            @endforeach 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Footer Design</h6>                
+                            </div>
+                            <div class="card-body scroll-design">
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">                            
+                                        <div id="lp-right-list-footer" class="lp-drop-container">
+
+                                            @php $tempate = explode(",",$settings->footer); @endphp
+                                            @foreach($tempate as $tempateName)
+                                            @if($tempateName)
+                                            <?php
+                                            // Iterate through the merged directory list and output options
+                                            foreach ($mergedDirList as $dir => $files) { 
+
+                                                if($tempateName == $dir){
+
+                                                    // Find the screenshot (png) file for background image
+                                                    $screenshot = findScreenshot($files);
+                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                                    ?>
+                                                    <div class="lp-item card" data-id="{{ $dir }}">
+                                                        
+                                                        <img src="<?php echo $backgroundImage; ?>">
+                                                        <div class="card-body">                                        
+                                                        <?php
+                                                        foreach ($files as $file) {
+                                                            // Check if the file is a PHP file
+                                                            if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                                                                // Extract template info from the PHP file comments
+                                                                $templateInfo = extractTemplateInfo($file);
+                                                                ?>                                                
+                                                                    <?php //echo basename($file); ?>
+                                                                    <strong>Template Name:</strong> <?php echo $templateInfo['Template']; ?> <br>
+                                                                    <strong>Version:</strong> <?php echo $templateInfo['Version']; ?>                                                
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        </div>  
+                                                        <button class="close-btn">×</button>                                       
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                            ?> 
+                                            @endif
+                                            @endforeach 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
+
+
+
+            </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>                            
             </form>            
             <hr>

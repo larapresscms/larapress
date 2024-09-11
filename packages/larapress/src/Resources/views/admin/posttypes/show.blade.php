@@ -223,13 +223,12 @@
                                                         <div class="modal-body">Select "Delete" below if you are ready to Permanently delete your current data.</div>
                                                         <div class="modal-footer">
                                                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                                            
-                                                            <form action="{{ url('/dashboard/posts/posttype',$post->id) }}" method="POST">
-                                                                @csrf     
-                                                                @method('DELETE')         
-                                                                <input class="d-none" name="post_type" type="text" value="{{$post->post_type}}">                                                 
-                                                                <button class="btn btn-danger bbtn" type="submit">Delete</button>
-                                                            </form>  
+                                                            <a  class="btn btn-danger bbtn">
+                                                            {!! Form::open(['url' => 'dashboard/posts/posttype/'.$post->id, 'method'=>'delete']) !!}
+                                                            {!! Form::input('text', 'post_type', $post->post_type, ['class' => 'd-none']) !!}
+                                                            {!! Form::submit('Delete') !!}
+                                                            {!! Form::close() !!}
+                                                            </a>
                                                             
                                                         </div>
                                                     </div>

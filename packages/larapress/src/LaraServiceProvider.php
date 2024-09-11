@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Http;
 use LaraPressCMS\LaraPress\Console\DownloadLatestLaraPressCommand;
 use Illuminate\Http\Client\ConnectionException;
 use LaraPressCMS\LaraPress\Http\Controllers\Controller; 
+use Illuminate\Support\Facades\Blade;
+use LaraPressCMS\LaraPress\Models\Post;
+use LaraPressCMS\LaraPress\Models\Settings;
 
 class LaraServiceProvider extends ServiceProvider
 {
     // Static variable to hold the value
-    protected static $currentLaraVersion = '1.0.7';
+    protected static $currentLaraVersion = '1.0.8';
 
     public function boot()
     {        
@@ -114,11 +117,74 @@ class LaraServiceProvider extends ServiceProvider
             // Call a method from the controller
             //$controller->setErrorMessage('Your Internet connection is down.'); 
            // return response()->json(['error' => 'Internet connection is down or the host is unreachable']);            
-        }
-
-        
+        }        
         view()->share('lara_version', $lara_version);
         view()->share('lara_status', $lara_status);   
+
+        // Register your custom Blade directive with a parameter        
+        Blade::directive('getTemplate', function ($expression) {
+            return "<?php
+                \$values = explode(',', $expression);
+                foreach (\$values as \$imgid) {
+                    \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                    if (!empty(\$imgid)) {
+                        // Check if the view exists
+                        if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
+                            echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                        } else {
+                            echo ' -> '. \$imgid.' Template not found';
+                        }
+                    }
+                }
+            ?>";
+        });
+        
+        //getHeader
+        Blade::directive('getHeader', function () {            
+            $post = Settings::get()->first();      
+            return "<?php
+                    \$values = explode(',', '$post->header');
+                    foreach (\$values as \$imgid) {
+                        \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                        if (!empty(\$imgid)) {
+                            // Check if the view exists
+                            if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
+                                echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                            } else {
+                                echo ' -> '. \$imgid.' Template not found';
+                            }
+                        }
+                    }
+                ?>";
+        });
+
+        //getFooter
+        Blade::directive('getFooter', function () {            
+            $post = Settings::get()->first();      
+            return "<?php
+                    \$values = explode(',', '$post->footer');
+                    foreach (\$values as \$imgid) {
+                        \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                        if (!empty(\$imgid)) {
+                            // Check if the view exists
+                            if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
+                                echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                            } else {
+                                echo ' -> '. \$imgid.' Template not found';
+                            }
+                        }
+                    }
+                ?>";
+        });
+        //getSetting    
+        Blade::directive('getSetting', function ($name) {
+            return "<?php echo getSetting($name); ?>";
+        });   
+
+        //get content 
+        Blade::directive('getContent', function ($expression) {
+            return "<?php echo getContentBySlug($expression); ?>";
+        });
 
 
     }
@@ -127,6 +193,11 @@ class LaraServiceProvider extends ServiceProvider
     {
         // Binding classes into the service container.
         // $this->mergeConfigFrom(__DIR__.'/../config/yourconfig.php', 'yourconfig');
+
+        if (file_exists($file = __DIR__.'/helpers.php')) {
+            require_once $file;
+        }
+        
 
     }
     // Method to access the global variable

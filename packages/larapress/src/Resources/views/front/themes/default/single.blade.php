@@ -13,18 +13,15 @@
         <div class="container">
             <div class="row">
                 <!-- Blog entries-->
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <!-- Featured blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="{{ $post->thumbnail_path ?? ''}}" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">{{ $post->created_at ?? ''}}</div>
-                            <h2 class="card-title">{{ $post->title ?? ''}}</h2>
-                            <p class="card-text">{!! $post->content ?? '' !!}</p> 
-                        </div>
+                    <div class="mb-4">
+                        <img class="card-img-top" src="{{ url('public/uploads/images/',$post->thumbnail_path ?? '') }}" alt="..." />                      
+                        <style>{!! $post->content_css ?? '' !!}</style>
+                        <p class="card-text">{!! $post->content ?? '' !!}</p>
                     </div>
-                </div>
-                @include('front.themes.default.sidebar')
+                </div>                
             </div>
         </div>
+        @getTemplate($post->template ?? '')  
 @endsection      

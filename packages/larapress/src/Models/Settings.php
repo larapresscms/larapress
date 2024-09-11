@@ -13,5 +13,5 @@ class Settings extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['site_title','sub_title','fav_icon','site_logo','dashboard_color','text_color','text_hover','theme_url','home_url','editor'];
+    protected $fillable = ['site_title','sub_title','fav_icon','site_logo','dashboard_color','text_color','text_hover','theme_url','home_url','editor','header','footer'];
 }

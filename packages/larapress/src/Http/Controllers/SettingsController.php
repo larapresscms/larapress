@@ -45,7 +45,9 @@ class SettingsController extends Controller
             'text_hover' => '', 
             'theme_url' => '',
             'home_url' => '',
-            'editor' => '' 
+            'editor' => '',
+            'header' => '',
+            'footer' => '',
         ]);
         Settings::create($validated);
         session()->flash('message','Home page set successfully');

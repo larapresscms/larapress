@@ -88,7 +88,7 @@
 												<span aria-hidden="true">×</span>
 											</button>
 										</div>
-										<div class="modal-body">Select "Delete" below if you are ready to Permanently delete your current data.</div>
+										<div class="modal-body">To permanently delete your current data and all related posts, please confirm by selecting 'Delete' below.</div>
 										<div class="modal-footer">
 											<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
 											<form action="{{ url('/dashboard/posttypes',$posttype->id) }}" method="POST">
@@ -162,16 +162,14 @@
 															<span aria-hidden="true">×</span>
 														</button>
 													</div>
-													<div class="modal-body">Select "Delete" below if you are ready to Permanently delete your current data.</div>
+													<div class="modal-body">To permanently delete your current data and all related posts, please confirm by selecting 'Delete' below</div>
 													<div class="modal-footer">
 														<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-														
-														<form action="{{ url('/dashboard/posttypes/',$posttype->id) }}" method="POST">
-                                                            @csrf     
-                                                            @method('DELETE')                                                  
-                                                            <button class="btn btn-danger bbtn" type="submit">Delete</button>
-                                                        </form>
-                                                        
+														<form action="{{ url('/dashboard/posttypes',$posttype->id) }}" method="POST">
+															@csrf     
+															@method('DELETE')                                                           
+															<button class="btn btn-danger bbtn" type="submit">Delete</button>
+														</form>
 													</div>
 												</div>
 											</div>
@@ -185,10 +183,7 @@
 							@endif
 						@endforeach 				
 					@endif	
-					<!-- role mang editor--> 
-                    
-                    
-                    
+					<!-- role mang editor-->                     
                     
                     @endforeach
                 </tbody>

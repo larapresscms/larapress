@@ -282,6 +282,13 @@
                                 <span class="sliderswitch round"></span>
                             </label>
                         </div> 
+                        <label for="basic-url">Template Design Turn On Off</label>
+                        <div class="input-group mb-3">
+                            <label class="switch">
+                                <input type="checkbox" name="template" value="1" {{ $posttype->template == '1' ? 'checked' : ''}}>
+                                <span class="sliderswitch round"></span>
+                            </label>
+                        </div>
                     </div> 
                     
                     <label for="basic-url">Main Categories</label>

@@ -360,6 +360,35 @@ class AdminController extends Controller
         $status = explode("\n", trim($status));
 
         return response()->json(['status' => $status]);
-    }  
+    } 
+    
+    public function uploadTemplate(Request $request){
+
+        if ($request->hasFile('templateZip')) {
+            $file = $request->file('templateZip');
+            $zip = new \ZipArchive;
+            if ($zip->open($file->getPathname()) === TRUE) {
+                $zip->extractTo(resource_path('views/front/template'));
+                $zip->close();
+                return redirect()->back()->with('message', 'Template installed successfully!'); 
+            } else {
+                return redirect()->back()->with('message', 'Failed to install template.');
+            }
+        } 
+    }
+
+    public function deleteTemplate($folderName) {    
+        // Build the full path to the template directory
+        $templatePath = resource_path('views/front/template/' . $folderName);
+    
+        // Check if the directory exists
+        if (File::exists($templatePath)) {
+            // Recursively delete the directory and all its contents
+            File::deleteDirectory($templatePath);
+            return redirect()->back()->with('message', 'Template deleted successfully.');              
+        } else {
+            return redirect()->back()->with('message', 'Permission Denied.'); 
+        }
+    }
     
 }

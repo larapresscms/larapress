@@ -44,7 +44,9 @@ class AuthController extends Controller
                 'text_hover' => '', 
                 'theme_url' => 'default',
                 'home_url' => '',
-                'editor' => 'classic'
+                'editor' => 'classic',
+                'header' => 'header',
+                'footer' => 'footer'
             ];
             Settings::create($settingsdata);
 
@@ -54,18 +56,18 @@ class AuthController extends Controller
                 'name' => 'Posts', 
                 'slug' => 'posts', 
                 'status' => '1',
-                'category_id' => 'Yes',
+                'category_id' => 'Categories',
                 'title'=> 'Title',
                 'content'=> 'Description', 
                 'excerpt'=> 'Excerpt',
-                'thumbnail_path'=> 'Yes', 
+                'thumbnail_path'=> 'Thumbnails', 
                 'option_1'=> 'Option 1',
                 'option_2'=> 'Option 2',
                 'option_3'=> 'Option 3',
                 'option_4'=> 'Option 4',
                 'more_option_1'=> 'Extra Fields',
                 'more_option_2'=> 'Extra Fields',
-                'gallery_img'=> 'Yes',
+                'gallery_img'=> 'Gallery',
                 'trash'=> '0',
                 'in_menu_swh'=> '1',
                 'menu_icon'=> '',
@@ -74,7 +76,8 @@ class AuthController extends Controller
                 'pt_content' => '',
                 'pt_content_css' => '',
                 'pt_thumbnail_path' => '',
-                'paginate' => '100'
+                'paginate' => '100',
+                'template' => 1
             ];
             Posttype::create($posttypedata);            
             
