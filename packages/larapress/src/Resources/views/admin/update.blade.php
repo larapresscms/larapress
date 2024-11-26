@@ -300,7 +300,7 @@
 
     <header class="site clearfix">
       <div class="col one">
-        <img src="{{asset('public/admin/img/larapress.png')}}" alt="591 Systems" width="740" height="729" id="logo-v" />
+        <img src="{{asset('packages/larapress/src/Assets/admin/img/larapress.png')}}" alt="591 Systems" width="740" height="729" id="logo-v" />
       </div>
       <div class="col two">
         <h4>LaraPress (tm) <br /> <b>H</b>euristically <b>E</b>ncrypted <b>R</b>ealtime <b>O</b>perating <b>S</b>ystem (HEROS)</h4>

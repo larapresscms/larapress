@@ -22,7 +22,7 @@
                       <div class="form-group row">
                           <div class="col-sm-12 mb-3 mb-sm-0 text-center">
                               <label class=newbtn>
-                                  <img id="blah" src="{{ asset('public/admin/img/dummy-image-square.jpg') }}" >
+                                  <img id="blah" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" >
                                   <input name='img_name[]' id="images_multiple" class='pis form-control' type="file" multiple>
                                   <!-- <input name='img_name[]' id="images" class='pis form-control' onchange="readURL(this);" type="file" multiple> -->
                               </label>
@@ -81,8 +81,15 @@
                                       $(".divGalleryid").load(" .divGalleryid"); //for div replace
                                       $(".images-preview-div").empty(); // image preview remove
                                       $("#images_multiple").val('');  // image remove do not again
-                                      $(".uploadMessage").text('File Uploaded Successfully.');  // image remove do not again
-                                      $(".uploadMessage").addClass("alert alert-success");
+                                      if(data == 'failed'){
+                                        $(".uploadMessage").text('You are not allowed to upload.');  // image remove do not again
+                                        $(".uploadMessage").addClass("alert alert-danger");
+                                      }else{
+                                          $(".uploadMessage").text('File Uploaded Successfully.');  // image remove do not again
+                                          $(".uploadMessage").addClass("alert alert-success");
+                                      }
+                                    
+
                                       //document.getElementsByClassName("uploadMessage").innerHTML = "File Uploaded Successfully.";   
                                   },
                                   cache: false,

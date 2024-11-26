@@ -9,10 +9,10 @@
             <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Edit</h1>
             </div>
-            {!! Form::open(['url' => '/dashboard/categories/'.$categories->id,'method'=>'patch','class'=>'user']) !!}
-<!-- 
-            <form class="user" action="{{ url('/dashboard/categories') }}" method="post">
-            {{ csrf_field() }} -->
+            
+            <form method="POST" action="{{ url('/dashboard/categories',$categories->id) }}" accept-charset="UTF-8" class="user">
+            @csrf
+            @method('PATCH') 
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
                         <input type="text" name='name' value='{{ $categories->name }}' class="form-control form-control-user" id="exampleFirstName"
@@ -42,9 +42,8 @@
                 @foreach ($errors->all() as $message)
                 {{ $message }}
                 @endforeach
-            <!-- </form> -->
-             
-            {!! Form::close() !!}
+
+            </form>
 
             <hr>
         </div>

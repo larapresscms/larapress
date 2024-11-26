@@ -203,7 +203,12 @@ class PosttypeController extends Controller
     * @return \Illuminate\Http\Response
     */
    public function destroy($id)
-   {    
+   {   
+        $user = auth()->user();
+        if ($user->role == 112 && $user->delete == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to delete.');
+            return redirect('/dashboard/posttypes/');
+        } 
     
        $posttype = Posttype::where('id',$id)->first();
        Post::where('post_type', $posttype->slug)->delete();
@@ -258,6 +263,13 @@ class PosttypeController extends Controller
         ]); 
 
         $validated = $request->all();
+
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->create == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to create.');            
+            return redirect('/dashboard/posttypes/'.$request->post_type);
+        } 
 
         $category_id = isset($request->category_id) && is_array($request->category_id) ? $request->category_id : [];
         $validated['category_id'] = implode(",",$category_id); 
@@ -355,7 +367,7 @@ class PosttypeController extends Controller
     }
     
     public function updateppost(Request $request, $id)
-    {  
+    {    
         $posts = Post::find($id);
         $postsAll = $request->all();
         //gallery validation
@@ -377,6 +389,13 @@ class PosttypeController extends Controller
             $this_cat = Category::create($data);
             $postsAll['category_id'] = $postsAll['category_id'].','.$this_cat->id;
         }
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->update == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to update.');            
+            return redirect('/dashboard/posts/posttype/'.$id.'/edit/'.$request->post_type); 
+        } 
+
         $posts->update($postsAll);
         session()->flash('message',$request->post_type.' update successfully');        
         return redirect('/dashboard/posts/posttype/'.$id.'/edit/'.$request->post_type); 
@@ -410,9 +429,15 @@ class PosttypeController extends Controller
     }
     // slug---
 
-
     public function destroyppost(Request $request, $id)
     {
+        // Check if user has role 112
+        $user = auth()->user();
+        if ($user->role == 112 && $user->delete == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to delete.');
+            return redirect('/dashboard/posttypes/'.$request->post_type);
+        }
+
         Post::destroy($id); 
         session()->flash('messageDestroy',$request->post_type.' delete successfully');
         return redirect('/dashboard/posttypes/'.$request->post_type);

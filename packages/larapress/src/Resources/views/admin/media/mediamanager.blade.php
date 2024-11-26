@@ -17,16 +17,16 @@
     <title> {{ $settingsAdmin->site_title ?? 'None'}} </title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('public/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('public/admin/css/sb-admin-2.css')}}" rel="stylesheet">
-    <link href="{{ asset('public/admin/css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/css/sb-admin-2.css')}}" rel="stylesheet">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/css/style.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"> 
+    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"> 
 </head>
 
 <body id="page-top"> 
@@ -45,7 +45,7 @@
                       <div class="form-group row">
                           <div class="col-sm-12 mb-3 mb-sm-0 text-center">
                               <label class=newbtn>
-                                  <img id="blah" src="{{ asset('public/admin/img/dummy-image-square.jpg') }}" >
+                                  <img id="blah" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" >
                                   <input name='img_name[]' id="images_multiple" class='pis form-control' type="file" multiple>
                                   <!-- <input name='img_name[]' id="images" class='pis form-control' onchange="readURL(this);" type="file" multiple> -->
                               </label>
@@ -90,7 +90,7 @@
 
                       <!--for pdf or image check -->
                       @php
-                      $link = "asset('public/uploads/images/')/$media->img_name";
+                      $link = "asset('public/uploads/')/$media->img_name";
                       $file_extension = pathinfo($link, PATHINFO_EXTENSION);
                       if ($file_extension == "pdf" || $file_extension == "xlsx") {
                       @endphp
@@ -98,7 +98,7 @@
                       @php
                       } else {
                       @endphp
-                          <img src="{{ asset('public/uploads/images/') }}/{{$media->img_name }}" style="width:100%; height:200px" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/images/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
+                          <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" style="width:100%; height:200px" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
                       @php 
                       }
                       @endphp
@@ -107,7 +107,7 @@
                     
                       <!-- Tooltip----- -->
                       <span class="input">
-                        <input type="text" class="btn-block btn100" id="afInput{{$media->id }}" value="{{ asset('public/uploads/images/') }}/{{$media->img_name }}" readonly>
+                        <input type="text" class="btn-block btn100" id="afInput{{$media->id }}" value="{{ asset('public/uploads/') }}/{{$media->img_name }}" readonly>
                       </span>
                       <!-- <div class="tooltip-af">
                           <button class="btn btn-primary btn-user btn-block btn100" onclick="afTooltipFunction{{$media->id }}()" onmouseout="afoutFunc{{$media->id }}()" class="button-ffu">
@@ -202,7 +202,7 @@
             <div class="row thumbId" id="thumbId"></div>   
 
             <div id="loadingIconthumbId" style="display: none; width:100%; text-align: center;"> 
-                <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/>
+                <!-- <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/> -->
             </div>
 
             <div class="row">
@@ -309,11 +309,11 @@ function fetchDataFromThumb() {
                       <!--for pdf or image check -->
                       ${item.img_name.split('.').pop() === 'pdf' ?
                           `<a class="btn btn-info bbtn"><i class="fas fa-file-pdf"></i></a>` :
-                          `<img src="{{ asset('public/uploads/images/') }}/${item.img_name}" style="width:100%; height:200px" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/images/') }}/${item.img_name}', '${item.img_name}')"/>`
+                          `<img src="{{ asset('public/uploads/') }}/${item.img_name}" style="width:100%; height:200px" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/') }}/${item.img_name}', '${item.img_name}')"/>`
                       }
                   </label>
                   <span class="input">
-                    <input type="text" class="btn-block btn100" id="afInput${item.id}" value="{{ asset('public/uploads/images/') }}/${item.img_name}" readonly>
+                    <input type="text" class="btn-block btn100" id="afInput${item.id}" value="{{ asset('public/uploads/') }}/${item.img_name}" readonly>
                   </span>
               </div>
               `; 
@@ -335,23 +335,23 @@ document.getElementById('fetchDataAjaxBtnThumb').addEventListener('click', fetch
 
  
    <!-- Bootstrap core JavaScript-->
-   <script src="{{ asset('public/admin/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('public/admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+   <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('public/admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('public/admin/js/sb-admin-2.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
 
     <!-- Page level plugins -->
-    <script src="{{ asset('public/admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('public/admin/js/demo/datatables-demo.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/demo/datatables-demo.js')}}"></script>
     <!-- image upload -->
     <script >
         $(function() {

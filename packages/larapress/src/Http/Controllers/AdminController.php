@@ -114,10 +114,12 @@ class AdminController extends Controller
             'feedbacks' => '',
             'media' => '',
             'menus' => '',
-            'pages_id' => '',
             'posts_id' => '',
             'posttypes_id' => '',
-            'admin_pt_menu' => ''
+            'admin_pt_menu' => '',
+            'create' => '',
+            'update' =>'',
+            'delete'=>''
             
         ]);
        
@@ -125,8 +127,8 @@ class AdminController extends Controller
         $posts_id = isset($request->posts_id) && is_array($request->posts_id) ? $request->posts_id : [];
         $input['posts_id'] = implode(",",$posts_id); 
         
-        $pages_id = isset($request->pages_id) && is_array($request->pages_id) ? $request->pages_id : [];
-        $input['pages_id'] = implode(",",$pages_id);
+        // $pages_id = isset($request->pages_id) && is_array($request->pages_id) ? $request->pages_id : [];
+        // $input['pages_id'] = implode(",",$pages_id);
         
         $posttypes_id = isset($request->posttypes_id) && is_array($request->posttypes_id) ? $request->posttypes_id : [];
         $input['posttypes_id'] = implode(",",$posttypes_id);
@@ -138,27 +140,35 @@ class AdminController extends Controller
         $input['feedbacks'] = $request->input('feedbacks');
         $input['media'] = $request->input('media');
         $input['menus'] = $request->input('menus');
+                
+        $input['create'] = $request->input('create');
+        $input['update'] = $request->input('update');
+        $input['delete'] = $request->input('delete');
 
         if($request->role == 111){
             $input['categories'] = null;
             $input['feedbacks'] = null;
             $input['media'] = null;
-            $input['menus'] = null;
-            $input['pages_id'] = null;
+            $input['menus'] = null; 
             $input['posts_id'] = null;
             $input['posttypes_id'] = null;
-            $input['admin_pt_menu'] = null;
+            $input['admin_pt_menu'] = null;            
+            $input['create'] = null;
+            $input['update'] = null;
+            $input['delete'] = null;
         }
 
         if(auth()->user()->role == 112){ 
             $input['categories'] = auth()->user()->categories;
             $input['feedbacks'] = auth()->user()->feedbacks;
             $input['media'] = auth()->user()->media;
-            $input['menus'] = auth()->user()->menus;
-            $input['pages_id'] = auth()->user()->pages_id;
+            $input['menus'] = auth()->user()->menus; 
             $input['posts_id'] =  auth()->user()->posts_id;
             $input['posttypes_id'] = auth()->user()->posttypes_id;
-            $input['admin_pt_menu'] = auth()->user()->admin_pt_menu;
+            $input['admin_pt_menu'] = auth()->user()->admin_pt_menu;                   
+            $input['create'] = auth()->user()->create;;
+            $input['update'] = auth()->user()->update;;
+            $input['delete'] = auth()->user()->delete;;
         }
 
         if($request->password != '' || $request->password != null){
@@ -176,11 +186,13 @@ class AdminController extends Controller
             'categories' => $input['categories'],
             'feedbacks' => $input['feedbacks'],
             'media' => $input['media'],
-            'menus' => $input['menus'],
-            'pages_id' => $input['pages_id'],
+            'menus' => $input['menus'], 
             'posts_id' => $input['posts_id'],
             'posttypes_id' => $input['posttypes_id'],
-            'admin_pt_menu' => $input['admin_pt_menu']
+            'admin_pt_menu' => $input['admin_pt_menu'],            
+            'create' => $input['create'],
+            'update' => $input['update'],
+            'delete' => $input['delete']
         ];
 
 

@@ -162,14 +162,14 @@ class HomeController extends Controller
     } 
     
     //search all
+    //search all
     public function searchAll(Request $request)
     {  
         $categories = Category::all();
-        $menus = Menu::orderBy('id','ASC')->get();         
-        $posts = Post::all(); 
+        $menus = Menu::orderBy('position','ASC')->get();         
+        //$posts = Post::orderBy('position','ASC')->where('status','1')->where('post_type','template')->paginate(1); 
        // dd($request->search);        
-        $search_posts = Post::where('content','LIKE','%'.$request->search.'%')->where('status','1')->get();       
-
+        $posts = Post::where('title','LIKE','%'.$request->search.'%')->where('status','1')->where('post_type','course')->paginate(1); 
         //set as home page
         $setting = Settings::all();
         if($setting->count() == 0){
@@ -179,8 +179,26 @@ class HomeController extends Controller
                 $themeName = $sttingsVlue->theme_url;
             }
         }
-        return view('front.themes.'.$themeName.'.search',compact('posts','categories','menus','search_posts'));
+        return view('front.themes.'.$themeName.'.course',compact('posts','categories','menus'));
     }
+    // public function searchAll(Request $request)
+    // {  
+    //     $categories = Category::all();
+    //     $menus = Menu::orderBy('id','ASC')->get();         
+    //     $posts = Post::all();       
+    //     $search_posts = Post::where('content','LIKE','%'.$request->search.'%')->where('status','1')->get();       
+
+    //     //set as home page
+    //     $setting = Settings::all();
+    //     if($setting->count() == 0){
+    //         $themeName = "default";
+    //     }else{
+    //         foreach($setting as $sttingsVlue){
+    //             $themeName = $sttingsVlue->theme_url;
+    //         }
+    //     }
+    //     return view('front.themes.'.$themeName.'.search',compact('posts','categories','menus','search_posts'));
+    // }
     //mail all
     public function sendmail(Request $request)
     {    

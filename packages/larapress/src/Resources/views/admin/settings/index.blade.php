@@ -20,7 +20,7 @@
                     <div class="p-2 bg-primary text-white">Theme Name: {{ $setting->theme_url}}</div> 
                     <div class="p-2 bg-primary text-white">Set Home Page: {{ $setting->home_url}}</div> 
                     <div class="p-2">Theme Editor: {{ $setting->editor == "classic" ? 'Classic' : 'Visual'}}</div> 
-                    <img class="p-2" src="{{ $settingsAdmin->site_logo ? url('/public/uploads/images/'.$settingsAdmin->site_logo) : asset('public/admin/img/larapress.png') }}" width="100px"/>
+                    <img class="p-2" src="{{ $settingsAdmin->site_logo ? url('/public/uploads/'.$settingsAdmin->site_logo) : asset('packages/larapress/src/Assets/admin/img/larapress.png') }}" width="100px"/>
                 </div>              
             </div>  
             <div class="form-group">

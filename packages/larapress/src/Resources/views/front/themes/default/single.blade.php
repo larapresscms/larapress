@@ -16,7 +16,7 @@
                 <div class="col-lg-12">
                     <!-- Featured blog post-->
                     <div class="mb-4">
-                        <img class="card-img-top" src="{{ url('public/uploads/images/',$post->thumbnail_path ?? '') }}" alt="..." />                      
+                        <img class="card-img-top" src="{!! asset('public/uploads/' . $post->thumbnail_path) ?? '' !!}" alt="..." />                      
                         <style>{!! $post->content_css ?? '' !!}</style>
                         <p class="card-text">{!! $post->content ?? '' !!}</p>
                     </div>

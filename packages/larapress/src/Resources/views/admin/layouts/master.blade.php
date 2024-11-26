@@ -6,34 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <link rel="icon" type="image/x-icon" href="{{ $settingsAdmin->fav_icon == null ? asset('public/admin/img/fav.png') : asset('public/uploads/images/').'/'.$settingsAdmin->fav_icon }}">
-
+    <link rel="icon" type="image/x-icon" href="{{ $settingsAdmin->fav_icon == null ? asset('packages/larapress/src/Assets/admin/img/fav.png') : asset('public/uploads/').'/'.$settingsAdmin->fav_icon }}">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
     <title>Dashboard - {{ $settingsAdmin->site_title ?? 'None'}} </title>
-
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('public/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
     <!-- Custom styles for this template-->
-    <link href="{{ asset('public/admin/css/sb-admin-2.css')}}" rel="stylesheet">
-    <link href="{{ asset('public/admin/css/style.css')}}" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/css/sb-admin-2.css')}}" rel="stylesheet">
+    <link href="{{ asset('packages/larapress/src/Assets/admin/css/style.css')}}" rel="stylesheet">
+    <!-- Custom styles for this page -->    
+     
+    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
 
     @if($settingsAdmin->editor == "classic")
         <!-- editor 1 -->
-        <script src="{{ asset('public/admin/js/tinymce.min.js')}}" referrerpolicy="origin"></script>
+        <script src="{{ asset('packages/larapress/src/Assets/admin/js/tinymce.min.js')}}" referrerpolicy="origin"></script>
     @else
         <!--graphjs editor 2-->    
-        <link  href="{{ asset('public/admin/editor_visual/grapes.min.css')}}" rel="stylesheet"/>
+        <link  href="{{ asset('packages/larapress/src/Assets/admin/editor_visual/grapes.min.css')}}" rel="stylesheet"/>
         <link  href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>     
         <!--graphjs -->
     @endif
@@ -80,14 +74,9 @@
             color: {{ $settingsAdmin->dashboard_color ?? 'None'}} !important;
             background: {{ $settingsAdmin->text_color ?? 'None'}} !important;
         }
-    </style>
-     
-    
-    
+    </style>     
 </head>
-
-<body id="page-top">
-    
+<body id="page-top">   
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -102,7 +91,7 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">
                     <div>
-                        <img src="{{ $settingsAdmin->site_logo ? url('/public/uploads/images/'.$settingsAdmin->site_logo) : asset('public/admin/img/larapress.png') }}" class="img-fluid" width="100%" alt="Logo">
+                        <img src="{{ $settingsAdmin->site_logo ? url('/public/uploads/'.$settingsAdmin->site_logo) : asset('packages/larapress/src/Assets/admin/img/larapress.png') }}" class="img-fluid" width="100%" alt="Logo">
                      </div>
                 </div>
             </a>
@@ -767,30 +756,31 @@
        
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('public/admin/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('public/admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('public/admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('public/admin/js/sb-admin-2.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
-    <!-- <script src="{{ asset('public/admin/vendor/chart.js/Chart.min.js')}}"></script> -->
+    <!-- <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/chart.js/Chart.min.js')}}"></script> -->
 
     <!-- Page level custom scripts -->
-    <!-- <script src="{{ asset('public/admin/js/demo/chart-area-demo.js')}}"></script> -->
-    <!-- <script src="{{ asset('public/admin/js/demo/chart-pie-demo.js')}}"></script> -->
+    <!-- <script src="{{ asset('packages/larapress/src/Assets/admin/js/demo/chart-area-demo.js')}}"></script> -->
+    <!-- <script src="{{ asset('packages/larapress/src/Assets/admin/js/demo/chart-pie-demo.js')}}"></script> -->
 
     <!-- Page level plugins -->
-    <script src="{{ asset('public/admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ asset('public/admin/js/demo/datatables-demo.js')}}"></script>    
-    <script src="{{ asset('public/admin/js/sortable.min.js')}}"></script>
-    <script src="{{ asset('public/admin/js/custom.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/demo/datatables-demo.js')}}"></script>    
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/sortable.min.js')}}"></script>
+    <script src="{{ asset('packages/larapress/src/Assets/admin/js/custom.js')}}"></script>
+
 
 <!-- image upload -->
 <script >
@@ -852,9 +842,9 @@
     </script>
 @else
 <!-- graphjs  editor 2 visual-->
-<script src="{{ asset('public/admin/editor_visual/grapesjs')}}"></script>
-<script src="{{ asset('public/admin/editor_visual/grapesjs-preset-webpage.min.js')}}"></script>
-<script src="{{ asset('public/admin/editor_visual/grapesjs-echarts.min.js')}}"></script>
+<script src="{{ asset('packages/larapress/src/Assets/admin/editor_visual/grapesjs')}}"></script>
+<script src="{{ asset('packages/larapress/src/Assets/admin/editor_visual/grapesjs-preset-webpage.min.js')}}"></script>
+<script src="{{ asset('packages/larapress/src/Assets/admin/editor_visual/grapesjs-echarts.min.js')}}"></script>
 
 <script>
   const editor = grapesjs.init({

@@ -23,12 +23,13 @@
     <div class="card-header py-3">  
         <div class="jumbotron jumbotron-fluid">            
             <div class="container">
-                <h2 class="display-4">What's New v1.0.8</h2>
+                <h2 class="display-4">What's New v{{$CurrentLaraPressVersion ?? "Not Available"}}</h2>
                 <hr>
                 <p class="lead"></p>
-                <p>Template theme make</p>
-                <p>Post type url fix.</p>
-                <p>Menu url fix. Add post type with more...</p>         
+                <p>Meadia Upload on separate folder.</p>
+                <p>Pulic folder rearrange.</p>
+                <p>Admin assets change folder path.</p>   
+                <p>Create,Update,Delete parmission add.</p>        
             </div> 
         </div>
     </div>                       

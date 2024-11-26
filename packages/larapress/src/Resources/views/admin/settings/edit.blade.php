@@ -115,8 +115,8 @@
                         <div class="form-group">
                             <label class="form-check-label form-label mr-1" for="">Website Logo</label><br>
                             <input type="hidden" id="type" name='site_logo' value="{{ $settings->site_logo }}" placeholder="Image Url" class="form-control" >                              
-                            <img id="myImg" src="{{ $settings->site_logo == null ? asset('public/admin/img/dummy-image-square.jpg') : asset('public/uploads/images/').'/'.$settings->site_logo }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
-                            <button type="button" onclick="removeValue('{{url('public/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>
+                            <img id="myImg" src="{{ $settings->site_logo == null ? asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') : asset('public/uploads/').'/'.$settings->site_logo }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
+                            <button type="button" onclick="removeValue('{{url('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>
                         </div> 
                         <!-- fevicon  -->
                         <div class="form-group">
@@ -392,4 +392,5 @@
 @else
 You can't access this page. Please contact admin.
 @endif
+<script src="{{ asset('packages/larapress/src/Assets/admin/js/template_design.js')}}"></script>
 @endsection

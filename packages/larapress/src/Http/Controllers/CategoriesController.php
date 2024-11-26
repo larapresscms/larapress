@@ -71,6 +71,13 @@ class CategoriesController extends Controller
         $input = $request->all();
         $input['slug'] = "$slug";
 
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->create == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to create.');
+            return redirect('/dashboard/categories');
+        }
+
         Category::create($input);
 
         session()->flash('message','Data insert successfully');
@@ -144,6 +151,13 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->update == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to update.');
+            return redirect('/dashboard/categories');
+        }
+
         $categories = Category::find($id);
         $categories->update($request->all());
 
@@ -159,6 +173,12 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->delete == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to delete.');
+            return redirect('/dashboard/categories');
+        }
         Category::destroy($id); 
         session()->flash('messageDestroy','Data Delete successfully');
         return redirect('/dashboard/categories');

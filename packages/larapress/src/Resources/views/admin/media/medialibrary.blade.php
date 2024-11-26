@@ -21,7 +21,7 @@
                       <label for="{{$media->id }}" class="labelMedia">
                            <!--for pdf or image check -->
                             @php
-                            $link = "asset('public/uploads/images/')/$media->img_name";
+                            $link = "asset('public/uploads/')/$media->img_name";
                             $file_extension = pathinfo($link, PATHINFO_EXTENSION);
                             if ($file_extension == "pdf" || $file_extension == "xlsx") {
                             @endphp
@@ -29,7 +29,7 @@
                             @php
                             } else {
                             @endphp
-                                <img src="{{ asset('public/uploads/images/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/images/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
+                                <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
                             @php 
                             }
                             @endphp
@@ -46,7 +46,7 @@
             <div class="row thumbId" id="thumbId"></div>   
 
             <div id="loadingIconthumbId" style="display: none; width:100%; text-align: center;"> 
-                <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/>
+                <!-- <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/> -->
             </div>
 
             <div class="row">
@@ -92,7 +92,7 @@
                           
                           <!--for pdf or image check -->
                             @php
-                            $link = "asset('public/uploads/images/')/$media->img_name";
+                            $link = "asset('public/uploads/')/$media->img_name";
                             $file_extension = pathinfo($link, PATHINFO_EXTENSION);
                             if ($file_extension == "pdf" || $file_extension == "xlsx") {
                             @endphp
@@ -100,7 +100,7 @@
                             @php
                             } else {
                             @endphp
-                                <img src="{{ asset('public/uploads/images/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValueForGallery('{{ asset('public/uploads/images/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
+                                <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValueForGallery('{{ asset('public/uploads/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
                             @php 
                             }
                             @endphp
@@ -119,7 +119,7 @@
             </div>             
 
             <div id="loadingIcon" style="display: none; width:100%; text-align: center;"> 
-                <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/>
+                <!-- <img src="https://media.tenor.com/JeNT_qdjEYcAAAAj/loading.gif" alt="Loading..."  style="width:100px"/> -->
             </div>
 
             <div class="row">
@@ -171,7 +171,7 @@ function fetchDataFromThumb() {
                       <!--for pdf or image check -->
                       ${item.img_name.split('.').pop() === 'pdf' ?
                           `<a class="btn btn-info bbtn"><i class="fas fa-file-pdf"></i></a>` :
-                          `<img src="{{ asset('public/uploads/images/') }}/${item.img_name}" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/images/') }}/${item.img_name}', '${item.img_name}')"/>`
+                          `<img src="{{ asset('public/uploads/') }}/${item.img_name}" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/') }}/${item.img_name}', '${item.img_name}')"/>`
                       }
                   </label>
               </div>`; 
@@ -218,7 +218,7 @@ function fetchDataFromLaravel() {
                       <!--for pdf or image check -->
                       ${item.img_name.split('.').pop() === 'pdf' ?
                           `<a class="btn btn-info bbtn"><i class="fas fa-file-pdf"></i></a>` :
-                          `<img src="{{ asset('public/uploads/images/') }}/${item.img_name}" class="img-thumbnail" onclick="changeValueForGallery('{{ asset('public/uploads/images/') }}/${item.img_name}', '${item.img_name}')"/>`
+                          `<img src="{{ asset('public/uploads/') }}/${item.img_name}" class="img-thumbnail" onclick="changeValueForGallery('{{ asset('public/uploads/') }}/${item.img_name}', '${item.img_name}')"/>`
                       }
                   </label>
               </div>`; 

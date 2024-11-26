@@ -200,12 +200,13 @@
                                                         </div>
                                                         <div class="modal-body">Select "Delete - {{ $submenu->title }}" below if you are ready to Permanently delete your current data.</div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                                            <a  class="btn btn-danger bbtn">
-                                                            {!! Form::open(['url' => 'dashboard/menu/'.$submenu->id, 'method'=>'delete']) !!}
-                                                            {!! Form::submit('Delete') !!}
-                                                            {!! Form::close() !!}
-                                                            </a>
+                                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>                                                           
+
+                                                            <form action="{{ url('/dashboard/menu',$submenu->id) }}" method="POST">
+                                                                @csrf     
+                                                                @method('DELETE')                                                           
+                                                                <button class="btn btn-danger bbtn" type="submit">Delete</button>
+                                                            </form>  
                                                             
                                                         </div>
                                                     </div>
@@ -246,11 +247,12 @@
                                                             <div class="modal-body">Select "Delete - {{ $submenu2->title }}" below if you are ready to Permanently delete your current data.</div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                                                <a  class="btn btn-danger bbtn">
-                                                                {!! Form::open(['url' => 'dashboard/menu/'.$submenu2->id, 'method'=>'delete']) !!}
-                                                                {!! Form::submit('Delete') !!}
-                                                                {!! Form::close() !!}
-                                                                </a>
+                                                                 
+                                                                <form action="{{ url('/dashboard/menu',$submenu2->id) }}" method="POST">
+                                                                    @csrf     
+                                                                    @method('DELETE')                                                           
+                                                                    <button class="btn btn-danger bbtn" type="submit">Delete</button>
+                                                                </form>  
                                                                 
                                                             </div>
                                                         </div>

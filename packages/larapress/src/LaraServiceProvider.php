@@ -17,7 +17,7 @@ use LaraPressCMS\LaraPress\Models\Settings;
 class LaraServiceProvider extends ServiceProvider
 {
     // Static variable to hold the value
-    protected static $currentLaraVersion = '1.0.9';
+    protected static $currentLaraVersion = '2.0';
 
     public function boot()
     {        
@@ -26,62 +26,33 @@ class LaraServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         // $this->loadViewsFrom(__DIR__.'/Resources/views', 'larapress');
         View::addLocation(base_path('packages/larapress/src/Resources/views'));
-
-        // $this->publishes([
-        //     __DIR__.'/../config/yourconfig.php' => config_path('yourconfig.php'),
-        // ]);
-
         // Publish the public assets
         $this->publishes([
             __DIR__.'/../public' => public_path(),
         ], 'public');
-
         // Register the command
         if ($this->app->runningInConsole()) {
             $this->commands([
                 DownloadLatestLaraPressCommand::class,
             ]);
-        }
-        
+        }        
         // Share a static version value across all views 
-        view()->share('CurrentLaraPressVersion', self::$currentLaraVersion);    
-
-        try {  
-
-            //old
-            // $apiUrl = 'https://larapress.org/version-controll';
-            // $response = Http::get($apiUrl); 
-            // if ($response->successful()) {
-            //     $data = $response->json();
-            //     $currentVersion = self::$currentLaraVersion;
-            //     $apiVersion = $data['version'] ?? 'unknown'; 
-            //     $versionMessage = $data['version_message'] ?? 'No message';
-            //     $lara_status = $data['status'] ?? 'unknown'; 
-            //     $lara_version = version_compare($apiVersion, $currentVersion, '>') ? $apiVersion . ' ' . $versionMessage : 'LaraPress is up-to-date.';                         
-            // } else {
-            //     $lara_version = "LaraPress is up-to-date.";
-            //     $lara_status = false;
-            // } 
-
-            //new
+        view()->share('CurrentLaraPressVersion', self::$currentLaraVersion); 
+        try { 
             // Define the cache key and timeout
             $cacheKey = 'larapress_version';
             $cacheTime = 60; // Time in minutes
             // Try to get the cached data
             $versionData = Cache::get($cacheKey);
-
             if (!$versionData) {
                 // Define the API URL
                 $apiUrl = 'https://larapress.org/version-controll';
-
                 // Make a GET request to the API
                 $response = Http::get($apiUrl);
-
                 // Check if the request was successful
                 if ($response->successful()) {
                     // Decode the JSON response
                     $data = $response->json();
-
                     // Prepare version data for caching
                     $versionData = [
                         'currentVersion' => self::$currentLaraVersion,  // The version you're comparing against
@@ -89,7 +60,6 @@ class LaraServiceProvider extends ServiceProvider
                         'versionMessage' => $data['version_message'] ?? 'No message',  // Get the version message from the API
                         'laraStatus' => $data['status'] ?? false,  // Get the status from the API
                     ];
-
                     // Cache the data
                     Cache::put($cacheKey, $versionData, $cacheTime);
                 } else {
@@ -105,14 +75,11 @@ class LaraServiceProvider extends ServiceProvider
             $lara_status = $versionData['laraStatus'];
             // Compare versions
             $lara_version = version_compare($versionData['apiVersion'], $versionData['currentVersion'], '>') ? $versionData['apiVersion'] . ' ' . $versionData['versionMessage'] : 'LaraPress is up-to-date.';
-            //$lara_version = version_compare($apiVersion, $currentVersion, '>') ? $apiVersion . ' ' . $versionMessage : 'LaraPress is up-to-date.';   
-
-        } catch (ConnectionException $e) {
-            
+            //$lara_version = version_compare($apiVersion, $currentVersion, '>') ? $apiVersion . ' ' . $versionMessage : 'LaraPress is up-to-date.';  
+        } catch (ConnectionException $e) {            
             // Handle connection-related exceptions
             $lara_version = "LaraPress is up-to-date.";
             $lara_status = false;
-
             //$controller = app(Controller::class);
             // Call a method from the controller
             //$controller->setErrorMessage('Your Internet connection is down.'); 
@@ -180,25 +147,19 @@ class LaraServiceProvider extends ServiceProvider
         Blade::directive('getSetting', function ($name) {
             return "<?php echo getSetting($name); ?>";
         });   
-
         //get content 
         Blade::directive('getContent', function ($expression) {
             return "<?php echo getContentBySlug($expression); ?>";
-        });
-
+        });         
 
     }
-
     public function register()
     {
         // Binding classes into the service container.
         // $this->mergeConfigFrom(__DIR__.'/../config/yourconfig.php', 'yourconfig');
-
         if (file_exists($file = __DIR__.'/helpers.php')) {
             require_once $file;
-        }
-        
-
+        }   
     }
     // Method to access the global variable
     public static function getCurrentLaraVersion()

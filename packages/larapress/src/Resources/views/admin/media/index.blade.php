@@ -39,9 +39,9 @@
                                         <tr>
                                             <td>{{ ++$sl }}</td>
                                             <td class="text-center">
-                                                <a href="{{ asset('public/uploads/images/') }}/{{$media->img_name }}">
+                                                <a href="{{ asset('public/uploads/') }}/{{$media->img_name }}">
                                                 @php
-                                                $link = "asset('public/uploads/images/')/$media->img_name";
+                                                $link = "asset('public/uploads/')/$media->img_name";
                                                 $file_extension = pathinfo($link, PATHINFO_EXTENSION);
                                                 if ($file_extension == "pdf" || $file_extension == "xlsx") {
                                                 @endphp
@@ -49,13 +49,13 @@
                                                 @php
                                                 } else {
                                                 @endphp
-                                                    <img src="{{ asset('public/uploads/images/') }}/{{$media->img_name }}" width="100" alt="Image"/>
+                                                    <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" width="100" alt="Image"/>
                                                 @php 
                                                 }
                                                 @endphp
                                                 </a>
                                             </td>
-                                            <td>{{ asset('public/uploads/images/') }}/{{$media->img_name }}</td> 
+                                            <td>{{ asset('public/uploads/') }}/{{$media->img_name }}</td> 
 
                                             <td> 
                                             @if(optional(auth()->user())->role == 111)

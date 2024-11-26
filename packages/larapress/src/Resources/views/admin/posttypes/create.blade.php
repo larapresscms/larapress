@@ -201,8 +201,8 @@
                 <div class="card-body">                    
                     <div class="form-group">                       
                             <input type="hidden" id="type" name='pt_thumbnail_path' placeholder="Image Url" class="form-control" >
-                            <img id="myImg" src="{{ asset('public/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
-                            <button type="button" onclick="removeValue('{{url('/public/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
+                            <img id="myImg" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
+                            <button type="button" onclick="removeValue('{{url('/packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
                     </div>
                 </div>
             </div>

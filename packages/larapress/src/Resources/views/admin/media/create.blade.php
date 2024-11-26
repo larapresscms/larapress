@@ -13,7 +13,7 @@
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0 text-center">
                         <label class=newbtn>
-                            <img id="blah" src="{{ asset('public/admin/img/dummy-image-square.jpg') }}" >
+                            <img id="blah" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" >
                             <input name='img_name[]' id="images_multiple" class='pis form-control' onchange="readURL(this);" type="file" multiple>
                         </label>
                         <!-- <input type="file" name='img_name' class="form-control" id="exampleFirstName"> -->

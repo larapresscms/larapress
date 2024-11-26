@@ -28,10 +28,12 @@ class User extends Authenticatable
         'feedbacks',
         'media',
         'menus',
-        'pages_id',
         'posts_id',
         'posttypes_id',
-        'admin_pt_menu'
+        'admin_pt_menu',
+        'create',
+        'update',
+        'delete'
     ];
 
     /**

@@ -10,7 +10,7 @@
                         </div>
                         <div class="sidebar-brand-text mx-3">
                             <div>
-                                <img src="{{ $settingsAdmin->site_logo ? url('public/uploads/images/'.$settingsAdmin->site_logo) : asset('public/admin/img/larapress.png') }}" class="img-fluid" width="100%" alt="Logo">
+                                <img src="{{ $settingsAdmin->site_logo ? url('public/uploads/'.$settingsAdmin->site_logo) : asset('packages/larapress/src/Assets/admin/img/larapress.png') }}" class="img-fluid" width="100%" alt="Logo">
                              </div>
                         </div>
                     </a> 

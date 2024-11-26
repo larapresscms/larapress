@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="role" onchange="changeFunc(value);">
                             <option value="111" {{ $user->role == 111 ? 'selected':'' }}>Administrator</option>
-                            <option value="112" {{ $user->role == 112 ? 'selected':'' }}>Editor</option>
+                            <option value="112" {{ $user->role == 112 ? 'selected':'' }}>Editor</option>	
 
                             <!-- <option value="2" {{ $user->role == 2 ? 'selected':'' }}>Author</option>
                             <option value="3" {{ $user->role == 3 ? 'selected':'' }}>Subscriber</option> -->
@@ -133,9 +133,23 @@
 												</label>
 
 												<label class="btn btn-primary">
-												<input class="" type="checkbox" name="feedbacks" value="feedbacks" {{$user->feedbacks == 'feedbacks' ? 'checked':''}}>
-												<span class="form-check-label">Feedback</span>
+													<input class="" type="checkbox" name="feedbacks" value="feedbacks" {{$user->feedbacks == 'feedbacks' ? 'checked':''}}>
+													<span class="form-check-label">Feedback</span>
 												</label>
+
+												<label class="btn btn-primary">
+													<input class="" type="checkbox" name="create" value="create" {{$user->create == 'create' ? 'checked':''}}>
+													<span class="form-check-label">Create</span>
+												</label>
+												<label class="btn btn-primary">
+													<input class="" type="checkbox" name="update" value="update" {{$user->update == 'update' ? 'checked':''}}>
+													<span class="form-check-label">Update</span>
+												</label>
+												<label class="btn btn-primary">
+													<input class="" type="checkbox" name="delete" value="delete" {{$user->delete == 'delete' ? 'checked':''}}>
+													<span class="form-check-label">Delete</span>
+												</label>
+
 											</div> <!-- card-body.// -->
 										</div>
 									</article> <!-- card-group-item.// -->	

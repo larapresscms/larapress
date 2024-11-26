@@ -35,6 +35,13 @@ class MediaController extends Controller
     }
     public function store(Request $request)
     {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->create == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to create.');
+            return redirect('/dashboard/media');
+        }
+
         $validated = $request->validate([
             'img_name' => 'required',
             'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:51200', 
@@ -44,16 +51,28 @@ class MediaController extends Controller
             foreach ($request->file('img_name') as $imgName) {                
 
                 $originalFileName = $imgName->getClientOriginalName();
-                $getFileExt = uniqid().'_'.str_replace(' ', '_', $originalFileName);   
-                
+                $getFileExt = uniqid().'_'.str_replace(' ', '_', $originalFileName);                   
                 $extension = $imgName->getClientOriginalExtension();
 
-                //$imgName->move('public/uploads/images/', $getFileExt);
-                $imgName->move(public_path('uploads/images/'), $getFileExt);
+                // Get the current year and month
+                $year = date('Y');
+                $month = date('m');
+                // Define the directory path
+                $directory = public_path("uploads/{$year}/{$month}");
+                // Create the directory if it doesn't exist
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                $getFileExt = $year.'/'.$month.'/'.$getFileExt;
+                // Move the uploaded file to the directory
+                $imgName->move($directory, $getFileExt);
+
+                //$imgName->move('public/uploads/', $getFileExt);
+                //$imgName->move(public_path('uploads/'), $getFileExt);
 
                 if (!in_array(strtoupper($extension), ['PDF', 'XLSX'])) {                    
                     // Compress the image after moving
-                    $this->compressImageFile(public_path('uploads/images/' . $getFileExt), 75);                    
+                    //$this->compressImageFile(public_path('uploads/' . $getFileExt), 75);                    
                 }
                 
                 $input = $request->all();
@@ -99,10 +118,17 @@ class MediaController extends Controller
 
     public function destroy($id)
     {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->delete == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to delete.');
+            return redirect('/dashboard/media');
+        }
+
         //img distroy
         $media = Media::find($id);
         if($media->img_name){
-            unlink("public/uploads/images/".$media->img_name);
+            unlink("public/uploads/".$media->img_name);
         }else{}
         Media::destroy($id); 
         session()->flash('messageDestroy','Data Delete successfully');
@@ -111,7 +137,13 @@ class MediaController extends Controller
 
     //new ajx
     public function storemediaajx(Request $request)
-    {         
+    {   
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->create == NULL) {            
+            return 'failed'; 
+        } 
+
         $validated = $request->validate([
             'img_name' => 'required',
             'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:51200', 
@@ -126,14 +158,26 @@ class MediaController extends Controller
                 
                 $extension = $imgName->getClientOriginalExtension();
 
-                //$imgName->move('public/uploads/images/', $getFileExt);
-                $imgName->move(public_path('uploads/images/'), $getFileExt);
+                // Get the current year and month
+                $year = date('Y');
+                $month = date('m');
+                // Define the directory path
+                $directory = public_path("uploads/{$year}/{$month}");
+                // Create the directory if it doesn't exist
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0777, true);
+                }
+                $getFileExt = $year.'/'.$month.'/'.$getFileExt;
+                // Move the uploaded file to the directory
+                $imgName->move($directory, $getFileExt);
+
+                //$imgName->move('public/uploads/', $getFileExt);
+                //$imgName->move(public_path('uploads/'), $getFileExt);
 
                 if (!in_array(strtoupper($extension), ['PDF', 'XLSX'])) {                    
                     // Compress the image after moving
-                    $this->compressImageFile(public_path('uploads/images/' . $getFileExt), 75);                    
+                    //$this->compressImageFile(public_path('uploads/' . $getFileExt), 75);                    
                 }
-
 
                 $input = $request->all();
                 $input['img_name'] = $getFileExt; 

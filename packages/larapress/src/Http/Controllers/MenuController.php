@@ -74,6 +74,13 @@ class MenuController extends Controller
             'target' => ''
         ]); 
 
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->create == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to create.');            
+            return redirect('/dashboard/menu/create');
+        } 
+
         $menu_id = Menu::create($validated);
         session()->flash('message'.$menu_id->id,'success');  
 
@@ -127,11 +134,17 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->update == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to update.');
+            return redirect('/dashboard/menu/'.$id.'/edit/');
+        }
+
         $categories = Menu::find($id);
         $categories->update($request->all());
 
-        session()->flash('message'.$categories->id,'success');  
-
+        session()->flash('message'.$categories->id,'success'); 
         session()->flash('message','Data update successfully');
         return redirect('/dashboard/menu/'.$id.'/edit/');
     }

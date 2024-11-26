@@ -248,8 +248,8 @@
                 <div class="card-body">                    
                     <div class="form-group">                        
                             <input type="hidden" id="type" name='thumbnail_path' placeholder="Image Url" class="form-control" value="{{ $posts->thumbnail_path }}">
-                            <img id="myImg" src="{{ $posts->thumbnail_path == null ? asset('public/admin/img/dummy-image-square.jpg') : asset('public/uploads/images').'/'.$posts->thumbnail_path }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
-                            <button type="button" onclick="removeValue('{{url('public/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
+                            <img id="myImg" src="{{ $posts->thumbnail_path == null ? asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') : asset('public/uploads').'/'.$posts->thumbnail_path }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
+                            <button type="button" onclick="removeValue('{{url('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
                     </div>
                 </div>
             </div>
@@ -267,7 +267,7 @@
                     <div class="form-group ">
                         <div class="mb-3">
                             <div class="form-group">                            
-                                <img id="myImg" src="{{ asset('public/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalGallery" class="border border-info">
+                                <img id="myImg" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalGallery" class="border border-info">
                             </div> 
                         </div> 
                         <div class="row container1">  
@@ -278,7 +278,7 @@
                             <div class="col-md-3 col-sm-12">
                                 <div class="mb-3 removeClass">
                                     <input type="hidden" name="gallery_img[]" value="{{ $imgid }}">
-                                    <img src="{{ asset('public/uploads/images/') }}/{{$imgid }}" width="100%" height="auto" class="border border-info">
+                                    <img src="{{ asset('public/uploads/') }}/{{$imgid }}" width="100%" height="auto" class="border border-info">
                                     <a href="#" class="delete">Delete</a>
                                 </div>
                             </div>
@@ -490,5 +490,6 @@ You can't access this page. Please contact admin.
 <!-- Insert Image from library -->
 @include('admin.media.medialibrary')
 @include('admin.media.mediauploads')
-<!-- Modal -->
+<!-- Modal --> 
+<script src="{{ asset('packages/larapress/src/Assets/admin/js/template_design.js')}}"></script>
 @endsection
