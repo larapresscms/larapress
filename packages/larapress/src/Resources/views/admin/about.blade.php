@@ -29,7 +29,8 @@
                 <p>Meadia Upload on separate folder.</p>
                 <p>Pulic folder rearrange.</p>
                 <p>Admin assets change folder path.</p>   
-                <p>Create,Update,Delete parmission add.</p>        
+                <p>Create,Update,Delete parmission add.</p> 
+                <p>More bug fixed.</p>         
             </div> 
         </div>
     </div>                       
