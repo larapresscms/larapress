@@ -1,4 +1,4 @@
-<p align="center"><a href="https://larapress.org" target="_blank"><img src="packages/larapress/public/admin/img/larapress.svg" width="400" alt="LaraPress Logo"></a></p>
+<p align="center"><a href="https://larapress.org" target="_blank"><img src="packages/larapress/src/Assets/admin/img/larapress.svg" width="400" alt="LaraPress Logo"></a></p>
 
 ## About LaraPress 
 
