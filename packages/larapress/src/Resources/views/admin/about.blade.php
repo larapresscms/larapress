@@ -26,10 +26,7 @@
                 <h2 class="display-4">What's New v{{$CurrentLaraPressVersion ?? "Not Available"}}</h2>
                 <hr>
                 <p class="lead"></p>
-                <p>Meadia Upload on separate folder.</p>
-                <p>Pulic folder rearrange.</p>
-                <p>Admin assets change folder path.</p>   
-                <p>Create,Update,Delete parmission add.</p> 
+                <p>Laravel ^12.0</p>
                 <p>More bug fixed.</p>         
             </div> 
         </div>

@@ -51,6 +51,12 @@ LaraPressCMS\LaraPress\LaraServiceProvider::class
 
 4. Remove .env
 
+5. Default route change
+
+Route::get('/shahin', function () {
+    return view('welcome');
+});
+
 ## License
 
 The LaraPress is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
