@@ -59,8 +59,7 @@ Route::get('/shahin', function () {
 
 ## 👤 Founder
 
-**Md. Shahinur Islamm**  
-[GitHub Profile](https://github.com/mdShahinurislamm)
+**Md. Shahinur Islamm** [GitHub Profile](https://github.com/mdShahinurislamm)
 
 ## License
 
