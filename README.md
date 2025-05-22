@@ -57,6 +57,11 @@ Route::get('/shahin', function () {
     return view('welcome');
 });
 
+## 👤 Founder
+
+**Md. Shahinur Islamm**  
+[GitHub Profile](https://github.com/mdShahinurislamm)
+
 ## License
 
 The LaraPress is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
