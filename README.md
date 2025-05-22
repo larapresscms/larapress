@@ -8,7 +8,7 @@ LaraPress is accessible, powerful, and provides tools required for large, robust
 
 ## Learning LaraPress
 
-LaraPress has the most extensive and thorough [documentation](https://larapress.org/documentation) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+LaraPress has the most extensive and thorough [documentation](https://larapress.org/en/documentation) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
 ## Important things
 
