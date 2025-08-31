@@ -100,7 +100,7 @@ class HomeController extends Controller
     public function postType($post_type){
         $posttype = Posttype::where('slug',$post_type)->first();
         //dd($posttype);
-        $posts = Post::orderBy('position','ASC')->where('status','1')->where('post_type',$post_type)->paginate($posttype->paginate);         
+        $posts = Post::orderBy('position','ASC')->orderBy('id','DESC')->where('status','1')->where('post_type',$post_type)->paginate($posttype->paginate);         
         $categories = Category::all(); 
         //$postD = DB::table('posts')->select('category_id')->distinct()->pluck('category_id');
         $postD = DB::table('posts')->where('post_type', $post_type)->select('category_id')->distinct()->pluck('category_id');
@@ -129,7 +129,7 @@ class HomeController extends Controller
         }
     }
     public function postTypeSingle($post_type, $slug){
-        $post = Post::orderBy('id','DESC')->where('status','1')->where('post_type',$post_type)->where('slug',$slug)->first();        
+        $post = Post::orderBy('id','DESC')->where('status','1')->where('post_type',$post_type)->where('slug',$slug)->firstOrFail();    
         $posttype = Posttype::where('slug',$slug)->first();
         $categories = Category::all(); 
         $menus = Menu::orderBy('id','ASC')->get();
