@@ -17,10 +17,8 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('packages/larapress/src/Assets/admin/css/sb-admin-2.css')}}" rel="stylesheet">
     <link href="{{ asset('packages/larapress/src/Assets/admin/css/style.css')}}" rel="stylesheet">
-    <!-- Custom styles for this page -->    
-     
-    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-
+    <!-- Custom styles for this page -->         
+    <link href="{{ asset('packages/larapress/src/Assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"> 
 
     @if($settingsAdmin->editor == "classic")
         <!-- editor 1 -->
@@ -54,7 +52,7 @@
         }
         #html, #css, #save{display:none}
         .sidebar-dark #sidebarToggle{background-color: {{ $settingsAdmin->text_color ?? 'None'}};}
-        .sidebar-dark #sidebarToggle:hover {background-color: {{ $settingsAdmin->text_hover ?? 'None'}};}
+        .sidebar-dark #sidebarToggle:hover, .custom_dropdownmenu {background-color: {{ $settingsAdmin->text_hover ?? 'None'}} !important;}
         .text-posttype-color {
             color: {{ $settingsAdmin->text_color ?? 'None'}}
         }
@@ -73,6 +71,10 @@
         .labelBalloon:focus + label, .labelBalloon:active + label, .labelBalloon:hover + label {
             color: {{ $settingsAdmin->dashboard_color ?? 'None'}} !important;
             background: {{ $settingsAdmin->text_color ?? 'None'}} !important;
+        }
+        .custom_dropdownmenu .collapse-item:active{
+            color: {{ $settingsAdmin->text_hover ?? 'None'}} !important;
+            background-color: {{ $settingsAdmin->text_color ?? 'None'}} !important;
         }
     </style>     
 </head>
@@ -120,7 +122,7 @@
                     <span>Media</span>
                 </a>
                 <div id="collapseMedia" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
                         <h6 class="collapse-header">Create Media:</h6>
                         <a class="collapse-item" href="{{ url('/dashboard/media')}}">All Media</a>
                         <a class="collapse-item" href="{{ url('/dashboard/media/create') }}">Add New</a>
@@ -145,7 +147,7 @@
                     <span>{{$posttype_result->menu_icon}}</span>
                     </a>
                     <div id="collapseD{{$i}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
+                        <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
                             <h6 class="collapse-header">All {{$posttype_result->menu_icon}}:</h6>
                             @foreach($posttypes as $posttype)
                                 @if($posttype->in_menu_swh == '1' && ($posttype->menu_icon != null || $posttype->menu_icon != '')) 
@@ -197,7 +199,7 @@
                                 <span>{{$posttype_result->menu_icon}}</span>
                                 </a>
                                 <div id="collapseD{{$i}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                                    <div class="bg-white py-2 collapse-inner rounded">
+                                    <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
                                         <h6 class="collapse-header">All {{$posttype_result->menu_icon}}:</h6>
                                         @foreach($posttypes as $posttype)
                                             @if($posttype->in_menu_swh == '1' && ($posttype->menu_icon != null || $posttype->menu_icon != '')) 
@@ -260,7 +262,7 @@
 					<span>{{ $posttype->name }}</span>
 					</a>
 					<div id="collapse{{ $posttype->id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-						<div class="bg-white py-2 collapse-inner rounded">
+						<div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
 							<h6 class="collapse-header">Create {{ $posttype->name }}:</h6>
 							<a class="collapse-item" href="{{ url('dashboard/posttypes/'.$posttype->slug) }}">All {{ $posttype->name }}</a>
 							<a class="collapse-item" href="{{ url('/dashboard/posttypes/create/'.$posttype->slug) }}">Add New</a>
@@ -286,7 +288,7 @@
 								<span>{{ $posttype->name }}</span>
 								</a>
 								<div id="collapse{{ $posttype->id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-									<div class="bg-white py-2 collapse-inner rounded">
+									<div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
 										<h6 class="collapse-header">Create {{ $posttype->name }}:</h6>
 										<a class="collapse-item" href="{{ url('dashboard/posttypes/'.$posttype->slug) }}">All {{ $posttype->name }}</a>
 										<a class="collapse-item" href="{{ url('/dashboard/posttypes/create/'.$posttype->slug) }}">Add New</a>
@@ -316,7 +318,7 @@
                     <span>User</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
+                    <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu">
                         <h6 class="collapse-header">Create User:</h6>
                          
                             @if(optional(auth()->user())->role == 111)
@@ -340,7 +342,7 @@
                     <span>Tools</span>
                  </a> 
                  <div id="collapseTools" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar"> 
-                     <div class="bg-white py-2 collapse-inner rounded"> 
+                     <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu"> 
                          <h6 class="collapse-header">Tools:</h6> 
                          @if(optional(auth()->user())->role == 111 || optional(auth()->user())->posttypes_id != null)
 						 <a class="collapse-item" href="{{ url('/dashboard/posttypes') }}">Post Type</a>
@@ -379,15 +381,45 @@
                     <span>Settings</span>
                  </a> 
                  <div id="collapseSettings" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar"> 
-                     <div class="bg-white py-2 collapse-inner rounded"> 
+                     <div class="bg-white py-2 collapse-inner rounded custom_dropdownmenu"> 
                          <h6 class="collapse-header">Settings:</h6> 
-                         <a class="collapse-item" href="{{ url('/dashboard/settings') }}">General</a> 
-                         <a class="collapse-item" href="{{ url('/dashboard/clear') }}">Cache Clear</a> 
                          <a class="collapse-item" href="{{ url('/dashboard/about') }}">About</a> 
+                         <a class="collapse-item" href="{{ url('/dashboard/settings') }}">General</a> 
+                         <a class="collapse-item" href="{{ url('/dashboard/clear') }}">Cache Clear</a>  
+                         <!-- Developer Mode Trigger -->
+                         <a class="collapse-item" href="#" data-toggle="modal" data-target="#developerModeModal">
+                            Developer Mode
+                         </a>
                      </div>
                  </div>
             </li>
+                <!-- Developer Mode Warning Modal -->
+                <div class="modal fade" id="developerModeModal" tabindex="-1" role="dialog" aria-labelledby="developerModeLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content border-danger">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="developerModeLabel">⚠️ Enter Developer Mode</h5>
+                                <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
+                            <div class="modal-body">
+                                <p><strong>Are you sure you understand what you’re doing?</strong></p>
+                                <p>Developer Mode gives you access to advanced features that can <strong>affect system stability, data security,</strong> or even <strong>delete critical files</strong> if misused.</p>
+                                <p class="text-danger font-weight-bold">⚠ Proceed only if you know the risks!</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a href="{{ url('/dashboard/editor') }}" class="btn btn-danger">
+                                    Yes, I Understand the Risk
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Developer Mode Warning Modal -->
             @endif 
 
     @else
@@ -648,7 +680,8 @@
                         <hr>
                         <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
                     </div>-->
-
+                    
+                <div id="alert-container">
                     @if ($errors->any())
                     @foreach ($errors->all() as $error)
                         <!-- Toasts will be dynamically added here --> 
@@ -657,7 +690,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <i class="fas fa-exclamation opacity-05 mr-3 text-danger"></i>
-                            {{ $error }}
+                            {!! $error !!}
                         </div>
                     @endforeach
                     @endif
@@ -668,7 +701,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <i class="fas fa-exclamation opacity-05 mr-3 text-{{ session('type') ?? 'success' }}"></i>
-                            {{session('message')}}
+                            {!! session('message') !!}
                         </div>
                     @endif    
                     @if(session()->has('messageDestroy'))
@@ -678,9 +711,11 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <i class="fas fa-exclamation opacity-05 mr-3 text-{{ session('type') ?? 'danger' }}"></i>
-                        {{session('messageDestroy')}}
+                        {!! session('messageDestroy') !!}
                     </div>
                     @endif
+                </div>
+
                     @if($lara_version !== 'LaraPress is up-to-date.')
                         <!-- Toasts will be dynamically added here --> 
                         <div class="text-capitalize alert alert-dismissible fade show border-{{ session('type') ?? 'success' }} border-left border-width-4 px-4 py-3 mx-3 mb-3 bg-white text-black shadow-sm animated flipInX delay-02s " role="alert">
@@ -753,7 +788,7 @@
         </div>
     </div>   
     
-       
+    
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('packages/larapress/src/Assets/admin/vendor/jquery/jquery.min.js')}}"></script>
@@ -824,6 +859,7 @@
             convert_urls: false,
             valid_elements : '*[*]',
             toolbar_mode: 'sliding',
+            forced_root_block: '', // disables automatic <p> wrapping
             file_picker_callback(callback, value, meta) {
                 let x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth
                 let y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight
@@ -887,6 +923,20 @@ $("button[data-dismiss-modal=uploadmodal]").click(function () {
 });
 </script>
 <!-- close inner uploads modal  -->
+<script src="{{ asset('packages/larapress/src/Assets/admin/monaco-editor/loader.js')}}"></script>
+<!--set auto timezone-->
+<script>
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    fetch("{{ url('/set-timezone') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ timezone: tz })
+    });
+</script>
 
 </body>
 </html>

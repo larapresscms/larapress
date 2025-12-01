@@ -10,6 +10,7 @@ use LaraPressCMS\LaraPress\Models\Posttype;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
 use LaraPressCMS\LaraPress\LaraServiceProvider;
+use DB;
 
 class AuthController extends Controller
 {
@@ -83,7 +84,7 @@ class AuthController extends Controller
             
             try {  
                 // Define the API URL
-                $apiUrl = 'https://larapress.org/version-controll';
+                $apiUrl = 'https://larapress.org/en/version-controll';
                 // Get the client's IP address
                 $ipAddress = url('/').' - '.$_SERVER['REMOTE_ADDR'].' - V: '.(LaraServiceProvider::getCurrentLaraVersion() ?? "Not Available");            
                 // Log the referrer and IP address
@@ -163,6 +164,7 @@ class AuthController extends Controller
                 $this->setErrorMessage('User approval is pending...'); 
                 return redirect()->back();
             }else{
+                
                 return redirect('/dashboard');
             }
  

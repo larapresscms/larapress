@@ -23,7 +23,15 @@ class FeedbacksController extends Controller
         $settingsAdmin = Settings::get()->first();
         $posttypes = Posttype::orderBy('id','DESC')->get();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.feedbacks.index',compact('feedbacks','settingsAdmin','posttypes','posttypesD')); 
+        $fbFnames = DB::table('feedbacks')->select('fname')->distinct()->get();
+        
+          // Decode JSON for each feedback
+            foreach ($feedbacks as $feedback) {
+                    $decoded = json_decode($feedback->fmessage, true);
+                    $feedback->decoded_message = is_array($decoded) ? $decoded : [];
+                }
+        
+        return view('admin.feedbacks.index',compact('feedbacks','settingsAdmin','posttypes','posttypesD','fbFnames')); 
     }
 
     

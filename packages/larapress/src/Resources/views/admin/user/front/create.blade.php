@@ -8,8 +8,7 @@
             <div class="p-5">
                 <div class="text-center">
                     <h1 class="h4 mb-4">Create an Account!</h1>
-                </div>
-               
+                </div>               
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

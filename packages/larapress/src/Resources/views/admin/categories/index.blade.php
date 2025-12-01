@@ -1,5 +1,4 @@
 @extends('admin.layouts.master')
-
 @section('content')
 @if(optional(auth()->user())->role == 111 || optional(auth()->user())->categories == 'categories')
        <!-- Page Heading -->

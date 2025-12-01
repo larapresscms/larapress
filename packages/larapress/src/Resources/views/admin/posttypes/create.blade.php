@@ -159,6 +159,14 @@
                         </div>
                         <input type="text" name="category_id" class="form-control form-control-user" value="#">
                     </div>
+
+                    <label for="basic-url">Template Design Turn On Off also set your single page template.</label>
+                    <div class="input-group">
+                        <label class="switch">
+                            <input type="checkbox" id="templateSwitch" checked>
+                            <span class="sliderswitch round"></span>
+                        </label>
+                    </div>
                     
                 </div>
             </div> 
@@ -229,15 +237,6 @@
                                 <span class="sliderswitch round"></span>
                             </label>
                         </div> 
-
-                        <label for="basic-url">Template Design Turn On Off</label>
-                        <div class="input-group mb-3">
-                            <label class="switch">
-                                <input type="checkbox" name="template" value="1" checked>
-                                <span class="sliderswitch round"></span>
-                            </label>
-                        </div>
-
                     </div>
                     <label for="basic-url">Main Categories</label>
                     <div class="form-group">
@@ -269,11 +268,162 @@
                     <!-- Display Options -->  
                 </div>
             </div>  
-
-
-
         </div>
     </div> 
+
+    <!-- The div you want to show/hide -->    
+    <input type="hidden" name="template" value="single" id="lp-orderInput">
+    <div id="templateDiv" class="row">
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Template</h6>         
+                    <a href="https://larapress.org/en/store"><h6 class="m-0 font-weight-bold text-primary">View More Template</h6> </a>
+                    <a href="{{url('/dashboard/about')}}"><h6 class="m-0 font-weight-bold text-primary">Upload Template</h6> </a>       
+                </div>
+                <div class="card-body scroll-design">
+                    <div class="form-group row">
+                        <div class="col-sm-12 mb-3 mb-sm-0"> 
+                            <div id="lp-left-list" class="lp-list-container"> 
+                                <?php
+                                $folder_names = [];
+                                $i = 0;  
+                                // Define the paths
+                                $mainResourceDir = resource_path('views/front/template');
+                                $packageDir = base_path('packages/larapress/src/resources/views/front/template');
+
+                                // Initialize an empty array to hold the merged directory list
+                                $mergedDirList = [];
+
+                                // Function to scan directories recursively
+                                function scanDirectoryRecursively($dir) {
+                                    $result = [];
+                                    $items = scandir($dir);
+                                    foreach ($items as $item) {
+                                        if ($item == '.' || $item == '..') continue; // Skip current and parent directory references
+                                        $fullPath = $dir . '/' . $item;
+                                        if (is_dir($fullPath)) {
+                                            // If it's a directory, recursively scan it
+                                            $result[$item] = scanDirectoryRecursively($fullPath);
+                                        } else {
+                                            // If it's a file, just add it to the result
+                                            $result[] = $fullPath;
+                                        }
+                                    }
+                                    return $result;
+                                }
+
+                                // Function to extract comments from PHP file
+                                function extractTemplateInfo($filePath) {
+                                    $templateInfo = [
+                                        'Template' => 'Unknown',
+                                        'Version' => 'Unknown'
+                                    ];
+
+                                    // Read the first 1024 bytes of the file to look for the comment block
+                                    $fileContent = file_get_contents($filePath, false, null, 0, 1024);
+                                    if (preg_match('/\/\*\s*Template Name:\s*(.+)\s*Version:\s*(.+?)\s*\*\//', $fileContent, $matches)) {
+                                        $templateInfo['Template'] = trim($matches[1]);
+                                        $templateInfo['Version'] = trim($matches[2]);
+                                    }
+
+                                    return $templateInfo;
+                                }
+
+                                // Function to find the screenshot (png) file in the directory
+                                function findScreenshot($files) {
+                                    foreach ($files as $file) {
+                                        if (pathinfo($file, PATHINFO_EXTENSION) === 'png') {
+                                            return $file; // Return the first PNG file found
+                                        }
+                                    }
+                                    return null; // Return null if no PNG is found
+                                }
+
+                                // Scan the main resource directory
+                                if (is_dir($mainResourceDir)) {
+                                    $dirList = scandir($mainResourceDir);
+                                    foreach ($dirList as $value) {
+                                        if (strpos($value, '.') === false) {
+                                            // Recursively get files inside the directory
+                                            $mergedDirList[$value] = scanDirectoryRecursively($mainResourceDir . '/' . $value);
+                                        }
+                                    }
+                                }
+
+                                // Scan the package directory
+                                if (is_dir($packageDir)) {
+                                    $dirList = scandir($packageDir);                                    
+                                    foreach ($dirList as $value) {
+                                        if (strpos($value, '.') === false) {
+                                            // Recursively get files inside the directory
+                                            $mergedDirList[$value] = scanDirectoryRecursively($packageDir . '/' . $value);
+                                        }
+                                    }
+                                }
+
+                                // Iterate through the merged directory list and output options
+                                foreach ($mergedDirList as $dir => $files) {                                    
+                                    // Find the screenshot (png) file for background image
+                                    $screenshot = findScreenshot($files);
+                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                    ?>
+                                    <div class="lp-item card" data-id="{{ $dir }}">
+                                        <img src="<?php echo $backgroundImage; ?>">
+                                        <div class="card-body">                                        
+                                        <?php
+                                        foreach ($files as $file) {
+                                            // Check if the file is a PHP file
+                                            if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                                                // Extract template info from the PHP file comments
+                                                $templateInfo = extractTemplateInfo($file);
+                                                ?>                                                
+                                                    <?php //echo basename($file); ?>
+                                                    <strong>Template Name:</strong> <?php echo $templateInfo['Template']; ?> <br>
+                                                    <strong>Version:</strong> <?php echo $templateInfo['Version']; ?>    
+                                                    <p><a href="{{url('/dashboard/delete-template',$dir)}}" class="btn btn-danger">Delete</a></p>                                                  
+                                                <?php
+                                            }
+                                        }
+                                        ?>
+                                        </div>                                        
+                                    </div>
+                                    <?php
+                                }
+                                ?>                                
+                                <!-- <div class="lp-item" data-id="4">Item 4</div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">My Design</h6>                
+                </div>
+                <div class="card-body scroll-design">
+                    <div class="form-group row">
+                        <div class="col-sm-12 mb-3 mb-sm-0">                            
+                            <div id="lp-right-list" class="lp-drop-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <script>
+    document.getElementById("templateSwitch").addEventListener("change", function() {
+        if (this.checked) {
+            document.getElementById("templateDiv").style.display = "flex";
+        } else {
+            document.getElementById("templateDiv").style.display = "none";
+            document.getElementById("lp-orderInput").value = "";
+        }
+    });
+    </script>
 </form>
 <!-- Insert Image from library -->
 @include('admin.media.medialibrary')
@@ -282,4 +432,5 @@
 @else
 You can't access this page. Please contact admin.
 @endif
+<script src="{{ asset('packages/larapress/src/Assets/admin/js/template_design.js')}}"></script>
 @endsection

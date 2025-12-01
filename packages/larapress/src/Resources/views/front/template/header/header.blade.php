@@ -3,6 +3,27 @@
     Version: 1.0
 */
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @php
+        $slug = collect(request()->segments())->last();
+        $titlePart1 = getContentBySlug($slug)->title ?? '';
+        $titlePart2 = getPostTypeBySlug($slug)->name ?? '';
+        $left = trim($titlePart1.' '.$titlePart2);
+    @endphp
+    <title>
+        {{ $left }} @if(!empty($left)) - @endif @getSetting('site_title')
+    </title>
+    <!-- favicons Icons --> 
+    <link rel="icon" type="image/x-icon" href="{{ getSetting('fav_icon') == null ? asset('packages/larapress/src/Assets/admin/img/fav.png') : asset('public/uploads/').'/'.getSetting('fav_icon') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ getSetting('fav_icon') == null ? asset('packages/larapress/src/Assets/admin/img/fav.png') : asset('public/uploads/').'/'.getSetting('fav_icon') }}" />    
+    <link href="{{ asset('packages/larapress/public/front/default/css/bootstrap.min.css')}}" rel="stylesheet" crossorigin="anonymous"> 
+</head>
+<body>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{{url('/')}}">

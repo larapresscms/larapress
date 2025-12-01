@@ -1,10 +1,10 @@
 <?php
-if (file_exists(__DIR__.'/.env')) {  
+
+if (file_exists(__DIR__.'/.env')) {      
     require_once __DIR__.'/index.php';
 } else {    
-    require_once __DIR__.'/packages/larapress/pre-package/setup.php';
+    require_once __DIR__.'/packages/larapress/src/Resources/views/admin/install/create.php';
 }
- 
 
 use Illuminate\Http\Request;
 
@@ -21,3 +21,5 @@ require __DIR__.'/vendor/autoload.php';
 // Bootstrap Laravel and handle the request...
 (require_once __DIR__.'/bootstrap/app.php')
     ->handleRequest(Request::capture());
+
+

@@ -52,14 +52,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "Md. Shahinur Islamm",
-            "email": "shahinalam6644@email.com",
-            "homepage": "https://github.com/mdShahinurislamm",
-            "role": "Founder"
-        }
-    ]
-
+    "prefer-stable": true
 }

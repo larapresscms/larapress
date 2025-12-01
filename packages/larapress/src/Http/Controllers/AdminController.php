@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
 use LaraPressCMS\LaraPress\LaraServiceProvider;
+use Carbon\Carbon;
+use LaraPressCMS\LaraPress\Http\Controllers\HomeController;
+
 
 
 class AdminController extends Controller
@@ -46,6 +49,13 @@ class AdminController extends Controller
     
     //admin dashboard
     public function dashboard(){
+
+        $first = new HomeController();
+        if(env('SESSION_DRIVER') == "file"){
+            //update session
+            $first->updateEnv('SESSION_DRIVER', 'database');
+        } 
+
         $posts = Post::get();
         $media = Media::get();
         $categories = Category::get();
@@ -54,7 +64,19 @@ class AdminController extends Controller
         $posttypes = Posttype::all();
         $posttypes_inDash = Posttype::orderBy('id', 'ASC')->where('status', '1')->where('in_dashboard', '1')->get();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.index',compact('posts','categories','users','settingsAdmin','posttypes','posttypesD','media','posttypes_inDash'));
+        //last login
+        $lastSession = DB::table('sessions')
+        ->where('user_id', auth()->id())
+        ->orderBy('last_activity', 'desc')
+        ->skip(1) // skip current session
+        ->first();
+        if ($lastSession) {
+            $lastLogin = Carbon::createFromTimestamp($lastSession->last_activity)->timezone(session('user_timezone', 'UTC'))->format('l jS \of F Y g:i a');
+        } else {
+            $lastLogin = "First login";
+        }
+        
+        return view('admin.index',compact('posts','categories','users','settingsAdmin','posttypes','posttypesD','media','posttypes_inDash','lastLogin'));
     }
 
     //all user create
@@ -246,7 +268,7 @@ class AdminController extends Controller
     public function updateLaraPress(){ 
         try {  
             // Define the API URL
-            $apiUrl = 'https://larapress.org/version-controll';
+            $apiUrl = 'https://larapress.org/en/version-controll';
             // Get the client's IP address
             $ipAddress = url('/').' - '.$_SERVER['REMOTE_ADDR'].' - V: '.(LaraServiceProvider::getCurrentLaraVersion() ?? "Not Available");            
             // Log the referrer and IP address
@@ -278,7 +300,7 @@ class AdminController extends Controller
 
             // Step 1: Download the latest LaraPress version
             $zipFile = base_path('latest-larapress.zip');
-            file_put_contents($zipFile, fopen('https://larapress.org/latest/latest-larapress.zip', 'r'));
+            file_put_contents($zipFile, fopen('https://larapress.org/en/latest/latest-larapress.zip', 'r'));
 
             $this->info('Extracting the downloaded LaraPress...');
 

@@ -1,5 +1,5 @@
 @extends('front.themes.default.layouts.master')
-@section('content')
+@section('content') 
 @getTemplate($posttype->slug)
 @endsection      
 

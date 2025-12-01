@@ -90,7 +90,7 @@ class PosttypeController extends Controller
            'pt_thumbnail_path' => '',
            'paginate' => '',
            'template' => ''
-       ]);
+       ]);       
 
        //$slug = Str::slug($request->name, '-');
        $slug= $this->createSlug($request->name);
@@ -101,7 +101,7 @@ class PosttypeController extends Controller
        //check checkbox is empty
        $input['in_menu_swh'] = $request->in_menu_swh == null ? '0' : '1';
        $input['in_dashboard'] = $request->in_dashboard == null ? '0' : '1';
-       $input['template'] = $request->template == null ? '0' : '1';
+       $input['template'] = $request->template == 0 || $request->template == 1 || $request->template == null ? 'single' : $request->template;
 
        Posttype::create($input);
 
@@ -145,7 +145,7 @@ class PosttypeController extends Controller
     */
    public function show($post_type)
    {
-       $posts = DB::table('posts')->where('post_type', $post_type)->get();
+       $posts = DB::table('posts')->where('post_type', $post_type)->orderBy('id','DESC')->paginate(15);
        //dd($posts);
        $categories = Category::all();
        $posttypes = Posttype::all();
@@ -155,6 +155,51 @@ class PosttypeController extends Controller
        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get(); 
        return view('admin.posttypes.show',compact('posts','categories','posttypes','settingsAdmin','users','medies','posttypesD'));
    }
+
+    public function searchpost(Request $request)
+    {
+        $post_type = $request->input('post_type'); // replace with actual post type
+        $search = $request->input('search');
+
+        //dd($search);
+
+        $posts = DB::table('posts')
+            ->where('post_type', $post_type)
+            ->where('status', 1)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $columns = [
+                        'title',
+                        'slug',
+                        'content',
+                        'excerpt',
+                        'post_type',
+                        'option_1',
+                        'option_2',
+                        'option_3',
+                        'option_4',
+                        'more_option_1',
+                        'more_option_2',
+                    ]; // list all searchable columns
+                    foreach ($columns as $column) {
+                        $q->orWhere($column, 'like', "%{$search}%");
+                    }
+                });
+            })
+            ->orderBy('id', 'DESC')
+            ->paginate(15)
+            ->appends(['search' => $search]); // keep search term in pagination links
+
+        $categories = Category::all();
+        $posttypes = Posttype::all();
+        $settingsAdmin = Settings::get()->first();
+        $users = User::get();
+        $medies = Media::orderBy('id','DESC')->get();
+        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get(); 
+        return view('admin.posttypes.show',compact('posts','categories','posttypes','settingsAdmin','users','medies','posttypesD','search'));
+    }
+
+   
 
    /**
     * Show the form for editing the specified resource.
@@ -182,18 +227,33 @@ class PosttypeController extends Controller
     */
    public function update(Request $request, $id)
    {
-       $posttypes = Posttype::find($id); 
+
+    //dd($request->template);
+       $posttypes = Posttype::findOrFail($id); 
 
        $input = $request->all();
        //check checkbox is empty
        $input['in_menu_swh'] = $request->in_menu_swh == null ? '0' : '1';
        $input['in_dashboard'] = $request->in_dashboard == null ? '0' : '1';
-       $input['template'] = $request->template == null ? '0' : '1';
+       $input['template'] = $request->template == 0 || $request->template == 1 || $request->template == null ? 'single' : $request->template;
+
+    if($request->template !== NULL){
+        if($request->template_force){
+        //update all post template
+        // If template switch is ON → use given template, else use 'single'
+            $templateValue = $request->filled('template') ? $request->template : 'single';
+            $input['template'] = $templateValue;
+            // ✅ Update only related posts with matching post_type
+            Post::where('post_type', $posttypes->slug)->update([
+                'template' => $templateValue
+            ]);
+        }
+    }
 
        $posttypes->update($input);
 
        session()->flash('message','Data update successfully');
-       return redirect('/dashboard/posttypes');
+       return redirect()->back();
    }
 
    /**
@@ -263,6 +323,9 @@ class PosttypeController extends Controller
         ]); 
 
         $validated = $request->all();
+
+        // set default template 
+        //$validated['template'] = 'single';
 
         //check Editor
         $user = auth()->user();
@@ -397,8 +460,9 @@ class PosttypeController extends Controller
         } 
 
         $posts->update($postsAll);
-        session()->flash('message',$request->post_type.' update successfully');        
-        return redirect('/dashboard/posts/posttype/'.$id.'/edit/'.$request->post_type); 
+        //session()->flash('message',$request->post_type.' update successfully');  
+        return redirect()->back()->with('message','Update successfully!');
+        //return redirect('/dashboard/posts/posttype/'.$id.'/edit/'.$request->post_type); 
     }
 
     // create diffrent cat slug
@@ -441,6 +505,51 @@ class PosttypeController extends Controller
         Post::destroy($id); 
         session()->flash('messageDestroy',$request->post_type.' delete successfully');
         return redirect('/dashboard/posttypes/'.$request->post_type);
+    }
+
+    //bulkAction--------------
+     public function bulkAction(Request $request)
+    {
+        //dd($request->all());
+
+        $ids = $request->ids ?? [];
+        $action = $request->action;        
+        $old_type = $request->old_type;        
+        $new_type = $request->new_type;
+        // $user_id = $request->user_id;
+        $user = auth()->user();
+        
+
+        if (empty($ids)) {
+            return back()->with('messageDestroy', 'No '.$old_type.' selected.');
+        }
+
+        switch ($action) {
+            case 'delete':
+                DB::table('posts')->whereIn('id', $ids)->delete();
+                return back()->with('messageDestroy', 'Selected '.$old_type.' deleted.');
+            case 'publish':
+                DB::table('posts')->whereIn('id', $ids)->update(['status' => '1','user_id'=> $user->id]);
+                return back()->with('message', 'Selected '.$old_type.' published.');
+            case 'unpublish':
+                DB::table('posts')->whereIn('id', $ids)->update(['status' => '0','user_id'=> $user->id]);
+                return back()->with('messageDestroy', 'Selected '.$old_type.' unpublished.');
+            case 'change_type':
+                DB::table('posts')->whereIn('id', $ids)->update(['post_type' => $new_type,'user_id'=> $user->id]);
+                return back()->with('message', '<a href="'.url('/dashboard/posttypes',$new_type).'">Selected '.$old_type.' move to '.$new_type.' <i class="fa fa-arrow-right" aria-hidden="true"></i></a>');            
+            default:
+                return back()->with('messageDestroy', 'Invalid action.');
+        }
+    }
+    public function duplicatePosttype($id){
+        // Find the original post
+        $originalPost = Posttype::findOrFail($id);
+        // Create a new post instance with the original post's attributes
+        $newPost = $originalPost->replicate(); // replicate() copies all attributes except the primary key
+        $newPost->name = $originalPost->name . ' (Copy)'; // Optional: change the title
+        $newPost->slug = $originalPost->slug . 'copy'; // Optional: change the title
+        $newPost->save();
+        return redirect()->back()->with('success', 'Post duplicated successfully!');
     }
    
 }

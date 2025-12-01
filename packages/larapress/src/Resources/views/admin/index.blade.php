@@ -10,7 +10,7 @@
     <div class="me-4 mb-3 mb-sm-0">
         <h4 class="mb-0">Hi <span class="text-info">@auth() {{ optional(auth()->user())->name}}, @endauth</span> Welcome back.</h4>
         <div class="small">
-            <span>{{date('l jS \of F Y g:i a')}}</span> 
+            <span>Last Login: {{ $lastLogin }}</span> 
         </div>
     </div>
 </div>
@@ -134,7 +134,7 @@
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cont}}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="{{ $posttype->menu_icon != 0 ? $posttype->menu_icon : 'fas fa-thumbtack' }} fa-2x text-gray-300"></i>
+                            <i class="fas fa-thumbtack fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cont}}</div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="{{ $posttype->menu_icon != 0 ? $posttype->menu_icon : 'fas fa-thumbtack' }} fa-2x text-gray-300"></i>
+                                        <i class="fas fa-thumbtack fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>

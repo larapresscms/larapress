@@ -17,7 +17,7 @@ use LaraPressCMS\LaraPress\Models\Settings;
 class LaraServiceProvider extends ServiceProvider
 {
     // Static variable to hold the value
-    protected static $currentLaraVersion = '1.1.3';
+    protected static $currentLaraVersion = '1.1.4';
 
     public function boot()
     {        
@@ -46,7 +46,7 @@ class LaraServiceProvider extends ServiceProvider
             $versionData = Cache::get($cacheKey);
             if (!$versionData) {
                 // Define the API URL
-                $apiUrl = 'https://larapress.org/version-controll';
+                $apiUrl = 'https://larapress.org/en/version-controll';
                 // Make a GET request to the API
                 $response = Http::get($apiUrl);
                 // Check if the request was successful
@@ -74,8 +74,7 @@ class LaraServiceProvider extends ServiceProvider
             }
             $lara_status = $versionData['laraStatus'];
             // Compare versions
-            $lara_version = version_compare($versionData['apiVersion'], $versionData['currentVersion'], '>') ? $versionData['apiVersion'] . ' ' . $versionData['versionMessage'] : 'LaraPress is up-to-date.';
-            //$lara_version = version_compare($apiVersion, $currentVersion, '>') ? $apiVersion . ' ' . $versionMessage : 'LaraPress is up-to-date.';  
+            $lara_version = version_compare($versionData['apiVersion'], $versionData['currentVersion'], '>') ? $versionData['apiVersion'] . ' ' . $versionData['versionMessage'] : 'LaraPress is up-to-date.';             
         } catch (ConnectionException $e) {            
             // Handle connection-related exceptions
             $lara_version = "LaraPress is up-to-date.";
@@ -88,18 +87,20 @@ class LaraServiceProvider extends ServiceProvider
         view()->share('lara_version', $lara_version);
         view()->share('lara_status', $lara_status);   
 
-        // Register your custom Blade directive with a parameter        
+        // Register your custom Blade directive with a parameter 
         Blade::directive('getTemplate', function ($expression) {
             return "<?php
                 \$values = explode(',', $expression);
                 foreach (\$values as \$imgid) {
-                    \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                    \$imgid = trim(\$imgid);
+
                     if (!empty(\$imgid)) {
-                        // Check if the view exists
-                        if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
-                            echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                        \$template = 'front.template.' . \$imgid . '.' . \$imgid;
+
+                        if (view()->exists(\$template)) {
+                            echo \$__env->make(\$template, ['imgid' => \$imgid], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render();
                         } else {
-                            echo ' -> '. \$imgid.' Template not found';
+                            echo ' -> '. \$imgid .' Template not found';
                         }
                     }
                 }
@@ -112,13 +113,15 @@ class LaraServiceProvider extends ServiceProvider
             return "<?php
                     \$values = explode(',', '$post->header');
                     foreach (\$values as \$imgid) {
-                        \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                        \$imgid = trim(\$imgid);
+
                         if (!empty(\$imgid)) {
-                            // Check if the view exists
-                            if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
-                                echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                            \$template = 'front.template.' . \$imgid . '.' . \$imgid;
+
+                            if (view()->exists(\$template)) {
+                                echo \$__env->make(\$template, ['imgid' => \$imgid], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render();
                             } else {
-                                echo ' -> '. \$imgid.' Template not found';
+                                echo ' -> '. \$imgid .' Template not found';
                             }
                         }
                     }
@@ -130,14 +133,16 @@ class LaraServiceProvider extends ServiceProvider
             $post = Settings::get()->first();      
             return "<?php
                     \$values = explode(',', '$post->footer');
-                    foreach (\$values as \$imgid) {
-                        \$imgid = trim(\$imgid); // Trim any whitespace around the imgid
+                     foreach (\$values as \$imgid) {
+                        \$imgid = trim(\$imgid);
+
                         if (!empty(\$imgid)) {
-                            // Check if the view exists
-                            if (view()->exists('front.template.' . \$imgid .'.'.\$imgid)) {
-                                echo view('front.template.' . \$imgid.'.'.\$imgid, compact('imgid'))->render();
+                            \$template = 'front.template.' . \$imgid . '.' . \$imgid;
+
+                            if (view()->exists(\$template)) {
+                                echo \$__env->make(\$template, ['imgid' => \$imgid], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render();
                             } else {
-                                echo ' -> '. \$imgid.' Template not found';
+                                echo ' -> '. \$imgid .' Template not found';
                             }
                         }
                     }
@@ -150,7 +155,7 @@ class LaraServiceProvider extends ServiceProvider
         //get content 
         Blade::directive('getContent', function ($expression) {
             return "<?php echo getContentBySlug($expression); ?>";
-        });         
+        }); 
 
     }
     public function register()

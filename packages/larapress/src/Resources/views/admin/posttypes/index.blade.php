@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @section('content')
 <!-- Page Heading -->
-<h5 class="h5 mb-2 text-gray-800">Add New Post type <a href="{{ url('/dashboard/posttypes/create') }}" class="text-white"><button class="btn btn-primary btn-user">Add New</button></a></h5>
+<h5 class="h5 mb-2 text-gray-800">Add New Post type <a href="{{ url('/dashboard/posttypes/create') }}" class="text-white"><button class="btn btn-primary btn-user"><i class="fa fa-plus"></i></button></a></h5>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -16,7 +16,6 @@
                         <th>Post type</th> 
                         <th>Slug</th>
 						<th>Last Edit</th>
-						<th>Edit Date</th>
                         <th>Status</th>
                         <th>Menu</th>
                         <th>Action</th>
@@ -28,7 +27,6 @@
                         <th>Post type</th> 
                         <th>Slug</th>
 						<th>Last Edit</th>
-						<th>Edit Date</th>
                         <th>Status</th>
                         <th>Menu</th>
                         <th>Action</th>
@@ -45,7 +43,7 @@
 						 
 						 <tr>
 							<td>{{ ++$sl }}</td>
-							<td><a class="badge sizetext" href="{{ url('dashboard/posttypes/'.$posttype->slug) }}">{{ $posttype->name }}</a></td> 
+							<td><a class="badge sizetext" href="{{ url('dashboard/posttypes/'.$posttype->slug) }}">{!! Str::limit($posttype->name, 40, ' ...') !!}</a></td> 
 							<td>{{ $posttype->slug }}  
 							@foreach($categories as $category)
 								@if($category->id == $posttype->category_main_id)
@@ -59,8 +57,8 @@
 							       {{$user->name}}
 							       @endif
 							   @endforeach
+							   <br>{{ \Carbon\Carbon::parse($posttype->updated_at)->timezone(session('user_timezone', 'UTC'))->format('h:ia. d M, Y') }}
 							</td>
-							<td>{{ $posttype->updated_at }}</td>
 							<td>{{ $posttype->status == 0 ? 'Unpublish' : 'Publish' }}</td>
 
 							<td> 
@@ -71,7 +69,10 @@
 								@endif 
 							</td> 
 
-							<td><a href="{{ url($posttype->slug) }}" target="_blank"> <span class="btn badge-success"><i class="fas fa-link"></i></span></a>
+							<td style="width: 18%;">
+							<a href="{{ url('/dashboard/posttypes',$posttype->id) }}/copy" target="_blank"> <span class="btn badge-info"><i class="fas fa-clone"></i></span></a>
+							
+							<a href="{{ url($posttype->slug) }}" target="_blank"> <span class="btn badge-success"><i class="fas fa-link"></i></span></a>
 							<a href="{{ url('dashboard/posttypes/'.$posttype->slug) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a> 
 							<a href="{{ url('dashboard/posttypes/'.$posttype->id.'/edit') }}" class="btn btn-success"><i class="fas fa-edit"></i></a> 
 							

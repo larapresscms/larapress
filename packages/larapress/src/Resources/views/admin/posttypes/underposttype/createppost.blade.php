@@ -250,16 +250,16 @@
             <input type="hidden" name="gallery_img[]" >
             @endif
 
-            <input type="hidden" name="template" id="lp-orderInput">
+            <input type="hidden" name="template" value="{{$posttypeSlug->template}}" id="lp-orderInput">
 
         </div>        
-
-        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null)
+ 
+        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null && $posttypeSlug->template != 'single')
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Template</h6>         
-                    <a href="https://larapress.org/template"><h6 class="m-0 font-weight-bold text-primary">View More Template</h6> </a>
+                    <a href="https://larapress.org/en/store"><h6 class="m-0 font-weight-bold text-primary">View More Template</h6> </a>
                     <a href="{{url('/dashboard/about')}}"><h6 class="m-0 font-weight-bold text-primary">Upload Template</h6> </a>       
                 </div>
                 <div class="card-body scroll-design">

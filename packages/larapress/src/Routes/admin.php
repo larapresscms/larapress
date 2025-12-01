@@ -10,6 +10,7 @@ use LaraPressCMS\LaraPress\Http\Controllers\SettingsController;
 use LaraPressCMS\LaraPress\Http\Controllers\PosttypeController;
 use LaraPressCMS\LaraPress\Http\Controllers\FeedbacksController;
 use LaraPressCMS\LaraPress\Http\Controllers\MenuController;
+use LaraPressCMS\LaraPress\Http\Controllers\FileEditorController;
 
 
 /*
@@ -72,6 +73,9 @@ Route::get('/dashboard/mediamanager', [MediaController::class, 'mediamanager']);
 //ajaxshow
 Route::get('/dashboardmediamanager', [MediaController::class, 'dashboardMediaManager']);  
 
+//bulk media
+Route::POST('/dashboard/media/bulkaction', [MediaController::class, 'bulkActionMedia'])->name('media.bulkActionMedia');
+
 //Settings----- not wrk
 Route::get('/dashboard/settings/', [SettingsController::class, 'index']);
 //Route::get('/dashboard/settings/create', [SettingsController::class, 'create']);
@@ -91,15 +95,20 @@ Route::get('/dashboard/posttypes/{post_type}', [PosttypeController::class, 'show
 Route::get('/dashboard/posttypes/{id}/edit', [PosttypeController::class, 'edit']);
 Route::patch('/dashboard/posttypes/{id}', [PosttypeController::class, 'update']);
 Route::delete('/dashboard/posttypes/{id}', [PosttypeController::class, 'destroy']);
+Route::get('/dashboard/posttypes/{id}/copy', [PosttypeController::class, 'duplicatePosttype']);
 // under posttype
 Route::get('/dashboard/posttypes/create/{post_type}', [PosttypeController::class, 'createppost']);
 Route::get('/dashboard/posts/posttype/{id}/edit/{post_type}', [PosttypeController::class, 'editppost']);
 Route::post('/dashboard/posts/posttypes', [PosttypeController::class, 'storeposttype']);
-
 Route::patch('/dashboard/posts/posttype/{id}', [PosttypeController::class, 'updateppost']);
 Route::delete('/dashboard/posts/posttype/{id}', [PosttypeController::class, 'destroyppost']);
+Route::get('/dashboard/posttypes/search/{post_type}', [PosttypeController::class, 'searchpost']);
+
+//bulk post
+Route::POST('/dashboard/posttypes/bulkaction/posts', [PosttypeController::class, 'bulkAction'])->name('posts.bulkAction');
 
 //make feedback
+Route::get('/dashboard/feedbacks/{slug}', [FeedbacksController::class, 'index']);
 Route::get('/dashboard/feedbacks/', [FeedbacksController::class, 'index']);
 Route::get('/dashboard/feedbacks/{id}', [FeedbacksController::class, 'show']);
 Route::delete('/dashboard/feedbacks/{id}', [FeedbacksController::class, 'destroy']);
@@ -123,3 +132,26 @@ Route::get('/update-status', [AdminController::class, 'getStatus']);
 //upload template
 Route::post('/dashboard/upload-template', [AdminController::class, 'uploadTemplate']);
 Route::get('/dashboard/delete-template/{foldername}', [AdminController::class, 'deleteTemplate']);
+
+//File Editor
+Route::middleware(['auth'])->prefix('admin/editor')->group(function () {
+    
+});
+
+Route::get('/dashboard/editor', [FileEditorController::class, 'index'])->name('editor.index');
+Route::get('/dashboard/tree', [FileEditorController::class, 'tree'])->name('editor.tree');
+Route::get('/dashboard/read', [FileEditorController::class, 'readFile'])->name('editor.read');
+Route::post('/dashboard/save', [FileEditorController::class, 'saveFile'])->name('editor.save');
+Route::post('/dashboard/create-file', [FileEditorController::class, 'createFile'])->name('editor.createFile');
+Route::post('/dashboard/create-dir', [FileEditorController::class, 'createDir'])->name('editor.createDir');
+Route::post('/dashboard/editor/delete', [FileEditorController::class, 'delete'])->name('editor.delete');
+Route::post('/dashboard/rename', [FileEditorController::class, 'rename'])->name('editor.rename');
+Route::get('/dashboard/download', [FileEditorController::class, 'download'])->name('editor.download');
+Route::get('/dashboard/breadcrumbs', [FileEditorController::class,'breadcrumbs'])->name('editor.breadcrumbs');
+Route::get('/dashboard/preview', [FileEditorController::class,'preview'])->name('editor.preview');
+// auto timezone
+Route::post('/set-timezone', function (\Illuminate\Http\Request $request) {
+    session(['user_timezone' => $request->timezone]);
+    return response()->json(['success' => true]);
+});
+

@@ -4,6 +4,7 @@ use LaraPressCMS\LaraPress\Models\Post;
 use LaraPressCMS\LaraPress\Models\Posttype;
 use LaraPressCMS\LaraPress\Models\Settings;
 use LaraPressCMS\LaraPress\Models\Menu;
+use LaraPressCMS\LaraPress\Models\Media;
 
 //post data
 if (!function_exists('insertDummyData')) {
@@ -53,6 +54,7 @@ if (!function_exists('insertDummyData')) {
                     'content' => $post_content,
                     'post_type' => $posttype->slug,
                     'status' => 1, 
+                    'template' => 'single',
                 ]);
             };             
         }        
@@ -98,8 +100,10 @@ if (!function_exists('getPostsByType')) {
      */
     function getPostsByType($post_type)
     {
+        $posttype = Posttype::where('slug',$post_type)->first();
         // Ensure the Post model is imported or use the fully qualified class name
-        $post = Post::where('post_type', $post_type)->get();
+        //$post = Post::where('post_type', $post_type)->where('status', 1)->get();
+        $post = Post::orderBy('position','ASC')->where('status','1')->where('post_type',$post_type)->paginate($posttype->paginate);
         return $post ? $post : '';
     }
 }
@@ -133,7 +137,6 @@ if (!function_exists('getMenus')) {
         return $menu ? $menu : '';
     }
 }
-//demo---------------
 if (!function_exists('getContentBySlug')) {
     /**
      * Get the content of a post by its slug.
@@ -144,7 +147,51 @@ if (!function_exists('getContentBySlug')) {
     function getContentBySlug($slug)
     {
         // Ensure the Post model is imported or use the fully qualified class name
-        $post = Post::where('slug', $slug)->first();
-        return $post ? $post->content : '';
+        $post = Post::where('slug', $slug)->where('status', 1)->first();
+        return $post ? $post : '';
     }
 }
+
+if (!function_exists('getPostTypeBySlug')) {
+    /**
+     * Get the content of a post by its slug.
+     *
+     * @param string $slug
+     * @return string
+     */
+    function getPostTypeBySlug($slug)
+    {
+        // Ensure the Post model is imported or use the fully qualified class name
+        
+        $posttype = Posttype::where('slug',$slug)->where('status', 1)->first(); 
+        return $posttype ? $posttype : '';
+    }
+}
+//get gallery by post
+if (!function_exists('getGalleryBySlug')) {
+    /**
+     * Get the content of a post by its slug.
+     *
+     * @param string $slug
+     * @return string
+     */
+    function getGalleryBySlug($slug)
+    {         
+        $post = Post::where('slug', $slug)->where('status', 1)->first();
+        if (!$post || empty($post->gallery_img)) {
+            return [];
+        }
+        $paths = explode(",", $post->gallery_img);
+        // Media model assumed -> columns: path, caption
+        $mediaItems = Media::whereIn('img_name', $paths)->get()->keyBy('img_name');   
+        $result = [];
+        foreach ($paths as $path) {
+            $result[] = [
+                'path' => $path,
+                'caption' => $mediaItems[$path]->caption ?? '' // null safe
+            ];
+        }
+        return $result;
+    }
+}
+// End Helper Function 

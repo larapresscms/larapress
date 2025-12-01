@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use LaraPressCMS\LaraPress\Models\Media;
 use LaraPressCMS\LaraPress\Models\Settings;
 use LaraPressCMS\LaraPress\Models\Posttype;
+use LaraPressCMS\LaraPress\Models\User;
 use DB;
 use Image;
 
@@ -19,11 +20,12 @@ class MediaController extends Controller
     }
     public function index()
     {   
-        $medies = Media::orderBy('id','DESC')->get();
+        $medies = Media::orderBy('id','DESC')->paginate(15);
         $settingsAdmin = Settings::get()->first();
+        $users = User::all();
         $posttypes = Posttype::all();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.media.index',compact('medies','settingsAdmin','posttypes','posttypesD')); 
+        return view('admin.media.index',compact('medies','settingsAdmin','posttypes','posttypesD','users')); 
     }
 
     public function create()
@@ -44,7 +46,7 @@ class MediaController extends Controller
 
         $validated = $request->validate([
             'img_name' => 'required',
-            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:51200', 
+            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:10240', 
         ]);
         if($request->hasfile('img_name'))
         {
@@ -77,6 +79,7 @@ class MediaController extends Controller
                 
                 $input = $request->all();
                 $input['img_name'] = $getFileExt; 
+                $input['uploaded_by'] = auth()->user()->id;
                 Media::create($input);
             }              
          }  
@@ -146,7 +149,7 @@ class MediaController extends Controller
 
         $validated = $request->validate([
             'img_name' => 'required',
-            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:51200', 
+            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:10240', 
         ]);
         if($request->hasfile('img_name'))
         {
@@ -181,6 +184,7 @@ class MediaController extends Controller
 
                 $input = $request->all();
                 $input['img_name'] = $getFileExt; 
+                $input['uploaded_by'] = auth()->user()->id;
                 Media::create($input);
             }              
          } 
@@ -201,6 +205,56 @@ class MediaController extends Controller
         $data = Media::orderBy('id', 'DESC')->get();
         // Return the data as JSON response
         return response()->json($data);
+    }
+    //bulkAction--------------
+     public function bulkActionMedia(Request $request)
+    {
+        //dd($request->all());
+
+        $ids = $request->ids ?? [];
+        $action = $request->action;   
+        $user = auth()->user();
+        
+
+        if (empty($ids)) {
+            return back()->with('messageDestroy', 'No media selected.');
+        }
+
+        switch ($action) {
+            case 'delete':
+                DB::table('media')->whereIn('id', $ids)->delete();
+                return back()->with('messageDestroy', 'Selected Media deleted.');                      
+            default:
+                return back()->with('messageDestroy', 'Invalid action.');
+        }
+
+
+    }
+    public function edit($id){
+        //dd('test');
+        $media = Media::find($id);
+        $users = User::all();
+        $settingsAdmin = Settings::get()->first();
+        $posttypes = Posttype::all();
+        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
+        return view('admin.media.edit',compact('media','settingsAdmin','posttypes','posttypesD','users')); 
+    }
+
+     public function update(Request $request, $id)
+    {
+        //check Editor
+        $user = auth()->user();
+        if ($user->role == 112 && $user->update == NULL) {
+            session()->flash('messageDestroy', 'You are not allowed to update.');
+            return redirect('/dashboard/media/'.$id.'/edit/');
+        }
+
+        $media = Media::find($id);
+        $media->update($request->all());
+
+        session()->flash('message'.$media->id,'success'); 
+        session()->flash('message','Data update successfully');
+        return redirect('/dashboard/media/'.$id.'/edit/');
     }
 
 }

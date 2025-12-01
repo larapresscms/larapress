@@ -130,7 +130,7 @@
                             <div class="card shadow">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between @if(session()->has('message'.$menu->id)) alert-{{session('message'.$menu->id)}} @endif">
-                                    <h6 class="m-0 font-weight-bold text-primary">{{ $menu->title }}</h6>
+                                    <h6 class="m-0 w-75 text-primary">{{ $menu->title }}</h6>
                                     <div class="dropdown no-arrow"><span class="btn badge badge-primary">{{ $menu->position }}</span>
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -174,7 +174,7 @@
                                     <div class="card shadow ml-4">
                                         <!-- Card Header - Dropdown -->
                                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between @if(session()->has('message'.$submenu->id)) alert-{{session('message'.$submenu->id)}} @endif">
-                                            <h6 class="m-0 font-weight-bold text-primary">{{ $submenu->title }}</h6>
+                                            <h6 class="m-0 w-75 text-primary">{{ $submenu->title }}</h6>
                                             <div class="dropdown no-arrow"><span class="btn badge badge-primary">{{ $submenu->position }}</span>
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -220,7 +220,7 @@
                                         <div class="card shadow ml-5">
                                             <!-- Card Header - Dropdown -->
                                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between @if(session()->has('message'.$submenu2->id)) alert-{{session('message'.$submenu2->id)}} @endif">
-                                                <h6 class="m-0 font-weight-bold text-primary">{{ $submenu2->title }}</h6>
+                                                <h6 class="m-0 w-75 text-primary">{{ $submenu2->title }}</h6>
                                                 <div class="dropdown no-arrow"><span class="btn badge badge-primary">{{ $submenu2->position }}</span>
                                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>

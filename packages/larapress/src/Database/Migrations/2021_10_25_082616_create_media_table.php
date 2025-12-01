@@ -16,6 +16,9 @@ class CreateMediaTable extends Migration
         if (!Schema::hasTable('media')) {
             Schema::create('media', function (Blueprint $table) {
                 $table->id();     
+                $table->string('caption')->nullable();
+                $table->string('alt_text')->nullable();
+                $table->string('uploaded_by')->nullable();
                 $table->string('img_name');
                 $table->timestamps();
             });

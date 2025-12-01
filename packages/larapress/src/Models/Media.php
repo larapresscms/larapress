@@ -9,5 +9,5 @@ class Media extends Model
 {
     use HasFactory;
 
-   protected $fillable = ['img_name'];
+   protected $fillable = ['img_name','caption','alt_text','uploaded_by'];
 }

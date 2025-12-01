@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use LaraPressCMS\LaraPress\Http\Controllers\HomeController;
+Route::post('/setup/save-database', [HomeController::class, 'saveDatabaseConfig']);
 Route::get('/migrate', [HomeController::class, 'migrate']);
 Route::get('/clear', function() {
     Artisan::call('cache:clear');
