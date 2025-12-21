@@ -50,7 +50,7 @@
 
         <div class="row">
             <div class="col-6">
-                <div class="d-flex gap-2 mb-3 align-items-center">
+                <div class="{{optional(auth()->user())->role == 111 ? 'd-flex':'d-none'}}  gap-2 mb-3 align-items-center">
                 
                     <select id="bulkAction" class="form-select w-auto form-control w-25 d-inline">
                         <option value="">Bulk Actions</option>
@@ -157,7 +157,7 @@
                         @endif
                         @endauth  
                         </td> 
-                        <td >{{ $post->slug }}</td>
+                        <td>{{ $post->slug }}</td>
                         <td>
                             @foreach($categories as $categorie)
                                 @if($post->category_id == $categorie->id)
@@ -250,7 +250,8 @@
                             @if($vid)  							
                                 @if(optional(auth()->user())->role == 111 || $vid == $post->id)
                                 <tr>
-                                    <td>{{ ++$sl }}</td>
+                                    <td><input type="checkbox" name="ids[]" value="{{ $post->id }}" class="checkbox-item"></td>
+                                    <td>SL: {{ ++$sl }}<br>ID: {{ $post->id }}</td>
                                     <td>
                                     @auth()
                                     @if(optional(auth()->user())->id == $post->user_id || optional(auth()->user())->role == "111" || optional(auth()->user())->role == "112")
@@ -260,6 +261,7 @@
                                     @endif
                                     @endauth  
                                     </td> 
+                                    <td>{{ $post->slug }}</td>
                                     <td>
                                         @foreach($categories as $categorie)
                                             @if($post->category_id == $categorie->id)
@@ -273,15 +275,17 @@
                                         @endif
                                         @endforeach
                                     </td>
-                                    <td>{{ $post->more_option_1 }}</td>
+                                     
+                                    <td>{{ $post->position }}</td>
                                     <td>
-                                    @foreach($users as $user)
-                                        @if($user->id == $post->user_id)
-                                        {{$user->name}}
-                                        @endif
-                                    @endforeach
-                                    </td>
-                                    <td>{{ $post->updated_at }}</td>
+                                       @foreach($users as $user)
+                                           @if($user->id == $post->user_id)
+                                           {{$user->name}}
+                                           @endif
+                                       @endforeach
+                                       <br>{{ \Carbon\Carbon::parse($post->updated_at)->timezone(session('user_timezone', 'UTC'))->format('h:ia. d M, Y') }}
+                                    </td> 
+                                    
                                     <td>{{ $post->status == 0 ? 'Unpublish' : 'Publish' }}</td> 
                                     <td>
                                     <!-- <a href="{{ url('dashboard/posts/'.$post->id) }}" class="btn btn-success">Show</a> -->

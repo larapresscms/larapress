@@ -298,8 +298,9 @@
             <input type="hidden" name="template" value="{{$posttypeSlug->template != 0 && $posttypeSlug->template != null ? $posts->template : NULL}}" id="lp-orderInput">
 
         </div>
-
-        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null && $posttypeSlug->template != 'single')
+        @if(optional(auth()->user())->role == 111)
+        <!-- && $posttypeSlug->template != 'single' -->
+        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null )
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -480,6 +481,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endif
     </div>
 </form>

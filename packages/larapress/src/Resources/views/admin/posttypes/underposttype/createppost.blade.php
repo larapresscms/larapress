@@ -252,9 +252,10 @@
 
             <input type="hidden" name="template" value="{{$posttypeSlug->template}}" id="lp-orderInput">
 
-        </div>        
- 
-        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null && $posttypeSlug->template != 'single')
+        </div>   
+    @if(optional(auth()->user())->role == 111)
+        <!-- && $posttypeSlug->template != 'single' -->
+        @if($posttypeSlug->template != 0 && $posttypeSlug->template != null)  
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -347,10 +348,12 @@
                                 foreach ($mergedDirList as $dir => $files) {                                    
                                     // Find the screenshot (png) file for background image
                                     $screenshot = findScreenshot($files);
-                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : ''; // Default image if no screenshot is found
                                     ?>
                                     <div class="lp-item card" data-id="{{ $dir }}">
+                                        @if($backgroundImage)
                                         <img src="<?php echo $backgroundImage; ?>">
+                                        @endif
                                         <div class="card-body">                                        
                                         <?php
                                         foreach ($files as $file) {
@@ -394,6 +397,7 @@
             </div>
         </div>
         @endif
+    @endif
 
     </div>
 </form>

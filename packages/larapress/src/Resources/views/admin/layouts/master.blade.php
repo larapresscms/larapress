@@ -76,6 +76,8 @@
             color: {{ $settingsAdmin->text_hover ?? 'None'}} !important;
             background-color: {{ $settingsAdmin->text_color ?? 'None'}} !important;
         }
+        
+        
     </style>     
 </head>
 <body id="page-top">   

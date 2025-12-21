@@ -219,12 +219,12 @@
                             <label for="basic-url">Template Design Turn On Off</label>
                             <div class="input-group mb-3">
                                 <label class="switch">
-                                    <input type="checkbox" id="templateSwitch" {{ $posttype->template == 'single' || $posttype->template == 0 ? '' : 'checked'}}>
+                                    <input type="checkbox" id="templateSwitch" {{ $posttype->template === NULL || $posttype->template == 0 ? '' : 'checked'}}>
                                     <span class="sliderswitch round"></span>
                                 </label>
                             </div>
                         </div>
-                        <div class="col" id="template_force" style="display: {{ $posttype->template == 'single' || $posttype->template == 0 ? 'none' : ''}}">
+                        <div class="col" id="template_force" style="display: {{ $posttype->template === NULL || $posttype->template == 0 ? 'none' : ''}}">
                             <label for="basic-url">Forcefully Replace All Previous Templates?</label>
                             <div class="input-group mb-3">
                                 <label class="switch">
@@ -344,7 +344,7 @@
 
     <input type="hidden" name="template" value="{{ $posttype->template }}" id="lp-orderInput">
 
-    <div id="templateDiv" class="row" style="display:{{ $posttype->template == 'single' || $posttype->template == 0 ? 'none' : 'flex'}}">
+    <div id="templateDiv" class="row" style="display:{{ $posttype->template === NULL || $posttype->template == 0 ? 'none' : 'flex'}}">
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
