@@ -17,7 +17,9 @@
                                     <div class="d-flex gap-2 mb-3 align-items-center">                                
                                         <select id="bulkAction" class="form-select w-auto form-control w-25 d-inline">
                                             <option value="">Bulk Actions</option>
+                                            @if(optional(auth()->user())->role == 111)
                                             <option value="delete">Delete</option> 
+                                            @endif
                                         </select>
                                         
                                         <input type="hidden" name="user_id" value="@auth(){{ optional(auth()->user())->id}}@endauth" id="user_ID">
@@ -86,7 +88,12 @@
                                                 @endphp
                                                 <a class="btn btn-info bbtn"><i class="fas fa-file"></i></a>
                                                 @php
-                                                } else {
+                                                }elseif ($file_extension == "mp4" || $file_extension == "webm") {
+                                                @endphp
+                                                <a class="btn btn-info bbtn"><i class="fas fa-video"></i></a>
+                                                @php
+                                                }                                            
+                                                else {
                                                 @endphp
                                                     <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" width="100" alt="Image"/>
                                                 @php 

@@ -23,6 +23,7 @@ class CreateMenusTable extends Migration
                 $table->string('title')->nullable();
                 $table->string('url')->nullable();
                 $table->string('target')->nullable();
+                $table->string('icon')->nullable();
                 $table->string('status')->nullable();
                 $table->timestamps();
             });

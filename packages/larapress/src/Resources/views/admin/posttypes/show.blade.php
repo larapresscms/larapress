@@ -22,16 +22,16 @@
 @php $result = $vid ?? ''; @endphp
 <!-- role mang editor--> 
 
-@if(optional(auth()->user())->role == 111 || $result == $currnt_posttypeID)
-
+@if(optional(auth()->user())->role == 111 || $result == $currnt_posttypeID) 
 
 <!-- Page Heading -->
-<h5 class="h5 mb-2 text-gray-800"><a href="{{ url('/dashboard/posttypes/') }}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>    
+<h5 class="h5 mb-2 text-gray-800"><a href="{{ url('/dashboard/posttypes/') }}" class="text-decoration-none"><i class="fa fa-arrow-left" aria-hidden="true"></i>  
     @foreach($posttypes as $posttype)
         @if( $posttype->slug ==  collect(request()->segments())->last() )
             {{ $posttype->name }}
         @endif
     @endforeach
+    </a>  
 </h5>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -42,7 +42,10 @@
             All {!! Str::limit($posttype->name, 15, ' ...') !!} 
             @endif
         @endforeach
+        
+        @if(optional(auth()->user())->role == 111 || $result == $currnt_posttypeID && optional(auth()->user())->create == "create") 
         <a href="{{ url('/dashboard/posttypes/create/') }}/{{ collect(request()->segments())->last() }}" class="text-white"><button class="btn btn-primary btn-user"><i class="fa fa-plus"></i></button></a>
+        @endif
         </h6>                    
     </div>
     <div class="card-body">
@@ -50,14 +53,18 @@
 
         <div class="row">
             <div class="col-6">
-                <div class="{{optional(auth()->user())->role == 111 ? 'd-flex':'d-none'}}  gap-2 mb-3 align-items-center">
+                <div class="d-flex gap-2 mb-3 align-items-center">
                 
                     <select id="bulkAction" class="form-select w-auto form-control w-25 d-inline">
                         <option value="">Bulk Actions</option>
+                        @if(optional(auth()->user())->role == 111)
                         <option value="delete">Delete</option>
+                        <option value="change_type">Change Type</option>
+                        <option value="duplicate">Duplicate</option>
+                        @endif
                         <option value="publish">Publish</option>
                         <option value="unpublish">Unpublish</option>
-                        <option value="change_type">Change Type</option>
+                        
                     </select>
                     <select class="form-select form-control w-auto d-none w-25" name="post_type" id="bulkType">                                
                         <option value disabled selected>Select</option>
@@ -105,7 +112,6 @@
                 </form>
             </div>
         </div>  
-
 
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
@@ -157,7 +163,7 @@
                         @endif
                         @endauth  
                         </td> 
-                        <td>{{ $post->slug }}</td>
+                        <td >{{ $post->slug }}</td>
                         <td>
                             @foreach($categories as $categorie)
                                 @if($post->category_id == $categorie->id)
@@ -261,7 +267,7 @@
                                     @endif
                                     @endauth  
                                     </td> 
-                                    <td>{{ $post->slug }}</td>
+                                    <td >{{ $post->slug }}</td>
                                     <td>
                                         @foreach($categories as $categorie)
                                             @if($post->category_id == $categorie->id)
@@ -275,27 +281,27 @@
                                         @endif
                                         @endforeach
                                     </td>
-                                     
                                     <td>{{ $post->position }}</td>
-                                    <td>
-                                       @foreach($users as $user)
+                                    <td> 
+                                        @foreach($users as $user)
                                            @if($user->id == $post->user_id)
                                            {{$user->name}}
                                            @endif
-                                       @endforeach
-                                       <br>{{ \Carbon\Carbon::parse($post->updated_at)->timezone(session('user_timezone', 'UTC'))->format('h:ia. d M, Y') }}
+                                        @endforeach
+                                        <br>{{ \Carbon\Carbon::parse($post->updated_at)->timezone(session('user_timezone', 'UTC'))->format('h:ia. d M, Y') }}
                                     </td> 
-                                    
                                     <td>{{ $post->status == 0 ? 'Unpublish' : 'Publish' }}</td> 
                                     <td>
                                     <!-- <a href="{{ url('dashboard/posts/'.$post->id) }}" class="btn btn-success">Show</a> -->
                                     @auth()
                                         @if(optional(auth()->user())->id == $post->user_id || optional(auth()->user())->role == "111" || optional(auth()->user())->role == "112")
                                             <!-- check user won post action -->
-                                            <a href="{{ url('dashboard/posts/posttype/'.$post->id.'/edit/'.collect(request()->segments())->last()) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a> 
                                             
+                                            @if(optional(auth()->user())->update == "update")
+                                            <a href="{{ url('dashboard/posts/posttype/'.$post->id.'/edit/'.collect(request()->segments())->last()) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                            @endif
+                                            @if(optional(auth()->user())->delete == "delete")
                                             <a  class="btn btn-danger bbtn" data-toggle="modal" data-target="#logoutModal{{ $post->id }}"><i class="fas fa-trash"></i></a> 
-                                                
                                             <!-- Delete Modal-->
                                             <div class="modal fade" id="logoutModal{{ $post->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                                                 aria-hidden="true">
@@ -323,6 +329,7 @@
                                                 </div>
                                             </div>  
                                             <!-- Delete Modal-->
+                                            @endif
                                             
                                         @endif
                                     @endauth                        

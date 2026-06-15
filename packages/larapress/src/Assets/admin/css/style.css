@@ -299,7 +299,8 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 .labelBalloon:hover  {
   color: #377D6A;
   text-indent: 0;
-  background: #fff;
+  background: #fff;  
+  padding: 1.5rem 1rem !important;
 }
 .labelBalloon:hover::-webkit-input-placeholder  {
   color: #aaa;
@@ -320,7 +321,7 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 /* custom  */
 .custom-select{
   padding: 0.8rem !important;
-  height: 100%;
+  height: auto;
 }
 .alert{border: none;}
 
@@ -434,3 +435,62 @@ transition: background-color 0.2s ease;
   background-color: darkred;
 }
 .scroll-design{height: 450px; overflow-y: auto;}
+/* seeting page  */
+.lp_settings input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 1px solid;
+  cursor: pointer;
+  height: 9em;
+  padding: 0;
+  width: 9em;
+}
+
+.lp_settings *:focus{
+  border-radius: 0;
+  outline: none;
+}
+
+.lp_settings ::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.lp_settings ::-webkit-color-swatch{
+  border: 0;
+  border-radius: 0;
+}
+
+.lp_settings ::-moz-color-swatch,
+.lp_settings ::-moz-focus-inner{
+  border: 0;
+}
+
+.lp_settings ::-moz-focus-inner{
+  padding: 0;
+}
+/* //inout tag  */
+.tags-input {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 5px;
+      min-height: 45px;
+  }
+  .tags-input input {             
+      /* flex: 1; */
+      min-width: 120px;
+  }
+  .tag {
+      background: #007bff;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 4px;
+      margin: 3px;
+      font-size: 14px;
+  }
+  .tag span {
+      margin-left: 6px;
+      cursor: pointer;
+  }

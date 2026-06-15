@@ -26,7 +26,11 @@
                 <h2 class="display-4">What's New v{{$CurrentLaraPressVersion ?? "Not Available"}}</h2>
                 <hr>
                 <p class="lead"></p>
-                <p>Template Design bug fix</p>
+                <p>Editor edit public folder</p>
+                <p>Post duplicate feature</p>
+                <p>Post type make by new post</p>
+                <p>Add block</p>
+                <p>Menu redesign and icon uploads feature</p>
                 <p>More bug fixed.</p>         
             </div> 
         </div>

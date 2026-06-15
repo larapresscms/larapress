@@ -10,6 +10,7 @@ use LaraPressCMS\LaraPress\Models\Media;
 use LaraPressCMS\LaraPress\Models\Category;
 use LaraPressCMS\LaraPress\Models\Settings;
 use LaraPressCMS\LaraPress\Models\Posttype;
+use LaraPressCMS\LaraPress\Models\Menu;
 use DB;
 use Artisan;
 use Log;
@@ -20,7 +21,8 @@ use Illuminate\Http\Client\ConnectionException;
 use LaraPressCMS\LaraPress\LaraServiceProvider;
 use Carbon\Carbon;
 use LaraPressCMS\LaraPress\Http\Controllers\HomeController;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 
 class AdminController extends Controller
@@ -64,19 +66,30 @@ class AdminController extends Controller
         $posttypes = Posttype::all();
         $posttypes_inDash = Posttype::orderBy('id', 'ASC')->where('status', '1')->where('in_dashboard', '1')->get();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
+        
         //last login
-        $lastSession = DB::table('sessions')
-        ->where('user_id', auth()->id())
-        ->orderBy('last_activity', 'desc')
-        ->skip(1) // skip current session
-        ->first();
-        if ($lastSession) {
-            $lastLogin = Carbon::createFromTimestamp($lastSession->last_activity)->timezone(session('user_timezone', 'UTC'))->format('l jS \of F Y g:i a');
-        } else {
-            $lastLogin = "First login";
+        // $lastSession = DB::table('sessions')
+        // ->where('user_id', auth()->id())
+        // ->orderBy('last_activity', 'desc')
+        // ->skip(1) // skip current session
+        // ->first();
+        // if ($lastSession) {
+        //     $sessions = Carbon::createFromTimestamp($lastSession->last_activity)->timezone(session('user_timezone', 'UTC'))->format('l jS \of F Y g:i a');
+        // } 
+            
+        // Get session data keyed by user_id
+        $sessions = DB::table('sessions')->where('user_id', auth()->id())
+            ->whereNotNull('user_id')
+            ->get()
+            ->keyBy('user_id');  // so you can do $sessions[$user->id]
+            
+        // Get last login info from cache for each user
+        $lastLogins = collect();
+        foreach ($users as $user) {
+            $lastLogins[$user->id] = cache()->get('last_login_' . $user->id);
         }
         
-        return view('admin.index',compact('posts','categories','users','settingsAdmin','posttypes','posttypesD','media','posttypes_inDash','lastLogin'));
+        return view('admin.index',compact('posts','categories','users','settingsAdmin','posttypes','posttypesD','media','posttypes_inDash','sessions','lastLogins'));
     }
 
     //all user create
@@ -86,7 +99,20 @@ class AdminController extends Controller
         $settingsAdmin = Settings::get()->first();
         $posttypes = Posttype::all();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.user.backend.index',compact('users','settingsAdmin','posttypes','posttypesD'));
+        
+        // Get session data keyed by user_id
+        $sessions = DB::table('sessions')
+            ->whereNotNull('user_id')
+            ->get()
+            ->keyBy('user_id');  // so you can do $sessions[$user->id]
+            
+        // Get last login info from cache for each user
+        $lastLogins = collect();
+        foreach ($users as $user) {
+            $lastLogins[$user->id] = cache()->get('last_login_' . $user->id);
+        }
+        
+        return view('admin.user.backend.index',compact('users','settingsAdmin','posttypes','posttypesD','sessions','lastLogins'));
     }
     //delete
     public function destroy($id)
@@ -107,11 +133,88 @@ class AdminController extends Controller
     }
     public function singleUser($id)
     {
+
+    $userId = $id;
+    $user = User::findOrFail($userId);
+
+    $posts = Post::where('user_id', $userId)
+        ->select('id', 'title', 'created_at', 'updated_at')->get()
+        ->map(function ($item) {
+            return [
+                'type'       => 'Post',
+                'label'      => $item->title,
+                'action'     => 'Created or Modify a Post',
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at
+            ];
+        });
+        // ->map(fn($item) => [
+        //     'type'       => 'Post',
+        //     'label'      => $item->title,
+        //     'action'     => 'Created a Post',
+        //     'created_at' => $item->created_at,
+        //     'updated_at' => $item->updated_at
+        // ]);
+
+        $menus = Menu::where('user_id', $userId)
+            ->select('id', 'title', 'created_at', 'updated_at')
+            ->get()
+            ->map(fn($item) => [
+                'type'       => 'Menu',
+                'label'      => $item->title,
+                'action'     => 'Created a Menu',
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+            ]);
+    
+        $media = Media::where('uploaded_by', $userId)  // your column name
+            ->select('id', 'img_name', 'created_at', 'updated_at')
+            ->get()
+            ->map(fn($item) => [
+                'type'       => 'Media',
+                'label'      => $item->img_name,
+                'action'     => 'Uploaded a Media',
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+            ]);
+    
+        $postTypes = PostType::where('user_id', $userId)
+            ->select('id', 'name', 'created_at', 'updated_at')
+            ->get()
+            ->map(fn($item) => [
+                'type'       => 'Post Type',
+                'label'      => $item->name,
+                'action'     => 'Created a Post Type',
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+            ]);
+        
+        // Merge & sort
+        $allActivities = collect()
+            ->merge($posts)
+            ->merge($menus)
+            ->merge($media)
+            ->merge($postTypes)
+            ->sortByDesc('created_at')
+            ->values();
+    
+        // ✅ Manual pagination
+        $perPage     = 20;
+        $currentPage = request()->get('page', 1);
+    
+        $activities = new LengthAwarePaginator(
+            $allActivities->forPage($currentPage, $perPage),  // items for current page
+            $allActivities->count(),                           // total items
+            $perPage,                                          // per page
+            $currentPage,                                      // current page
+            ['path' => request()->url()]                       // keeps URL correct
+        );
+        
         $user = User::find($id);
         $settingsAdmin = Settings::get()->first();
         $posttypes = Posttype::all();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.user.backend.show',compact('user','settingsAdmin','posttypes','posttypesD'));        
+        return view('admin.user.backend.show',compact('user','settingsAdmin','posttypes','posttypesD','activities'));        
 
     }
     public function edit($id)
@@ -126,11 +229,11 @@ class AdminController extends Controller
     }
     public function update(Request $request, $id)
     {
-        //validation
-        $this->validate($request, [
-            'name' => 'required',
+        $user = User::find($id);
+        // Validation rules
+        $rules = [
+            'name'  => 'required',
             'email' => 'required|email',
-            'password' => 'confirmed',
             'role' => '',
             'categories' => '',
             'feedbacks' => '',
@@ -141,10 +244,39 @@ class AdminController extends Controller
             'admin_pt_menu' => '',
             'create' => '',
             'update' =>'',
-            'delete'=>''
-            
+            'delete'=>'',
+            'email_verified_at'=>'',
+        ];
+        
+        
+        if ($request->password != '' || $request->password != null) {
+            $rules['password'] = [
+                'confirmed',
+                'string',
+                'min:8',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*#?&]/',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value === $request->email) {
+                        $fail('Password cannot be same as email.');
+                    }
+                },
+            ];
+        }
+        
+        $this->validate($request, $rules, [
+            'password.regex' => 'Password must contain at least one number and one special character.',
         ]);
-       
+        
+        // Base input
+        $input = $request->only([
+            'name', 'email', 'role',
+            'categories', 'feedbacks', 'media',
+            'menus', 'posts_id', 'posttypes_id',
+            'admin_pt_menu', 'create', 'update', 'delete',
+        ]);
+        
+        
                 
         $posts_id = isset($request->posts_id) && is_array($request->posts_id) ? $request->posts_id : [];
         $input['posts_id'] = implode(",",$posts_id); 
@@ -166,6 +298,15 @@ class AdminController extends Controller
         $input['create'] = $request->input('create');
         $input['update'] = $request->input('update');
         $input['delete'] = $request->input('delete');
+        
+        if($request->input('email_verified_at') == 'force_reset'){
+            $input['email_verified_at'] = null;
+        }else{
+            $usr = User::find($id);
+            $input['email_verified_at'] = $usr->email_verified_at;
+        }
+        
+        //dd($request->role);
 
         if($request->role == 111){
             $input['categories'] = null;
@@ -177,7 +318,8 @@ class AdminController extends Controller
             $input['admin_pt_menu'] = null;            
             $input['create'] = null;
             $input['update'] = null;
-            $input['delete'] = null;
+            $input['delete'] = null; 
+            $input['email_verified_at'] = null;
         }
 
         if(auth()->user()->role == 112){ 
@@ -188,17 +330,20 @@ class AdminController extends Controller
             $input['posts_id'] =  auth()->user()->posts_id;
             $input['posttypes_id'] = auth()->user()->posttypes_id;
             $input['admin_pt_menu'] = auth()->user()->admin_pt_menu;                   
-            $input['create'] = auth()->user()->create;;
-            $input['update'] = auth()->user()->update;;
-            $input['delete'] = auth()->user()->delete;;
+            $input['create'] = auth()->user()->create;
+            $input['update'] = auth()->user()->update;
+            $input['delete'] = auth()->user()->delete; 
+            $input['email_verified_at'] = auth()->user()->email_verified_at;
         }
 
         if($request->password != '' || $request->password != null){
             $input['password'] = bcrypt($request->input('password'));
+            $input['email_verified_at'] = now();
         }else{
             $usr = User::find($id);
             $input['password'] = $usr->password;
         }
+         
         
         $data = [
             'name' => $request->input('name'),
@@ -214,9 +359,11 @@ class AdminController extends Controller
             'admin_pt_menu' => $input['admin_pt_menu'],            
             'create' => $input['create'],
             'update' => $input['update'],
-            'delete' => $input['delete']
+            'delete' => $input['delete'],
+            'email_verified_at' => $input['email_verified_at']
         ];
 
+//dd($data);
 
         try{
 
@@ -244,6 +391,47 @@ class AdminController extends Controller
         return view('admin.user.backend.profile',compact('settingsAdmin','posttypes','posttypesD'));        
 
     }
+    
+    public function useractivity()
+    {
+        $users = User::all()->map(function ($user) {
+            $key  = 'user_log_' . md5($user->email);
+            $logs = Cache::get($key, []);
+
+            return [
+                'id'       => $user->id,
+                'name'     => $user->name,
+                'email'    => $user->email,
+                'role'     => $user->role,
+                'logs'     => $logs,
+                'total'    => count($logs),
+                'login'    => count(array_filter($logs, fn($l) => $l['action'] === 'login')),
+                'logout'   => count(array_filter($logs, fn($l) => $l['action'] === 'logout')),
+                'failed'   => count(array_filter($logs, fn($l) => $l['action'] === 'failed')),
+                'attempt'  => count(array_filter($logs, fn($l) => $l['action'] === 'attempt')),
+                'last_ip'  => $logs[0]['ip']   ?? '—',
+                'last_act' => $logs[0]['time']  ?? '—',
+            ];
+        });
+        
+        $settingsAdmin = Settings::get()->first();
+        $posttypes = Posttype::all();
+        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
+        return view('admin.user.backend.useractivity', compact('users','settingsAdmin','posttypes','posttypesD'));
+    }
+
+    // Single user full log
+    public function useractivityShow($userId)
+    {
+        $user = User::findOrFail($userId);
+        $key  = 'user_log_' . md5($user->email);
+        $logs = Cache::get($key, []);
+
+        $settingsAdmin = Settings::get()->first();
+        $posttypes = Posttype::all();
+        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
+        return view('admin.user.backend.activity-details', compact('user', 'logs','settingsAdmin','posttypes','posttypesD'));
+    }
 
     //----------------
     // public function search(Request $request)
@@ -253,7 +441,8 @@ class AdminController extends Controller
     //    dd($Title);
     // }
     
-    public function aboutLaraPress(){   
+    public function aboutLaraPress(){  
+        
         $filePath = storage_path('update_status.txt');
             if (File::exists($filePath)) {
                 // Open the file in write mode, which will clear its contents
@@ -423,5 +612,7 @@ class AdminController extends Controller
             return redirect()->back()->with('message', 'Permission Denied.'); 
         }
     }
+    
+    
     
 }

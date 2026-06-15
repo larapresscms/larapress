@@ -61,7 +61,9 @@ class PosttypeController extends Controller
     * @return \Illuminate\Http\Response
     */
    public function store(Request $request)
-   {
+   {   
+
+   //dd($request->all());
 
        $validated = $request->validate([
            'user_id' => '',
@@ -102,6 +104,48 @@ class PosttypeController extends Controller
        $input['in_menu_swh'] = $request->in_menu_swh == null ? '0' : '1';
        $input['in_dashboard'] = $request->in_dashboard == null ? '0' : '1';
        $input['template'] = $request->template == 0 || $request->template == 1 || $request->template == null ? 'single' : $request->template;
+
+       //excerpt features-----------------------         
+        $input['excerpt'] = [
+                'type'   => $request->excerpt_type,
+                'label'   => $request->excerpt_type_label,
+                'values' => rtrim($request->excerpt_type_value, ','),
+                'required'   => $request->excerpt_type_required ?? 0
+                
+        ];
+        $input['option_1'] = [
+                'type'   => $request->option_1_type,
+                'label'   => $request->option_1_type_label,
+                'values' => rtrim($request->option_1_type_value, ','),
+                'required'   => $request->option_1_type_required ?? 0
+                
+        ];
+        $input['option_2'] = [
+                'type'   => $request->option_2_type,
+                'label'   => $request->option_2_type_label,
+                'values' => rtrim($request->option_2_type_value, ','),
+                'required'   => $request->option_2_type_required ?? 0
+                
+        ];
+        
+        $input['option_3'] = [
+                'type'   => $request->option_3_type,
+                'label'   => $request->option_3_type_label,
+                'values' => rtrim($request->option_3_type_value, ','),
+                'required'   => $request->option_3_type_required ?? 0
+                
+        ];
+        
+        $input['option_4'] = [
+                'type'   => $request->option_4_type,
+                'label'   => $request->option_4_type_label,
+                'values' => rtrim($request->option_4_type_value, ','),
+                'required'   => $request->option_4_type_required ?? 0
+                
+        ];
+        
+        // $input['option_1'] = '1';
+       //---------------------------------------
 
        Posttype::create($input);
 
@@ -153,6 +197,18 @@ class PosttypeController extends Controller
        $users = User::get();
        $medies = Media::orderBy('id','DESC')->get();
        $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get(); 
+       
+        //user permission
+        $user = auth()->user();
+        $query = Post::query();
+        if ($user && $user->role != 111) {
+            $postIds = explode(',', $user->posts_id);
+            $query->whereIn('id', $postIds);
+        }
+        $posts = $query->where('post_type', $post_type)->orderBy('id','DESC')->paginate(15);
+        
+       // dd($posts);
+       
        return view('admin.posttypes.show',compact('posts','categories','posttypes','settingsAdmin','users','medies','posttypesD'));
    }
 
@@ -165,7 +221,6 @@ class PosttypeController extends Controller
 
         $posts = DB::table('posts')
             ->where('post_type', $post_type)
-            ->where('status', 1)
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $columns = [
@@ -250,8 +305,40 @@ class PosttypeController extends Controller
         }
     }
 
-       $posttypes->update($input);
+        $input['excerpt'] = [
+                'type'   => $request->excerpt_type,
+                'label'   => $request->excerpt_type_label,
+                'values' => rtrim($request->excerpt_type_value, ','),
+                'required'   => $request->excerpt_type_required ?? 0                
+        ];
+        $input['option_1'] = [
+                'type'   => $request->option_1_type,
+                'label'   => $request->option_1_type_label,
+                'values' => rtrim($request->option_1_type_value, ','),
+                'required'   => $request->option_1_type_required ?? 0                
+        ];
+        $input['option_2'] = [
+                'type'   => $request->option_2_type,
+                'label'   => $request->option_2_type_label,
+                'values' => rtrim($request->option_2_type_value, ','),
+                'required'   => $request->option_2_type_required ?? 0                
+        ];
+        
+        $input['option_3'] = [
+                'type'   => $request->option_3_type,
+                'label'   => $request->option_3_type_label,
+                'values' => rtrim($request->option_3_type_value, ','),
+                'required'   => $request->option_3_type_required ?? 0                
+        ];
+        
+        $input['option_4'] = [
+                'type'   => $request->option_4_type,
+                'label'   => $request->option_4_type_label,
+                'values' => rtrim($request->option_4_type_value, ','),
+                'required'   => $request->option_4_type_required ?? 0                
+        ];
 
+       $posttypes->update($input);
        session()->flash('message','Data update successfully');
        return redirect()->back();
    }
@@ -299,8 +386,9 @@ class PosttypeController extends Controller
 
     }
     public function storeposttype(Request $request)
-    { 
-        
+    {   
+        //dd($request->all());
+
         $validated = $request->validate([            
             'user_id' => '',
             'position' => 'nullable',
@@ -350,12 +438,29 @@ class PosttypeController extends Controller
             $slug = $this->createSlugCat($request->categori_name);
             $data = [
                 'name' =>$request->categori_name,
-                'slug' => $slug ,
+                'slug' => $slug,
                 'status' => 1
             ];
-            $this_cat = Category::create($data);
-            $validated['category_id'] = $validated['category_id'].','.$this_cat->id;
+            $this_cat = Category::create($data);    
+            
+            if($validated['category_id']){
+                $validated['category_id'] = $validated['category_id'].','.$this_cat->id;
+            }else{
+                $validated['category_id'] = $this_cat->id;
+            }             
+            
         }
+
+        //excerpt
+        $validated['excerpt'] = is_array($request->excerpt) ? implode(',', $request->excerpt) : $request->excerpt;   
+        //option_1
+        $validated['option_1'] = is_array($request->option_1) ? implode(',', $request->option_1) : $request->option_1;  
+        //option_2
+        $validated['option_2'] = is_array($request->option_2) ? implode(',', $request->option_2) : $request->option_2;          
+        //option_3
+        $validated['option_3'] = is_array($request->option_3) ? implode(',', $request->option_3) : $request->option_3;           
+        //option_4
+        $validated['option_4'] = is_array($request->option_4) ? implode(',', $request->option_4) : $request->option_4;          
 
         //$validated['gallery_img'] = implode(",",$request->gallery_img);      
         $this_post = Post::create($validated);
@@ -433,6 +538,14 @@ class PosttypeController extends Controller
     {    
         $posts = Post::find($id);
         $postsAll = $request->all();
+        
+        // slug update
+        if($request->slug){
+            $postsAll['slug'] = $this->createSlugPost($request->slug, $id);
+        }else{
+            $postsAll['slug'] = $this->createSlugPost($request->title, $id);
+        }
+        
         //gallery validation
         $gallery_img = isset($request->gallery_img) && is_array($request->gallery_img) ? $request->gallery_img : [];
         $postsAll['gallery_img'] = implode(",",$gallery_img); 
@@ -450,7 +563,12 @@ class PosttypeController extends Controller
                 'status' => 1
             ];
             $this_cat = Category::create($data);
-            $postsAll['category_id'] = $postsAll['category_id'].','.$this_cat->id;
+            
+            if($postsAll['category_id']){
+                $postsAll['category_id'] = $postsAll['category_id'].','.$this_cat->id;
+            }else{
+                $postsAll['category_id'] = $this_cat->id;
+            }            
         }
         //check Editor
         $user = auth()->user();
@@ -458,6 +576,16 @@ class PosttypeController extends Controller
             session()->flash('messageDestroy', 'You are not allowed to update.');            
             return redirect('/dashboard/posts/posttype/'.$id.'/edit/'.$request->post_type); 
         } 
+
+        $postsAll['excerpt'] = is_array($request->excerpt) ? implode(',', $request->excerpt) : $request->excerpt; 
+        //option_1
+        $postsAll['option_1'] = is_array($request->option_1) ? implode(',', $request->option_1) : $request->option_1;  
+        //option_2
+        $postsAll['option_2'] = is_array($request->option_2) ? implode(',', $request->option_2) : $request->option_2;          
+        //option_3
+        $postsAll['option_3'] = is_array($request->option_3) ? implode(',', $request->option_3) : $request->option_3;           
+        //option_4
+        $postsAll['option_4'] = is_array($request->option_4) ? implode(',', $request->option_4) : $request->option_4;   
 
         $posts->update($postsAll);
         //session()->flash('message',$request->post_type.' update successfully');  
@@ -536,7 +664,28 @@ class PosttypeController extends Controller
                 return back()->with('messageDestroy', 'Selected '.$old_type.' unpublished.');
             case 'change_type':
                 DB::table('posts')->whereIn('id', $ids)->update(['post_type' => $new_type,'user_id'=> $user->id]);
-                return back()->with('message', '<a href="'.url('/dashboard/posttypes',$new_type).'">Selected '.$old_type.' move to '.$new_type.' <i class="fa fa-arrow-right" aria-hidden="true"></i></a>');            
+                return back()->with('message', '<a href="'.url('/dashboard/posttypes',$new_type).'">Selected '.$old_type.' move to '.$new_type.' <i class="fa fa-arrow-right" aria-hidden="true"></i></a>');     
+            case 'duplicate':
+                
+                $posts = DB::table('posts')->whereIn('id', $ids)->get();
+                foreach ($posts as $post) {
+                    $newPost = (array) $post;
+                    // Remove primary key
+                    unset($newPost['id']);
+                    // Modify fields
+                    $newPost['title'] = 'Copy of ' . $post->title;
+                    $newPost['slug']  = $post->slug . '-copy-' . time() . rand(10,99);
+                    $newPost['status'] = 0; // draft
+                    $newPost['user_id'] = $user->id;
+                    $newPost['created_at'] = now();
+                    $newPost['updated_at'] = now();
+                    DB::table('posts')->insert($newPost);
+                }
+                return back()->with(
+                    'message',
+                    'Selected '.$old_type.' duplicated successfully.'
+                );
+
             default:
                 return back()->with('messageDestroy', 'Invalid action.');
         }
@@ -551,5 +700,31 @@ class PosttypeController extends Controller
         $newPost->save();
         return redirect()->back()->with('success', 'Post duplicated successfully!');
     }
-   
+    public function duplicatePosttypeByPost($pt_slug,$p_slug){
+        $pt_slug = strtolower($pt_slug);        
+        $posttypeSlug = Posttype::where('slug', $pt_slug)->first();  
+        if($posttypeSlug){
+
+            $newslug = $p_slug.'_'.$posttypeSlug->slug;
+
+            $NewposttypeSlug = Posttype::where('slug', $newslug)->first();  
+            if($NewposttypeSlug){
+                return redirect('/dashboard/posttypes/'.$newslug);     
+            }else{
+                // Create a new post instance with the original post's attributes
+                $newPost = $posttypeSlug->replicate(); // replicate() copies all attributes except the primary key
+                $newPost->name = $p_slug.' '.$posttypeSlug->name; // Optional: change the title
+                $newPost->slug = $p_slug.'_'.$posttypeSlug->slug; // Optional: change the title
+                $newPost->save();
+                session()->flash('message', 'successfully created '.$newPost->slug);
+                return redirect('/dashboard/posttypes/'.$newPost->slug);  
+            }                   
+            
+        }else{
+            return redirect()->back()->with('messageDestroy', 'The `'.$pt_slug.'` post type has not been created yet. Please create it before proceeding. <a href="'.url('/dashboard/posttypes/create').'" target="_blank">[Create Post Type]</a> · <a href="https://larapress.org/en/contact" target="_blank">[Need Help?]</a>');
+        }; 
+        
+        return redirect()->back()->with('messageDestroy', 'Invalid!, Please contact admin. <a href="https://larapress.org/en/contact" target="_blank">[Need Help?]</a>');
+    }
+            // ekhane shesh 
 }

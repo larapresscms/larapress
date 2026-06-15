@@ -1,7 +1,9 @@
 @extends('admin.layouts.master')
 @section('content')
 <!-- Page Heading -->
+@if(optional(auth()->user())->role == 111)
 <h5 class="h5 mb-2 text-gray-800">Add New Post type <a href="{{ url('/dashboard/posttypes/create') }}" class="text-white"><button class="btn btn-primary btn-user"><i class="fa fa-plus"></i></button></a></h5>
+@endif
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -124,14 +126,14 @@
 											@endif
 										@endforeach
 										</td>
-										<td>
+										<td> 
 										@foreach($users as $user)
-											@if($user->id == $posttype->user_id)
-											{{$user->name}}
-											@endif
-										@endforeach
-										</td>
-										<td>{{ $posttype->updated_at }}</td>
+        							       @if($user->id == $posttype->user_id)
+        							       {{$user->name}}
+        							       @endif
+        							    @endforeach
+        							    <br>{{ \Carbon\Carbon::parse($posttype->updated_at)->timezone(session('user_timezone', 'UTC'))->format('h:ia. d M, Y') }}
+										</td> 
 										<td>{{ $posttype->status == 0 ? 'Unpublish' : 'Publish' }}</td>
 
 										<td> 

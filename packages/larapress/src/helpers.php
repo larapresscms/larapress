@@ -28,13 +28,38 @@ if (!function_exists('insertDummyData')) {
             'slug' => $slug,
             'status' => 1, 
             'title'=> 'Title',
-            'content'=> 'Content', 
-            'excerpt'=> 'Excerpt',
-            'thumbnail_path'=> 'Thumbnail', 
-            'option_1'=> 'Optional Field',
-            'option_2'=> 'Optional Field',
-            'option_3'=> 'Optional Field',
-            'option_4'=> 'Optional Field',
+            'content'=> 'Content',             
+            'excerpt'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+            ],
+            'thumbnail_path'=> 'Thumbnail',                          
+            'option_1'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+            ],             
+            'option_2'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+            ],             
+            'option_3'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+            ],             
+            'option_4'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+            ],            
             'more_option_1'=> 'Optional Field',
             'more_option_2'=> 'Optional Field',
             'gallery_img'=> 'Gallery',
@@ -42,6 +67,7 @@ if (!function_exists('insertDummyData')) {
             'category_id' => 'Categories',
             'in_menu_swh' => 1,
             'in_dashboard' => 0,
+            'template'=>'single'
 
             ]);      
 
@@ -98,12 +124,15 @@ if (!function_exists('getPostsByType')) {
      * @param string $slug
      * @return string
      */
-    function getPostsByType($post_type)
+    function getPostsByType($post_type, $paginate = 0)
     {
-        $posttype = Posttype::where('slug',$post_type)->first();
+        $posttype = Posttype::where('slug',$post_type)->first();        
         // Ensure the Post model is imported or use the fully qualified class name
-        //$post = Post::where('post_type', $post_type)->where('status', 1)->get();
-        $post = Post::orderBy('position','ASC')->where('status','1')->where('post_type',$post_type)->paginate($posttype->paginate);
+        if($paginate == 'all'){
+            $post = Post::orderBy('position','ASC')->where('status','1')->where('post_type',$post_type)->get();
+        }else{
+            $post = Post::orderBy('position','ASC')->where('status','1')->where('post_type',$post_type)->paginate($posttype->paginate);
+        }        
         return $post ? $post : '';
     }
 }
@@ -132,8 +161,7 @@ if (!function_exists('getMenus')) {
      */
     function getMenus()
     {
-        // Ensure the Post model is imported or use the fully qualified class name
-        $menu = Menu::where('status', 1)->get();
+        $menu = Menu::orderBy('position','ASC')->orderBy('created_at','ASC')->where('status', 1)->get();
         return $menu ? $menu : '';
     }
 }

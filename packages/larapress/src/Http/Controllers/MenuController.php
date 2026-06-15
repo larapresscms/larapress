@@ -9,6 +9,7 @@ use LaraPressCMS\LaraPress\Models\Menu;
 use LaraPressCMS\LaraPress\Models\Post;
 use LaraPressCMS\LaraPress\Models\Page;
 use LaraPressCMS\LaraPress\Models\User;
+use LaraPressCMS\LaraPress\Models\Media; 
 use DB;
 
 class MenuController extends Controller
@@ -50,7 +51,9 @@ class MenuController extends Controller
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
         $categories = Category::all();
         $menus = Menu::orderBy('position','ASC')->orderBy('created_at','ASC')->get();
-        return view('admin.menu.create',compact('settingsAdmin','posttypes','posttypesD','categories','menus','posts','users'));        
+        //insert media library
+        $medies = Media::orderBy('id','DESC')->limit(12)->get();
+        return view('admin.menu.create',compact('settingsAdmin','posttypes','posttypesD','categories','menus','posts','users','medies'));        
 
     }
 
@@ -64,14 +67,15 @@ class MenuController extends Controller
     {
 
         $validated = $request->validate([
-            'user_id' => '', 
-            'category_id' => '',
-            'position' => '',
-            'sub_menu_id' => '',
-            'title' => 'required',    
-            'status' => '',
-            'url' => '',
-            'target' => ''
+            'user_id'       => '', 
+            'category_id'   => '',
+            'position'      => '',
+            'sub_menu_id'   => '',
+            'title'         => 'required',    
+            'status'        => '',
+            'url'           => '',
+            'target'        => '',
+            'icon'          => ''
         ]); 
 
         //check Editor
@@ -122,7 +126,9 @@ class MenuController extends Controller
         $settingsAdmin = Settings::get()->first();
         $posttypes = Posttype::orderBy('id','DESC')->get();
         $posttypesD = DB::table('posttypes')->select('menu_icon')->distinct()->get();
-        return view('admin.menu.edit',compact('categories','settingsAdmin','posttypes','posttypesD','menu','menus','posts','users'));
+        //insert media library
+        $medies = Media::orderBy('id','DESC')->limit(12)->get();
+        return view('admin.menu.edit',compact('categories','settingsAdmin','posttypes','posttypesD','menu','menus','posts','users','medies'));
     }
 
     /**

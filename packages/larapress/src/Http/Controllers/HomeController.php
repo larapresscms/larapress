@@ -459,8 +459,12 @@ class HomeController extends Controller
         //     'g-recaptcha-response' => ['required', new Recaptcha()]
         // ]);   
         
+        
+        $posttitle = Post::where('slug', $request->skip_part)->first();
+        
         // Exclude non-form fields
-        $inputs = $request->except('_token', 'g-recaptcha-response');     
+        $inputs = $request->except('_token', 'g-recaptcha-response');  
+        $inputs['Dealer_Point_Name'] = $posttitle->title;
 
         // Save in DB
         $dataM = [

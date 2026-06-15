@@ -27,6 +27,10 @@
                             @endphp
                             <a class="btn btn-info bbtn" ><i class="fas fa-file"></i></a>
                             @php
+                            }elseif ($file_extension == "mp4") {
+                            @endphp
+                            <a class="btn btn-info bbtn"><i class="fas fa-video"></i></a>
+                            @php
                             } else {
                             @endphp
                                 <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValue('{{ asset('public/uploads/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
@@ -98,7 +102,11 @@
                             @endphp
                             <a class="btn btn-info bbtn" ><i class="fas fa-file"></i></a>
                             @php
-                            } else {
+                            }elseif ($file_extension == "mp4") {
+                              @endphp
+                              <a class="btn btn-info bbtn"><i class="fas fa-video"></i></a>
+                              @php
+                            }else {
                             @endphp
                                 <img src="{{ asset('public/uploads/') }}/{{$media->img_name }}" class="img-thumbnail" onclick="changeValueForGallery('{{ asset('public/uploads/') }}/{{$media->img_name }}', '{{$media->img_name }}')"/>
                             @php 

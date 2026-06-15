@@ -38,4 +38,11 @@ class Posttype extends Model
        'template'
 
     ];
+    protected $casts = [
+        'excerpt'   => 'array',
+        'option_1'  => 'array',
+        'option_2'  => 'array',
+        'option_3'  => 'array',
+        'option_4'  => 'array',
+    ];
 }

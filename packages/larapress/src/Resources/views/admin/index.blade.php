@@ -10,7 +10,19 @@
     <div class="me-4 mb-3 mb-sm-0">
         <h4 class="mb-0">Hi <span class="text-info">@auth() {{ optional(auth()->user())->name}}, @endauth</span> Welcome back.</h4>
         <div class="small">
-            <span>Last Login: {{ $lastLogin }}</span> 
+            <span>Last Login: 
+            @php
+                $session = $sessions[auth()->id()] ?? null;
+                $lastLogin = $lastLogins[auth()->id()]  ?? null;
+                $sessionDate = null; 
+            @endphp
+            @if($session)
+                @php $sessionDate = \Carbon\Carbon::createFromTimestamp($session->last_activity)->format('d M Y, h:i A'); @endphp
+            @endif
+            {{ $lastLogin['at'] ?? $sessionDate ?? '-' }}
+
+            
+            </span> 
         </div>
     </div>
 </div>
@@ -161,7 +173,7 @@
                                                 @php $cont += 1 @endphp                                     
                                             @endif
                                         @endforeach
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$cont}}</div>
+                                        <!--<div class="h5 mb-0 font-weight-bold text-gray-800">{{$cont}}</div>-->
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-thumbtack fa-2x text-gray-300"></i>

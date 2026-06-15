@@ -28,8 +28,13 @@ class FileEditorController extends Controller
         //     }
         //     return $next($request);
         // });
-
-        $this->baseDir = realpath(resource_path('views'));
+        
+        // $this->baseDir = realpath('public');
+        // $this->baseDir = realpath(resource_path('views'));
+        $this->baseDir = [
+            realpath('public'),
+            realpath(resource_path('views')),
+        ];
         $this->backupDir = storage_path('app/cms_backups');
         $this->allowed = ['php','html','htm','css','js','json','txt','md'];
 
@@ -98,12 +103,47 @@ class FileEditorController extends Controller
         return $tree;
     }
 
-    public function tree(){ return response()->json($this->getTree($this->baseDir)); }
+    // public function tree(){ return response()->json($this->getTree($this->baseDir)); }
+        public function tree() {
+            $fullTree = [];
+            foreach ($this->baseDir as $dir) {
+                if (!is_dir($dir)) continue;
+                $fullTree[] = [
+                    'name' => basename($dir),
+                    'path' => $dir,
+                    'is_dir' => true,
+                    'children' => $this->getTree($dir),
+                ];
+            }
+            return response()->json($fullTree);
+        }
 
     public function readFile(Request $request){
-        $file=$request->query('file'); $path=$this->resolvePath($file);
-        if(!$path||!is_file($path)) return response()->json(['error'=>'Invalid file'],400);
-        return response()->json(['content'=>file_get_contents($path),'path'=>$path]);
+        // $file=$request->query('file'); $path=$this->resolvePath($file);
+        // if(!$path||!is_file($path)) return response()->json(['error'=>'Invalid file'],400);
+        // return response()->json(['content'=>file_get_contents($path),'path'=>$path]);
+
+        $file = $request->query('file'); 
+        $path = $this->resolvePath($file);
+
+        // Check file exists
+        if (!$path || !is_file($path)) {
+            return response()->json(['error' => 'Invalid file'], 400);
+        }
+
+        // Check extension
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        if (!in_array(strtolower($ext), $this->allowed)) {
+            return response()->json(['error' => 'File type not supported for editing'], 400);
+        }
+
+        // Read file content safely
+        $content = file_get_contents($path);
+
+        return response()->json([
+            'content' => $content,
+            'path' => $path
+        ]);
     }
 
     public function saveFile(Request $request){
@@ -225,12 +265,49 @@ class FileEditorController extends Controller
         return new StreamedResponse(function() use($path){ readfile($path); },200,['Content-Type'=>mime_content_type($path),'Content-Disposition'=>'attachment; filename="'.basename($path).'"']);
     }
 
-    public function breadcrumbs(Request $request){
-        $path=$request->query('path',$this->baseDir); $full=$this->resolvePath($path);
-        if(!$full) return response()->json(['error'=>'Invalid path'],400);
-        $rel=ltrim(str_replace($this->baseDir,'',$full),DIRECTORY_SEPARATOR);
-        $parts=explode(DIRECTORY_SEPARATOR,$rel); $breadcrumbs=[]; $current=$this->baseDir;
-        foreach($parts as $part){ if($part==='') continue; $current.='/'.$part; $breadcrumbs[]=['name'=>$part,'path'=>$current]; }
+    // public function breadcrumbs(Request $request){
+    //     $path=$request->query('path',$this->baseDir); $full=$this->resolvePath($path);
+    //     if(!$full) return response()->json(['error'=>'Invalid path'],400);
+    //     $rel=ltrim(str_replace($this->baseDir,'',$full),DIRECTORY_SEPARATOR);
+    //     $parts=explode(DIRECTORY_SEPARATOR,$rel); $breadcrumbs=[]; $current=$this->baseDir;
+    //     foreach($parts as $part){ if($part==='') continue; $current.='/'.$part; $breadcrumbs[]=['name'=>$part,'path'=>$current]; }
+    //     return response()->json($breadcrumbs);
+    // }
+
+    public function breadcrumbs(Request $request)
+    {
+        $path = $request->get('path');
+
+        if (!$path || !file_exists($path)) {
+            return response()->json(['error' => 'File or directory does not exist'], 404);
+        }
+
+        // Security: path must start with one of allowed base dirs
+        $allowed = $this->baseDir;
+        $realPath = realpath($path);
+        $ok = false;
+        foreach ($allowed as $base) {
+            if (str_starts_with($realPath, realpath($base))) {
+                $ok = true;
+                break;
+            }
+        }
+        if (!$ok) return response()->json(['error'=>'Access denied'], 403);
+
+        // Split path into parts for breadcrumbs
+        $parts = explode(DIRECTORY_SEPARATOR, $realPath);
+        $breadcrumbs = [];
+
+        $accum = '';
+        foreach ($parts as $part) {
+            if ($part === '') continue;
+            $accum .= DIRECTORY_SEPARATOR . $part;
+            $breadcrumbs[] = [
+                'name' => $part,
+                'path' => $accum,
+            ];
+        }
+
         return response()->json($breadcrumbs);
     }
 

@@ -96,6 +96,7 @@ Route::get('/dashboard/posttypes/{id}/edit', [PosttypeController::class, 'edit']
 Route::patch('/dashboard/posttypes/{id}', [PosttypeController::class, 'update']);
 Route::delete('/dashboard/posttypes/{id}', [PosttypeController::class, 'destroy']);
 Route::get('/dashboard/posttypes/{id}/copy', [PosttypeController::class, 'duplicatePosttype']);
+Route::get('/dashboard/posttypes/{pt_slug}/copy/{p_slug}', [PosttypeController::class, 'duplicatePosttypeByPost']);
 // under posttype
 Route::get('/dashboard/posttypes/create/{post_type}', [PosttypeController::class, 'createppost']);
 Route::get('/dashboard/posts/posttype/{id}/edit/{post_type}', [PosttypeController::class, 'editppost']);
@@ -155,3 +156,10 @@ Route::post('/set-timezone', function (\Illuminate\Http\Request $request) {
     return response()->json(['success' => true]);
 });
 
+// Route::get('/verify-otp', function () {
+//     return view('admin.user.front.verification');
+// });
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+
+Route::get('/dashboard/user-activity',        [AdminController::class, 'useractivity'])->name('admin.user.backend.useractivity');
+Route::get('/dashboard/user-activity/{id}',   [AdminController::class, 'useractivityShow'])->name('admin.user.backend.activity-details');

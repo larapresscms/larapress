@@ -20,7 +20,7 @@ class CreateFeedbacksTable extends Migration
                 $table->string('fsubject')->nullable(); 
                 $table->string('femail')->nullable(); 
                 $table->string('fphone')->nullable(); 
-                $table->string('fmessage')->nullable(); 
+                $table->longtext('fmessage')->nullable(); 
                 $table->string('fattachemnt')->nullable(); 
                 $table->timestamps();
             });

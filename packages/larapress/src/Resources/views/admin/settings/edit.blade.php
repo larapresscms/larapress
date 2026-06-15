@@ -5,133 +5,177 @@
  <!-- Nested Row within Card Body -->
  <div class="row">
         <div class="col-lg-12">
-            <div class="p-5">
-            <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Edit a Home Page!</h1>
-            </div>
+            <div class="p-5">            
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 flex-row align-items-center justify-content-between text-center">
+                    <h1 class="h4 m-0 font-weight-bold text-primary text-gray-900 text-center">Edit Settings!</h1>                  
+                </div>
+            </div> 
+
             <form class="user" action="{{ url('/dashboard/settings/') }}/{{ $settings->id }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             @method('PATCH') 
                 <div class="form-group row">
                     <div class="col-sm-8 mb-3 mb-sm-0">
-                        <div class="form-group">
-                            <label for="floatingSiteTitle" class="form-label">Site Title</label>
-                            <input type="text" name='site_title' value="{{ $settings->site_title}}" class="form-control form-control-user" id="floatingSiteTitle"
-                            placeholder="Site Title">
-                        </div>
-                        <div class="form-group">
-                            <label for="floatingSubTitle" class="form-label">Sub Title</label>
-                            <input type="text" name='sub_title' value="{{ $settings->sub_title}}" class="form-control form-control-user" id="floatingSubTitle"
-                            placeholder="Sub Title">
-                        </div>
-                        <div class="form-group">
-                            <label for="floatingInputDashboard" class="form-label">Dashboard Color</label>
-                            <input type="color" name='dashboard_color' value="{{ $settings->dashboard_color}}" class="form-control form-control-user panel_color" id="floatingInputDashboard"
-                                placeholder="Dashboard Color"> 
-                        </div>
-                        
-                        <div class="form-group">
-                        <label for="floatingText" class="form-label">Text Color</label>
-                            <input type="color" name='text_color' value="{{ $settings->text_color}}" class="form-control form-control-user panel_color" id="floatingText"
-                                    placeholder="Text Color">
-                        </div>
-                        <div class="form-group">
-                        <label for="floatingInputHover" class="form-label">Text Hover Color</label>
-                            <input type="color" name='text_hover' value="{{ $settings->text_hover}}" class="form-control form-control-user panel_color" id="floatingInputHover"
-                                    placeholder="Text Hover Color">
-                        </div>
-                        <!-- //create theme name as folder name  -->
-                        <div class="form-group">
-                            <label for="floatingInput" class="form-label">Theme folder Name</label>
-                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="theme_url">
-                                <option value="default" selected>No theme set</option> 
-                                <?php
-                                    $foler_names = [];
-                                    $i = 0;                                    
 
-                                    // Define the paths
-                                    $mainResourceDir = resource_path('views/front/themes');
-                                    $packageDir = base_path('packages/larapress/src/resources/views/front/themes');
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Edit</h6>                  
+                            </div>
+                            <div class="card-body">
 
-                                    // Initialize an empty array to hold the merged directory list
-                                    $mergedDirList = [];
-
-                                    // Scan the main resource directory
-                                    if (is_dir($mainResourceDir)) {
-                                        $dirList = scandir($mainResourceDir);
-                                        foreach ($dirList as $value) {
-                                            if (strpos($value, '.') === false) {
-                                                $mergedDirList[$value] = $value;
-                                            }
-                                        }
-                                    }
-
-                                    // Scan the package directory
-                                    if (is_dir($packageDir)) {
-                                        $dirList = scandir($packageDir);
-                                        foreach ($dirList as $value) {
-                                            if (strpos($value, '.') === false) {
-                                                $mergedDirList[$value] = $value;
-                                            }
-                                        }
-                                    }
-
-                                    // Iterate through the merged directory list and output options
-                                    foreach ($mergedDirList as $value) {
-                                        ?>
-                                        <option value="{{ $value }}" {{ $value == $settingsAdmin->theme_url ? 'selected' : '' }}>{{ $value }}</option>
-                                        <?php
-                                    } 
-                                    ?>  
-                            </select>                            
-                        </div>  
-
-                        <div class="form-group">
-                            <label for="floatingInput" class="form-label">Home Page Name</label>
-                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="home_url">
-                                <option value="0" selected>No Home page set</option>
-                                @foreach($posts as $post)
-                                <option value="{{ $post->id }}" {{ $post->id == $settingsAdmin->home_url ? 'selected' : '' }}>{{ $post->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editor" class="form-label">Editor Choose</label>
-                            <div class="form-group">
-                                <div class="form-check form-check-inline">
-                                    <label class="form-check-label form-label mr-1" for="editor1">Classic </label>
-                                    <input class="form-check-input" type="radio" name="editor" id="editor1" value="classic" {{ $settings->editor == "classic" ? 'checked' : ''}}>                                    
+                                <div class="form-group">
+                                    <label for="floatingSiteTitle" class="form-label">Site Title</label>
+                                    <input type="text" name='site_title' value="{{ $settings->site_title}}" class="form-control form-control-user" id="floatingSiteTitle"
+                                    placeholder="Site Title">
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <label class="form-check-label form-label mr-1" for="editor2">Visual </label>
-                                    <input class="form-check-input" type="radio" name="editor" id="editor2" value="visual" {{ $settings->editor == "visual" ? 'checked' : ''}}>                                    
-                                </div>
-                            </div>                            
-                        </div>
 
+                                <div class="form-group">
+                                    <label for="floatingSubTitle" class="form-label">Sub Title</label>
+                                    <input type="text" name='sub_title' value="{{ $settings->sub_title}}" class="form-control form-control-user" id="floatingSubTitle"
+                                    placeholder="Sub Title">
+                                </div>
+
+                                <div class="row mt-3 mb-3">
+                                    <div class="col">
+                                        <div class="form-group lp_settings text-center">
+                                            <label for="floatingInputDashboard" class="form-label d-block">Dashboard Color</label>
+                                            <input type="color" name='dashboard_color' value="{{ $settings->dashboard_color}}" class="form-control form-control-user panel_color mx-auto" id="floatingInputDashboard"
+                                                placeholder="Dashboard Color"> 
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group lp_settings text-center">
+                                            <label for="floatingText" class="form-label">Text Color</label>
+                                            <input type="color" name='text_color' value="{{ $settings->text_color}}" class="form-control form-control-user panel_color mx-auto" id="floatingText"
+                                                    placeholder="Text Color">
+                                        </div>                                
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group lp_settings text-center">
+                                            <label for="floatingInputHover" class="form-label">Text Hover Color</label>
+                                            <input type="color" name='text_hover' value="{{ $settings->text_hover}}" class="form-control form-control-user panel_color mx-auto" id="floatingInputHover"
+                                                    placeholder="Text Hover Color">
+                                        </div>
+                                    </div>
+                                </div>                        
+                                
+                                <!-- //create theme name as folder name  -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="floatingInput" class="form-label">Theme folder Name</label>
+                                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="theme_url">
+                                                <option value="default" selected>No theme set</option> 
+                                                <?php
+                                                    $foler_names = [];
+                                                    $i = 0;                                    
+
+                                                    // Define the paths
+                                                    $mainResourceDir = resource_path('views/front/themes');
+                                                    $packageDir = base_path('packages/larapress/src/resources/views/front/themes');
+
+                                                    // Initialize an empty array to hold the merged directory list
+                                                    $mergedDirList = [];
+
+                                                    // Scan the main resource directory
+                                                    if (is_dir($mainResourceDir)) {
+                                                        $dirList = scandir($mainResourceDir);
+                                                        foreach ($dirList as $value) {
+                                                            if (strpos($value, '.') === false) {
+                                                                $mergedDirList[$value] = $value;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // Scan the package directory
+                                                    if (is_dir($packageDir)) {
+                                                        $dirList = scandir($packageDir);
+                                                        foreach ($dirList as $value) {
+                                                            if (strpos($value, '.') === false) {
+                                                                $mergedDirList[$value] = $value;
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // Iterate through the merged directory list and output options
+                                                    foreach ($mergedDirList as $value) {
+                                                        ?>
+                                                        <option value="{{ $value }}" {{ $value == $settingsAdmin->theme_url ? 'selected' : '' }}>{{ $value }}</option>
+                                                        <?php
+                                                    } 
+                                                    ?>  
+                                            </select>                            
+                                        </div> 
+                                    </div>                             
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="floatingInput" class="form-label">Home Page Name</label>
+                                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="home_url">
+                                                <option value="0" selected>No Home page set</option>
+                                                @foreach($posts as $post)
+                                                <option value="{{ $post->id }}" {{ $post->id == $settingsAdmin->home_url ? 'selected' : '' }}>{{ $post->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>  
+                                </div>  
+                                <div class="form-group">
+                                    <label for="editor" class="form-label">Editor Choose</label>
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label form-label mr-1" for="editor1">Classic </label>
+                                            <input class="form-check-input" type="radio" name="editor" id="editor1" value="classic" {{ $settings->editor == "classic" ? 'checked' : ''}}>                                    
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label form-label mr-1" for="editor2">Visual </label>
+                                            <input class="form-check-input" type="radio" name="editor" id="editor2" value="visual" {{ $settings->editor == "visual" ? 'checked' : ''}}>                                    
+                                        </div>
+                                    </div>                            
+                                </div>
+
+                            </div>
+                        </div>
 
                     </div>
-                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                        <div class="form-group">
-                            <label class="form-check-label form-label mr-1" for="">Website Logo</label><br>
-                            <input type="hidden" id="type" name='site_logo' value="{{ $settings->site_logo }}" placeholder="Image Url" class="form-control" >                              
-                            <img id="myImg" src="{{ $settings->site_logo == null ? asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') : asset('public/uploads/').'/'.$settings->site_logo }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
-                            <button type="button" onclick="removeValue('{{url('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>
+                    <div class="col-sm-4 mb-3 mb-sm-0 text-center">                        
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Website Logo</h6>       
+                                <button type="button" onclick="removeValue('{{url('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}','myImg')" class="btn btn-secondary btn-sm ">Remove Images</button>           
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">                                    
+                                    <input type="hidden" id="myImg_type" name='site_logo' value="{{ $settings->site_logo }}" placeholder="Image Url" class="form-control" >                              
+                                    <img id="myImg" src="{{ $settings->site_logo == null ? asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') : asset('public/uploads/').'/'.$settings->site_logo }}" width="80%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info" 
+                                    data-preview="myImg">                                    
+                                </div> 
+                            </div> 
                         </div> 
+
                         <!-- fevicon  -->
-                        <div class="form-group">
-                            <label for="floatingfevicon" class="form-label">Favicon Image Link:</label>
-                            <input type="text" name='fav_icon' value="{{ $settings->fav_icon}}" class="form-control form-control-user" id="floatingfevicon"
-                            placeholder="Example: 12423223.jpg">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Website FavIcon</h6>   
+                                <button type="button" onclick="removeValue('{{url('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}','fabicon')" class="btn btn-secondary btn-sm">Remove Images</button>               
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">   
+                                    <div class="form-group">                                                              
+                                        <input type="hidden" id="fabicon_type" name='fav_icon' value="{{ $settings->fav_icon }}" placeholder="Image Url" class="form-control" >                              
+                                        <img id="fabicon" src="{{ $settings->fav_icon == null ? asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') : asset('public/uploads/').'/'.$settings->fav_icon }}" width="20%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info" 
+                                        data-preview="fabicon">
+                                        
+                                    </div>
+                                    <input type="hidden" name="header" value="{{ $settings->header}}" id="lp-orderInput">
+                                    <input type="hidden" name="footer" value="{{ $settings->footer}}" id="lp-orderInput-footer">
+                                </div>   
+                            </div>   
                         </div>
 
-                        <input type="hidden" name="header" value="{{ $settings->header}}" id="lp-orderInput">
-
-                        <input type="hidden" name="footer" value="{{ $settings->footer}}" id="lp-orderInput-footer">
-
-                    </div>        
-
-                
+                    </div>                 
 
                 <div class="col-xl-6 col-lg-6">
                     <div class="card shadow mb-4">
@@ -225,10 +269,12 @@
                                         foreach ($mergedDirList as $dir => $files) {                                    
                                             // Find the screenshot (png) file for background image
                                             $screenshot = findScreenshot($files);
-                                            $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                            $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : ''; // Default image if no screenshot is found
                                             ?>
                                             <div class="lp-item card" data-id="{{ $dir }}">
-                                                <img src="<?php echo $backgroundImage; ?>">
+                                                @if($backgroundImage)
+                                                    <img src="<?php echo $backgroundImage; ?>">
+                                                @endif
                                                 <div class="card-body">                                        
                                                 <?php
                                                 foreach ($files as $file) {
@@ -264,10 +310,10 @@
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Header Design</h6>                
                             </div>
-                            <div class="card-body scroll-design">
+                            <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">                            
-                                        <div id="lp-right-list" class="lp-drop-container">
+                                        <div id="lp-right-list" class="lp-drop-container1">
 
                                             @php $tempate = explode(",",$settings->header); @endphp
                                             @foreach($tempate as $tempateName)
@@ -280,11 +326,13 @@
 
                                                     // Find the screenshot (png) file for background image
                                                     $screenshot = findScreenshot($files);
-                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : ''; // Default image if no screenshot is found
                                                     ?>
                                                     <div class="lp-item card" data-id="{{ $dir }}">
                                                         
-                                                        <img src="<?php echo $backgroundImage; ?>">
+                                                        @if($backgroundImage)
+                                                            <img src="<?php echo $backgroundImage; ?>">
+                                                        @endif
                                                         <div class="card-body">                                        
                                                         <?php
                                                         foreach ($files as $file) {
@@ -321,10 +369,10 @@
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Footer Design</h6>                
                             </div>
-                            <div class="card-body scroll-design">
+                            <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">                            
-                                        <div id="lp-right-list-footer" class="lp-drop-container">
+                                        <div id="lp-right-list-footer" class="lp-drop-container1">
 
                                             @php $tempate = explode(",",$settings->footer); @endphp
                                             @foreach($tempate as $tempateName)
@@ -337,11 +385,13 @@
 
                                                     // Find the screenshot (png) file for background image
                                                     $screenshot = findScreenshot($files);
-                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : ''; // Default image if no screenshot is found
                                                     ?>
                                                     <div class="lp-item card" data-id="{{ $dir }}">
                                                         
-                                                        <img src="<?php echo $backgroundImage; ?>">
+                                                        @if($backgroundImage)
+                                                            <img src="<?php echo $backgroundImage; ?>">
+                                                        @endif
                                                         <div class="card-body">                                        
                                                         <?php
                                                         foreach ($files as $file) {

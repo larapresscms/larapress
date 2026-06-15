@@ -76,8 +76,6 @@
             color: {{ $settingsAdmin->text_hover ?? 'None'}} !important;
             background-color: {{ $settingsAdmin->text_color ?? 'None'}} !important;
         }
-        
-        
     </style>     
 </head>
 <body id="page-top">   
@@ -729,6 +727,23 @@
                         </div>
                     @endif  
                     <!-- end toast   -->
+                    
+                    @php
+                        $expireDate = auth()->user()->updated_at->copy()->addDays(30);
+                        $daysLeft = (int) now()->diffInDays($expireDate, false);
+
+                    @endphp
+                    
+                    
+                    @if($daysLeft <= 0)
+                        <div class="text-capitalize alert alert-dismissible fade show border-danger border-left border-width-4 px-4 py-3 mx-3 mb-3 bg-white text-black shadow-sm animated flipInX delay-02s " role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <i class="fas fa-exclamation opacity-05 mr-3 text-danger"></i>
+                            ⚠ Password expired. Please change it now. - <a href="{{url('/dashboard/profile')}}">Update Now</a>
+                        </div>
+                    @endif
  
                     <!-- Page Heading -->
                     <!-- 
@@ -847,10 +862,10 @@
     <!-- editor 1 -->
     <script>
         tinymce.init({
-            selector: 'textarea',
+            selector: '.textarea',
             height: 550,
             directionality: '',
-            language: '',
+            /* language: '', */
             plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons', // imagetools, quickbars
             imagetools_cors_hosts: ['picsum.photos'],
             menubar: 'file edit view insert format tools table help',

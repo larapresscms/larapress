@@ -31,7 +31,7 @@ class CreatePostTable extends Migration
                 $table->string('option_2')->nullable(); 
                 $table->string('option_3')->nullable(); 
                 $table->string('option_4')->nullable(); 
-                $table->string('more_option_1')->nullable(); 
+                $table->longtext('more_option_1')->nullable(); 
                 $table->longtext('more_option_2')->nullable(); 
                 $table->string('gallery_img')->nullable(); 
                 $table->string('template')->nullable(); 

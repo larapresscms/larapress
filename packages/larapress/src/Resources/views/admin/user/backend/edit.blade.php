@@ -149,6 +149,11 @@
 													<input class="" type="checkbox" name="delete" value="delete" {{$user->delete == 'delete' ? 'checked':''}}>
 													<span class="form-check-label">Delete</span>
 												</label>
+												
+												<label class="btn btn-primary">
+													<input class="" type="checkbox" name="email_verified_at" value="force_reset" {{$user->email_verified_at !== null ? '':'checked'}}>
+													<span class="form-check-label">Password Reset</span>
+												</label>
 
 											</div> <!-- card-body.// -->
 										</div>

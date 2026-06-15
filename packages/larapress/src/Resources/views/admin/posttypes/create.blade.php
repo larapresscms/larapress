@@ -27,7 +27,7 @@
                             <!-- choose editor  -->
                             @if($settingsAdmin->editor == "classic")
                             <!-- editor 1-->
-                                <textarea name="pt_content"></textarea>  
+                                <textarea name="pt_content" class="textarea"></textarea>  
                             @else
                             <!-- editor 2-->                
                             <textarea id="html" name="pt_content"></textarea>
@@ -61,23 +61,40 @@
                             <span class="input-group-text badge-info"><input name="menu_icon" type="checkbox" /></span>
                         </div> -->
                     </div>
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: content</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">content or Editor section</span>
+                    
+                    
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: content</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">content or Editor section</span>
+                            </div>
+                            <input type="text" name="content" value="#" class="form-control form-control-user" aria-label="Dollar amount (with dot and two decimal places)">
                         </div>
-                        <input type="text" name="content" value="#" class="form-control form-control-user" aria-label="Dollar amount (with dot and two decimal places)">
-                    </div>
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: excerpt</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">Excerpt</span>
+                    <div class="border p-3">
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: excerpt</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">Excerpt</span>
+                            </div>
+                            <select id="excerptfieldType" name="excerpt_type" class="dynamic-field-type form-select form-select-sm custom-select" data-target="excerptDynamicField">
+                                <option value="none">None</option>
+                                <option value="text">Text</option>
+                                <option value="date">Date</option>
+                                <option value="select">Select</option>
+                                <option value="image">Image</option>
+                                <option value="color">Color</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="number">Number</option>
+                                <option value="radio">Radio</option>                                 
+                                <option value="posttype">Post Type</option> 
+                            </select> 
+                            <!-- <input type="text" name="excerpt" class="form-control form-control-user" value="#"> -->
                         </div>
-                        <input type="text" name="excerpt" class="form-control form-control-user" value="#">
-                    </div>
+                        <div id="excerptDynamicField" class="mt-2"></div>
+                    </div>                    
 
                     <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: thumbnail_path</label>
                     <div class="input-group mb-3">
@@ -88,41 +105,99 @@
                         <input type="text" name="thumbnail_path" class="form-control form-control-user" value="#">
                     </div>
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_1</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">option_1</span>
+                    <div class="border p-3">
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_1</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">option_1</span>
+                            </div>
+                            <!-- <input type="text" name="option_1" class="form-control form-control-user" value="#"> -->
+                            <select id="option_1fieldType" name="option_1_type" class="dynamic-field-type form-select form-select-sm custom-select" data-target="option_1DynamicField">
+                                <option value="none">None</option>
+                                <option value="text">Text</option>
+                                <option value="date">Date</option>
+                                <option value="select">Select</option>
+                                <option value="image">Image</option>
+                                <option value="color">Color</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="number">Number</option>
+                                <option value="radio">Radio</option>                              
+                                <option value="posttype">Post Type</option> 
+                            </select> 
                         </div>
-                        <input type="text" name="option_1" class="form-control form-control-user" value="#">
+                        <div id="option_1DynamicField" class="mt-2"></div>
+                    </div>
+                    <!-- <div id="option_1DynamicField" class="mt-2"></div> -->
+
+                    <div class="border p-3 mt-3">
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_2</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">option_2</span>
+                            </div>
+                            <select id="option_2fieldType" name="option_2_type" class="dynamic-field-type form-select form-select-sm custom-select" data-target="option_2DynamicField">
+                                <option value="none">None</option>
+                                <option value="text">Text</option>
+                                <option value="date">Date</option>
+                                <option value="select">Select</option>
+                                <option value="image">Image</option>
+                                <option value="color">Color</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="number">Number</option>
+                                <option value="radio">Radio</option>                              
+                                <option value="posttype">Post Type</option> 
+                            </select>
+                        </div>
+                        <div id="option_2DynamicField" class="mt-2"></div>
                     </div>
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_2</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">option_2</span>
+                    <div class="border p-3 mt-3">
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_3</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">option_3</span>
+                            </div>
+                            <select id="option_3fieldType" name="option_3_type" class="dynamic-field-type form-select form-select-sm custom-select" data-target="option_3DynamicField">
+                                <option value="none">None</option>
+                                <option value="text">Text</option>
+                                <option value="date">Date</option>
+                                <option value="select">Select</option>
+                                <option value="image">Image</option>
+                                <option value="color">Color</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="number">Number</option>
+                                <option value="radio">Radio</option>                              
+                                <option value="posttype">Post Type</option> 
+                            </select>
                         </div>
-                        <input type="text" name="option_2" class="form-control form-control-user" value="#">
+                        <div id="option_3DynamicField" class="mt-2"></div>
                     </div>
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_3</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">option_3</span>
+                    <div class="border p-3 mt-3">
+                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_4</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                <span class="input-group-text">option_4</span>
+                            </div>
+                            <select id="option_4fieldType" name="option_4_type" class="dynamic-field-type form-select form-select-sm custom-select" data-target="option_4DynamicField">
+                                <option value="none">None</option>
+                                <option value="text">Text</option>
+                                <option value="date">Date</option>
+                                <option value="select">Select</option>
+                                <option value="image">Image</option>
+                                <option value="color">Color</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="number">Number</option>
+                                <option value="radio">Radio</option>                              
+                                <option value="posttype">Post Type</option> 
+                            </select>
                         </div>
-                        <input type="text" name="option_3" class="form-control form-control-user" value="#">
-                    </div>
-
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_4</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">option_4</span>
-                        </div>
-                        <input type="text" name="option_4" class="form-control form-control-user" value="#">
-                    </div>
+                        <div id="option_4DynamicField" class="mt-2"></div>
+                    </div>                    
 
                     <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: more_option_1 like Positions</label>
                     <div class="input-group mb-3">
@@ -208,9 +283,9 @@
                 <!-- Card Body -->
                 <div class="card-body">                    
                     <div class="form-group">                       
-                            <input type="hidden" id="type" name='pt_thumbnail_path' placeholder="Image Url" class="form-control" >
-                            <img id="myImg" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info">
-                            <button type="button" onclick="removeValue('{{url('/packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
+                            <input type="hidden" id="posttype_img_type" name='pt_thumbnail_path' placeholder="Image Url" class="form-control" >
+                            <img id="posttype_img" src="{{ asset('packages/larapress/src/Assets/admin/img/dummy-image-square.jpg') }}" width="100%" height="auto" data-toggle="modal" data-target="#exampleModalCenter" class="border border-info" data-preview="posttype_img">
+                            <button type="button" onclick="removeValue('{{url('/packages/larapress/src/Assets/admin/img/dummy-image-square.jpg')}}','posttype_img')" class="btn btn-secondary btn-sm mt-3">Remove Images</button>                        
                     </div>
                 </div>
             </div>
@@ -366,10 +441,13 @@
                                 foreach ($mergedDirList as $dir => $files) {                                    
                                     // Find the screenshot (png) file for background image
                                     $screenshot = findScreenshot($files);
-                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : 'default-image.jpg'; // Default image if no screenshot is found
+                                    $backgroundImage = $screenshot ? url(str_replace(base_path(), '', $screenshot)) : ''; // Default image if no screenshot is found
                                     ?>
                                     <div class="lp-item card" data-id="{{ $dir }}">
-                                        <img src="<?php echo $backgroundImage; ?>">
+                                        @if($backgroundImage)
+                                            <img src="<?php echo $backgroundImage; ?>">
+                                        @endif
+                                        
                                         <div class="card-body">                                        
                                         <?php
                                         foreach ($files as $file) {
@@ -381,7 +459,7 @@
                                                     <?php //echo basename($file); ?>
                                                     <strong>Template Name:</strong> <?php echo $templateInfo['Template']; ?> <br>
                                                     <strong>Version:</strong> <?php echo $templateInfo['Version']; ?>    
-                                                    <p><a href="{{url('/dashboard/delete-template',$dir)}}" class="btn btn-danger">Delete</a></p>                                                  
+                                                    <!-- <p><a href="{{url('/dashboard/delete-template',$dir)}}" class="btn btn-danger">Delete</a></p>                                                   -->
                                                 <?php
                                             }
                                         }
@@ -424,6 +502,328 @@
         }
     });
     </script>
+
+    <!-- dynamic set input fields -->
+    <script>                            
+        document.addEventListener('DOMContentLoaded', function () {
+            const existingValues = {
+                excerpt_type: "none",        // current type
+                excerpt_label: "New Label", // existing value 
+                excerpt_value: "Option1,Option2", // existing value 
+                excerpt_required: 1,
+
+                option_1_type: "none",
+                options_1_label: "New Label",
+                options_1_value: "Checkbox1, Checkbox2",
+                options_1_required: 1,
+
+                option_2_type: "none",
+                options_2_label: "New Label",
+                options_2_value: "Checkbox1, Checkbox2",
+                options_2_required: 1,                
+
+                option_3_type: "none",
+                options_3_label: "New Label",
+                options_3_value: "Checkbox1, Checkbox2",
+                options_3_required: 1,                
+
+                option_4_type: "none",
+                options_4_label: "New Label",
+                options_4_value: "Checkbox1, Checkbox2",
+                options_4_required: 1
+            };
+
+           
+            // let type = this.value;
+            function renderField(type, container, fieldName='', existingLabel='', value = '', existingRequired='') {               
+            container.innerHTML = ''; // clear old input
+
+            if(type === 'select') {
+                container.innerHTML = `
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">Field Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Enter field label (e.g., Select Size)"
+                                value="${existingLabel}" required>
+                        </div>
+
+                        <!-- Field Values -->
+                        <div class="mb-3 tags-input-wrapper">
+                            <label class="form-label">Field Options (comma separated)</label>                          
+                            
+                            <div class="tags-input">
+                                <input type="text" class="form-control form-control-user" placeholder="Type and press enter: Small,Medium,Large">
+                            </div>
+                            <input type="hidden" name="${fieldName}_value" value="${value}">
+
+                            <small class="text-muted">
+                                Use comma (,) to separate values
+                            </small>                          
+                                
+                        </div>
+
+                        <!-- Required Checkbox -->
+                        <div class="form-check">
+                            <input type="checkbox"
+                                name="${fieldName}_required"
+                                value="1" 
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                class="form-check-input"
+                                id="${fieldName}Required">
+
+                            <label class="form-check-label" for="${fieldName}Required">
+                                This field is required
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }
+            else if(type === 'checkbox') {
+                container.innerHTML = `                                        
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">Checkbox Group Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Example: Select Features"
+                                value="${existingLabel}" required>
+                        </div>
+
+                        <!-- Checkbox Options -->
+                        <div class="mb-3 tags-input-wrapper">
+                            <label class="form-label">Checkbox Options (comma separated)</label>                            
+
+                            <div class="tags-input">
+                                <input type="text" class="form-control form-control-user" placeholder="Type and press enter: Wifi,Parking,AC">
+                            </div>
+                            <input type="hidden" name="${fieldName}_value" value="${value}">
+
+                            <small class="text-muted">
+                                Use comma (,) to separate each checkbox option
+                            </small>
+                        </div>
+
+                        <!-- Required Toggle -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="${fieldName}_required"
+                                value="1"
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                id="${fieldName}checkboxRequired">
+
+                            <label class="form-check-label" for="${fieldName}checkboxRequired">
+                                Make this field required
+                            </label>
+                        </div>
+
+                    </div>
+                `;
+            }
+            else if(type === 'radio') {
+                container.innerHTML = `
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">Radio Group Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Example: Select Gender"
+                                value="${existingLabel}" required>
+                        </div>
+
+                        <!-- Radio Options -->
+                        <div class="mb-3 tags-input-wrapper">
+                            <label class="form-label">Radio Options (comma separated)</label>                           
+                            
+                            <div class="tags-input">
+                                <input type="text" class="form-control form-control-user" placeholder="Type and press enter: Male,Female,Other">
+                            </div>
+                            <input type="hidden" name="${fieldName}_value" value="${value}">
+
+                            <small class="text-muted">
+                                Separate each option using comma (,)
+                            </small>
+                        </div>
+
+                        <!-- Required Switch -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="${fieldName}_required"
+                                value="1"
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                id="${fieldName}radioRequired">
+
+                            <label class="form-check-label" for="${fieldName}radioRequired">
+                                Make this ${type} field required
+                            </label>
+                        </div>
+
+                    </div>
+                `;
+            }
+            else if(type === 'image') {
+                container.innerHTML = `
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">Image Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Example: Post Thumb."
+                                value="${existingLabel}" required>
+                        </div>                                                                                                                                 
+                        <input type="hidden" name="${fieldName}_value" value="img">                                          
+
+                        <!-- Required Switch -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="${fieldName}_required"
+                                value="1"
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                id="${fieldName}radioRequired">
+
+                            <label class="form-check-label" for="${fieldName}radioRequired">
+                                Make this ${type} field required
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }else if(type === 'none') {
+                container.innerHTML = `
+                <input type="hidden" name="${fieldName}_label" value="none">
+                <input type="hidden" name="${fieldName}_value" value="none">
+                <input type="hidden" name="${fieldName}_required" value="1">
+                `;
+            }else if(type === 'posttype') {
+                container.innerHTML = `
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">Field Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Enter field label"
+                                value="${existingLabel}" required>
+                        </div>
+
+                        <!-- Field Values -->
+                        <div class="mb-3 tags-input-wrapper">
+                            <label class="form-label">Field Options</label>   
+                            <div class="tags-input">
+                                <select name="${fieldName}_value" class="dynamic-field-type form-select form-select-sm custom-select">
+                                    @foreach($posttypes as $posttype)                                    
+                                        <option value="{{$posttype->slug}}">{{$posttype->name}}</option>
+                                    @endforeach
+                                </select>                                
+                            </div> 
+                        </div>  
+
+                        <!-- Required Checkbox -->
+                        <div class="form-check">
+                            <input type="checkbox"
+                                name="${fieldName}_required"
+                                value="1" 
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                class="form-check-input"
+                                id="${fieldName}Required">
+
+                            <label class="form-check-label" for="${fieldName}Required">
+                                This field is required
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }else {
+                container.innerHTML = `
+                    <div class="card p-3 mb-3">
+                        <!-- Field Label -->
+                        <div class="mb-3">
+                            <label class="form-label">${type} Label</label>
+                            <input type="text"
+                                name="${fieldName}_label"
+                                class="form-control form-control-user"
+                                placeholder="Example: Title"
+                                value="${existingLabel}" required>
+                        </div>
+
+                        <!-- Radio Options -->
+                        <div class="mb-3">
+                            <label class="form-label">Placeholder</label>
+                            <input type="text"
+                                name="${fieldName}_value"
+                                class="form-control form-control-user"
+                                placeholder=" "
+                                value="${value}" required>                                                 
+                        </div>
+
+                        <!-- Required Switch -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="${fieldName}_required"
+                                value="1"
+                                ${existingRequired == 1 ? 'checked' : ''}
+                                id="${fieldName}radioRequired">
+
+                            <label class="form-check-label" for="${fieldName}radioRequired">
+                                Make this ${type} field required
+                            </label>
+                        </div>
+                    </div>                    
+                `;                 
+            }
+            initAllTags();
+        }
+        document.querySelectorAll('.dynamic-field-type')
+        .forEach(function(selectField) {
+
+            let targetId  = selectField.dataset.target;
+            let container = document.getElementById(targetId);                                   
+
+            // Get pre-filled value if editing
+            let fieldName = selectField.name; // like 'excerpt_type' or 'Options_1_type'            
+
+            let baseName = fieldName.replace('_type', '');
+            let existingLabel    = existingValues[baseName + '_label'] || '';
+            let existingValue    = existingValues[baseName + '_value'] || '';
+            let existingRequired = existingValues[baseName + '_required'] || '';
+
+            console.log('Label:', existingLabel);
+            console.log('Value:', existingValue);
+            console.log('Required:', existingRequired);
+            
+            // Set the select value (in case it is editing)
+            if (existingValues[fieldName]) {
+                selectField.value = existingValues[fieldName];
+            }
+
+            // Initial render on page load
+            renderField(selectField.value, container, fieldName, existingLabel, existingValue, existingRequired);
+
+            // on change
+            selectField.addEventListener('change', function () {
+                
+                renderField(this.value, container, fieldName, existingLabel, existingValue, existingRequired);
+                //alert(this.value);
+            });
+            
+        });
+
+        });
+    </script>
+    <!-- dynamic set input fields -->
 </form>
 <!-- Insert Image from library -->
 @include('admin.media.medialibrary')

@@ -3,7 +3,9 @@
 @section('content')
 @if(optional(auth()->user())->role == 111)
        <!-- Page Heading --> 
-    <h5 class="h5 mb-2 text-gray-800">Add New Users <a href="{{ url('/dashboard/user/create') }}" class="text-white"><button class="btn btn-primary btn-user">Add New</button></a></h5>
+    <h5 class="h5 mb-2 text-gray-800">Add New Users <a href="{{ url('/dashboard/user/create') }}" class="text-white"><button class="btn btn-primary btn-user">Add New</button></a>   <a href="{{ url('/dashboard/user-activity') }}" class="text-white"><button class="btn btn-primary btn-user">Users Log</button></a></h5>
+    
+ 
 
 
     <!-- DataTales Example -->
@@ -21,6 +23,11 @@
                             <th>User Name</th> 
                             <th>Email</th>
                             <th>Role</th>
+                            
+                            <th>IP Address</th>       
+                            <th>Last Activity</th>    
+                            <th>Status</th>           
+                            
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -30,6 +37,11 @@
                             <th>User Name</th> 
                             <th>Email</th>
                             <th>Role</th>
+                            
+                            <th>IP Address</th>       
+                            <th>Last Activity</th>    
+                            <th>Status</th>    
+                            
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -38,6 +50,10 @@
                         $sl = 0;
                         @endphp
                         @foreach($users as $user)
+                        @php
+                            $session = $sessions[$user->id] ?? null;
+                            $lastLogin = $lastLogins[$user->id]  ?? null;
+                        @endphp
                         <tr class="@if(session()->has('message'.$user->id)) alert alert-{{session('message'.$user->id)}} @endif">
                             <td>{{ ++$sl }}</td>
                             <td>{{ $user->name }}</td> 
@@ -57,6 +73,28 @@
                                 @endif
 
                             </td>
+                            
+                            <!--<td>{{ $session->ip_address ?? '-' }}</td>-->
+                            
+                            
+                            <td>{{ $lastLogin['ip'] ?? $session->ip_address ?? '-' }}</td>
+                            <td>
+                                @php $sessionDate = null; @endphp
+                                @if($session)
+                                    @php $sessionDate = \Carbon\Carbon::createFromTimestamp($session->last_activity)->format('d M Y, h:i A'); @endphp
+                                @endif
+                                
+                                {{ $lastLogin['at'] ?? $sessionDate ?? '-' }}
+                            </td>
+                            
+                            <td>
+                                @if($session && \Carbon\Carbon::createFromTimestamp($session->last_activity)->gt(now()->subMinutes(5)))
+                                    <span class="badge badge-success">🟢 Online</span>
+                                @else
+                                    <span class="badge badge-secondary">🔴 Offline</span>
+                                @endif
+                            </td>
+                            
                             <td>
                             @if(optional(auth()->user())->role == 1) 
                             @else 

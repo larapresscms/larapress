@@ -13,11 +13,12 @@ use LaraPressCMS\LaraPress\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Blade;
 use LaraPressCMS\LaraPress\Models\Post;
 use LaraPressCMS\LaraPress\Models\Settings;
+use Illuminate\Support\Facades\Config;
 
 class LaraServiceProvider extends ServiceProvider
 {
     // Static variable to hold the value
-    protected static $currentLaraVersion = '1.1.4';
+    protected static $currentLaraVersion = '1.1.5';
 
     public function boot()
     {        
@@ -155,8 +156,10 @@ class LaraServiceProvider extends ServiceProvider
         //get content 
         Blade::directive('getContent', function ($expression) {
             return "<?php echo getContentBySlug($expression); ?>";
-        }); 
-
+        });
+        
+        Config::set('auth.providers.users.model', \LaraPressCMS\LaraPress\Models\User::class);
+        
     }
     public function register()
     {

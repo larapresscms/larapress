@@ -36,12 +36,30 @@
                     @csrf
                     <div class="form-group">
                         <input type="email" name="email" class="form-control form-control-user"
-                            id="exampleInputEmail" aria-describedby="emailHelp"
+                            id="exampleInputEmail" aria-describedby="emailHelp" value="{{ old('email') }}"
                             placeholder="Enter Email Address...">
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="password" class="form-control form-control-user"
-                            id="exampleInputPassword" placeholder="Password">
+                    <div class="form-group input-group">
+                        <input type="password" name="password" class="form-control form-control-user" placeholder="Password" id="password">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-light border" onclick="togglePassword()" id="toggleBtn" style="border-radius: 0rem 10rem 10rem 0rem;"><i class="fa fa-eye-slash"></i></button>
+                        </div>
+                        <script>
+                            function togglePassword() {
+                            
+                                let password = document.getElementById("password");
+                                let toggleBtn = document.getElementById("toggleBtn");
+                            
+                                if (password.type === "password") {
+                                    password.type = "text";
+                                    toggleBtn.innerHTML = '<i class="fa fa-eye"></i>';
+                                } else {
+                                    password.type = "password";
+                                    toggleBtn.innerHTML = '<i class="fa fa-eye-slash"></i>';
+                                }
+                            }
+                        </script>
+                            
                     </div>
                     <!-- <div class="form-group">
                         <div class="custom-control custom-checkbox small">

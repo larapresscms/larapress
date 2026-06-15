@@ -46,7 +46,7 @@ class MediaController extends Controller
 
         $validated = $request->validate([
             'img_name' => 'required',
-            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:10240', 
+            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx,mp4,webm|max:51200', 
         ]);
         if($request->hasfile('img_name'))
         {
@@ -130,9 +130,20 @@ class MediaController extends Controller
 
         //img distroy
         $media = Media::find($id);
-        if($media->img_name){
-            unlink("public/uploads/".$media->img_name);
-        }else{}
+        
+        //dd($media->img_name);
+        
+        if (!empty($media->img_name)) {
+            $filePath = public_path("uploads/" . $media->img_name);
+
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+        
+        // if($media->img_name){
+        //     unlink("public/uploads/".$media->img_name);
+        // }else{}
         Media::destroy($id); 
         session()->flash('messageDestroy','Data Delete successfully');
         return redirect('/dashboard/media');
@@ -149,7 +160,7 @@ class MediaController extends Controller
 
         $validated = $request->validate([
             'img_name' => 'required',
-            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx|max:10240', 
+            'img_name.*' => 'mimes:jpeg,png,jpg,gif,svg,doc,docx,pdf,webp,xlsx,mp4|max:10240', 
         ]);
         if($request->hasfile('img_name'))
         {
@@ -222,8 +233,27 @@ class MediaController extends Controller
 
         switch ($action) {
             case 'delete':
-                DB::table('media')->whereIn('id', $ids)->delete();
-                return back()->with('messageDestroy', 'Selected Media deleted.');                      
+                
+                // 1. Get all media records first
+                $mediaItems = Media::whereIn('id', $ids)->get();
+    
+                foreach ($mediaItems as $media) {
+                    if (!empty($media->img_name)) {
+                        $filePath = public_path("uploads/" . $media->img_name);
+    
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
+                    }
+                }
+                
+                // 2. Delete DB records
+                Media::whereIn('id', $ids)->delete();
+                return back()->with('messageDestroy', 'Selected Media deleted successfully.');
+                
+                
+                // DB::table('media')->whereIn('id', $ids)->delete();
+                // return back()->with('messageDestroy', 'Selected Media deleted.');                      
             default:
                 return back()->with('messageDestroy', 'Invalid action.');
         }

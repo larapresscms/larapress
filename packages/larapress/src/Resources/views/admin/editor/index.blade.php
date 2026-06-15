@@ -11,7 +11,7 @@
                         <div class="mb-3"> 
                                     <p id="btn-delete" class="btn btn-danger btn-user">Delete</p>
                                     <p id="btn-download" class="btn btn-outline-secondary btn-user">Download</p>                                 
-                                <!-- <button id="btn-preview" class="btn btn-outline-primary btn-sm">Preview</button> -->
+                                    <a href="https://larapress.org/en/documentation" target="_blank"><p class="btn btn-outline-primary btn-user">Help?</p></a>
                             </div>                    
                         <!-- Editor actions -->
                         <div style="align-items:center; gap:8px; margin-bottom:6px;"> 
@@ -85,7 +85,11 @@ let editorQueue = []; // queue of code to set
 let selectedItem = null;  // track selected element
 let expandedPaths = new Set(); // track expanded folders
 let currentFile = null;
-let currentDir = @json($basePath); // root by default
+//let currentDir = @json($basePath); // root by default
+
+let rootDirs = @json($basePath); // array of base dirs
+let currentDir = rootDirs[0];          // currently opened dir
+//  console.log(currentDir);
 
 // Init Monaco
 function initMonaco(initialValue='') {
@@ -250,10 +254,6 @@ async function loadBreadcrumbs(path){
 //     const res=await fetch('{{ route("editor.save") }}',{method:'POST',body:form});
 //     const json=await res.json(); alert(json.success?'Saved ✓':(json.error||'Error'));
 // });
-
-
-
-
 
 document.getElementById('btn-save').addEventListener('click', async () => {
     if (!currentFile) return alert('No file open');

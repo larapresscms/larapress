@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
                 $table->string('feedbacks')->nullable();
                 $table->string('media')->nullable();
                 $table->string('menus')->nullable();
-                $table->string('posts_id')->nullable();
+                $table->longText('posts_id')->nullable();
                 $table->string('posttypes_id')->nullable(); 
                 $table->string('admin_pt_menu')->nullable();
                 
