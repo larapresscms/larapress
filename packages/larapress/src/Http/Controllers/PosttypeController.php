@@ -144,7 +144,7 @@ class PosttypeController extends Controller
                 
         ];
         
-        // $input['option_1'] = '1';
+        $input['content'] = $request->content ?? '#';
        //---------------------------------------
 
        Posttype::create($input);
@@ -337,6 +337,8 @@ class PosttypeController extends Controller
                 'values' => rtrim($request->option_4_type_value, ','),
                 'required'   => $request->option_4_type_required ?? 0                
         ];
+
+        $input['content'] = $request->content ?? '#';
 
        $posttypes->update($input);
        session()->flash('message','Data update successfully');

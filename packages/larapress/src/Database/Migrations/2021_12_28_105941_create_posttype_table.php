@@ -26,15 +26,15 @@ class CreatePosttypeTable extends Migration
                 $table->string('status');
                 $table->string('category_id');
                 $table->string('title');
-                $table->string('content');
+                $table->longtext('content');
                 $table->string('excerpt');
                 $table->string('thumbnail_path'); 
                 $table->string('option_1'); 
                 $table->string('option_2'); 
                 $table->string('option_3'); 
                 $table->string('option_4'); 
-                $table->string('more_option_1'); 
-                $table->string('more_option_2'); 
+                $table->longtext('more_option_1'); 
+                $table->longtext('more_option_2'); 
                 $table->string('gallery_img'); 
                 $table->string('trash')->nullable();
                 $table->string('in_menu_swh');            

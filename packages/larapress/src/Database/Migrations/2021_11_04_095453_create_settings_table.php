@@ -28,6 +28,7 @@ class CreateSettingsTable extends Migration
                 $table->string('editor')->nullable(); 
                 $table->string('header')->nullable(); 
                 $table->string('footer')->nullable(); 
+                $table->string('twofa')->nullable(); 
                 $table->timestamps();
             });
         }

@@ -60,17 +60,300 @@
                             <span class="input-group-text">Required?</span>
                             <span class="input-group-text badge-info"><input name="menu_icon" type="checkbox" /></span>
                         </div> -->
-                    </div>
-                    
-                    
-                        <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: content</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                                <span class="input-group-text">content or Editor section</span>
+                    </div> 
+
+                    <div class="border p-3 mb-3">
+                        <div class="card mb-2">
+                            <div class="card-header d-flex align-items-center justify-content-between py-2 px-3" style="background:#f8f9fa">
+                                <div class="d-flex align-items-center gap-2">
+                                    <label for="basic-url">Mutiple Fields: `content`  <a href="https://larapress.org/en/documentation/block-multiple-fields" target="_blank">Learn More</a></label>
+                                </div>
                             </div>
-                            <input type="text" name="content" value="#" class="form-control form-control-user" aria-label="Dollar amount (with dot and two decimal places)">
+                        </div>                  
+                        
+                        <div class="form-group mb-3">
+                            <!-- <div class="input-group-prepend"> -->                                                  
+
+                                <!-- ---------------Block System------------------- --> 
+                                <div id="blockAreaNew"></div>
+
+                                <div class="text-center mt-2">
+                                    <button type="button" class="btn btn-primary btn-user btn-block" onclick="openBlockModal()">
+                                        ➕ Add Multi Block
+                                    </button>
+                                </div>
+
+                                <input type="hidden" name="content" value="#" id="contentIFNew">
+
+                                <!-- Type Picker Modal -->
+                                <div id="blockTypeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+                                    <div style="background:#fff;border-radius:12px;padding:24px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,.15)">
+                                        <h6 class="mb-1 fw-semibold">Choose block type</h6>
+                                        <p class="text-muted small mb-3">Select the kind of content to add</p>
+                                        <div class="row g-2 mb-3" id="typePickerGrid">
+                                            <!-- filled by JS -->
+                                        </div>
+
+                                        <!-- ✏️ CHANGED: label input shown after type is selected -->
+                                        <div id="blockLabelRow" style="display:none;" class="mb-3">
+                                            <label class="form-label small fw-semibold">Field Label</label>
+                                            <input type="text" id="blockLabelInput" class="form-control form-control-sm"
+                                                placeholder="e.g. Title, Description, Cover Image...">
+                                        </div>
+
+                                        <div class="d-flex gap-2 justify-content-end">
+                                            <p class="btn btn-outline-secondary btn-sm mr-2" onclick="closeBlockModal()">Cancel</p>
+                                            <p class="btn btn-primary btn-sm" onclick="confirmBlock()">Add Block</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                let blocksNew = [];
+                                let selectedBlockType = null;
+                                let blockIdCounter = 0;
+
+                                const BLOCK_TYPES = [
+                                    { type: 'text',     label: 'Text',        icon: '🔤', badge: 'primary' },
+                                    { type: 'textarea', label: 'Rich Editor',  icon: '📝', badge: 'success' },
+                                    { type: 'image',    label: 'Image URL',    icon: '🖼️', badge: 'warning' },
+                                    { type: 'date',     label: 'Date',         icon: '📅', badge: 'danger' },
+                                    { type: 'color',    label: 'Color',        icon: '🎨', badge: 'info' },
+                                    { type: 'number',   label: 'Number',       icon: '🔢', badge: 'secondary' },
+                                ];
+
+                                function openBlockModal() {
+                                    selectedBlockType = null;
+                                    // ✏️ CHANGED: reset label row on open
+                                    document.getElementById('blockLabelRow').style.display = 'none';
+                                    document.getElementById('blockLabelInput').value = '';
+
+                                    const grid = document.getElementById('typePickerGrid');
+                                    grid.innerHTML = BLOCK_TYPES.map(t => `
+                                        <div class="col-4 mb-3">
+                                            <div class="card border type-card text-center py-3 px-2" style="cursor:pointer"
+                                                data-type="${t.type}" onclick="selectBlockType('${t.type}', this)">
+                                                <div style="font-size:24px">${t.icon}</div>
+                                                <div class="small mt-1">${t.label}</div>
+                                            </div>
+                                        </div>
+                                    `).join('');
+                                    document.getElementById('blockTypeModal').style.display = 'flex';
+                                }
+
+                                function closeBlockModal() {
+                                    document.getElementById('blockTypeModal').style.display = 'none';
+                                }
+
+                                function selectBlockType(type, el) {
+                                    selectedBlockType = type;
+                                    document.querySelectorAll('.type-card').forEach(c => {
+                                        c.classList.remove('border-primary', 'shadow-sm');
+                                    });
+                                    el.classList.add('border-primary', 'shadow-sm');
+                                    // ✏️ CHANGED: show label input after type is picked
+                                    document.getElementById('blockLabelRow').style.display = 'block';
+                                    document.getElementById('blockLabelInput').focus();
+                                }
+
+                                function confirmBlock() {
+                                    if (!selectedBlockType) {
+                                        alert('Please select a block type.');
+                                        return;
+                                    }
+                                    // ✏️ CHANGED: read label from input
+                                    const label = document.getElementById('blockLabelInput').value.trim();
+                                    if (!label) {
+                                        alert('Please enter a field label.');
+                                        return;
+                                    }
+                                    const id = ++blockIdCounter;
+                                    blocksNew.push({ id, type: selectedBlockType, value: '', label });
+                                    closeBlockModal();
+                                    renderBlocksNew();
+                                }
+
+                                function removeBlockNew(id) {
+                                    blocksNew.forEach(b => {
+                                        if (b.type === 'textarea') {
+                                            const ed = tinymce.get('editor_' + b.id);
+                                            if (ed) b.value = ed.getContent();
+                                        }
+                                    });
+                                    blocksNew = blocksNew.filter(b => b.id !== id);
+                                    renderBlocksNew();
+                                }
+
+                                function moveBlockNew(id, dir) {
+                                    blocksNew.forEach(b => {
+                                        if (b.type === 'textarea') {
+                                            const ed = tinymce.get('editor_' + b.id);
+                                            if (ed) b.value = ed.getContent();
+                                        }
+                                    });
+                                    const i = blocksNew.findIndex(b => b.id === id);
+                                    const swapIdx = dir === 'up' ? i - 1 : i + 1;
+                                    if (swapIdx < 0 || swapIdx >= blocksNew.length) return;
+                                    [blocksNew[i], blocksNew[swapIdx]] = [blocksNew[swapIdx], blocksNew[i]];
+                                    renderBlocksNew();
+                                }
+
+                                function syncContent() {
+                                    blocksNew.forEach(b => {
+                                        if (b.type === 'textarea') {
+                                            const ed = tinymce.get('editor_' + b.id);
+                                            if (ed) b.value = ed.getContent();
+                                        }
+                                    });
+                                    // ✏️ CHANGED: include label in output
+                                    document.getElementById('contentIFNew').value =
+                                        blocksNew.map(b => `<!--block--><!--type:${b.type}--><!--label:${b.label}-->${b.value}`).join('');
+                                }
+
+                                function renderBlocksNew() {
+                                    tinymce.remove('.tinymce-block');
+
+                                    const area = document.getElementById('blockAreaNew');
+                                    area.innerHTML = '';
+
+                                    blocksNew.forEach(b => {
+                                        let fieldHTML = '';
+
+                                        if (b.type === 'text') {
+                                            fieldHTML = `<input type="text" class="form-control form-control-user labelBalloon"
+                                                placeholder="Enter text..."
+                                                value="${escHtml(b.value)}"
+                                                onchange="updateBlockVal(${b.id}, this.value)">`;
+
+                                        } else if (b.type === 'textarea') {
+                                            fieldHTML = `<textarea id="editor_${b.id}" class="tinymce-block form-control"
+                                                style="height:300px">${escHtml(b.value)}</textarea>`;
+
+                                        } else if (b.type === 'image') {
+                                            fieldHTML = `
+                                                <input type="text" class="form-control form-control-user labelBalloon mb-2"
+                                                    placeholder="https://example.com/image.jpg"
+                                                    value="${escHtml(b.value)}"
+                                                    onchange="updateBlockVal(${b.id}, this.value)">
+                                                ${b.value ? `<img src="${escHtml(b.value)}" style="max-height:120px;border-radius:6px;border:1px solid #ddd">` : ''}`;
+
+                                        } else if (b.type === 'date') {
+                                            fieldHTML = `<input type="date" class="form-control form-control-user labelBalloon"
+                                                value="${escHtml(b.value)}"
+                                                onchange="updateBlockVal(${b.id}, this.value)">`;
+
+                                        } else if (b.type === 'color') {
+                                            fieldHTML = `
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <input type="color" class="form-control form-control-color"
+                                                        value="${b.value || '#3B82F6'}"
+                                                        oninput="updateBlockVal(${b.id}, this.value); document.getElementById('colorHex_${b.id}').textContent = this.value">
+                                                    <span id="colorHex_${b.id}" class="text-muted small">${b.value || '#3B82F6'}</span>
+                                                </div>`;
+
+                                        } else if (b.type === 'number') {
+                                            fieldHTML = `<input type="number" class="form-control form-control-user labelBalloon"
+                                                placeholder="0"
+                                                value="${escHtml(b.value)}"
+                                                onchange="updateBlockVal(${b.id}, this.value)">`;
+                                        }
+
+                                        const typeBadges = {
+                                            text:'primary text-white', textarea:'success text-white', image:'warning text-white',
+                                            date:'danger text-white', color:'info text-white', number:'secondary text-white'
+                                        };
+                                        const typeLabels = {
+                                            text:'Text', textarea:'Rich Editor', image:'Image',
+                                            date:'Date', color:'Color', number:'Number'
+                                        };
+
+                                        area.innerHTML += `
+                                        <div class="card mb-2" data-block-id="${b.id}">
+                                            <div class="card-header d-flex align-items-center justify-content-between py-2 px-3"
+                                                style="background:#f8f9fa">
+                                                <div class="d-flex align-items-center gap-2">                                                    
+                                                    <!-- ✏️ CHANGED: label shown as static text, not editable -->
+                                                    <span class="fw-semibold small badge bg-${typeBadges[b.type]}">${escHtml(b.label)}</span>
+                                                </div>
+                                                
+                                                <div class="d-flex gap-1">
+                                                    <button type="button" class="mr-1 btn btn-sm badge bg-${typeBadges[b.type]}">Type: ${typeLabels[b.type]} </button>
+                                                    <button type="button" class="mr-1 btn btn-outline-secondary btn-sm"
+                                                        onclick="moveBlockNew(${b.id},'up')">↑</button>
+                                                    <button type="button" class="mr-1 btn btn-outline-secondary btn-sm"
+                                                        onclick="moveBlockNew(${b.id},'down')">↓</button>
+                                                    <button type="button" class="mr-1 btn btn-outline-danger btn-sm"
+                                                        onclick="removeBlockNew(${b.id})">Delete</button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body py-2 px-3 d-none">${fieldHTML}</div>
+                                        </div>`;
+                                    });
+
+                                    syncContent();
+                                    initBlockEditors();
+                                }
+
+                                function updateBlockVal(id, val) {
+                                    const b = blocksNew.find(b => b.id === id);
+                                    if (b) b.value = val;
+                                    syncContent();
+                                }
+
+                                function escHtml(str) {
+                                    return String(str || '')
+                                        .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+                                        .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                                }
+
+                                function initBlockEditors() {
+                                    const textareaBlocks = blocksNew.filter(b => b.type === 'textarea');
+                                    if (!textareaBlocks.length) return;
+
+                                    tinymce.init({
+                                        selector: '.tinymce-block',
+                                        height: 300,
+                                        directionality: '',
+                                        plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons',
+                                        menubar: 'file edit view insert format tools table help',
+                                        toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | fullscreen preview | insertfile image media template link anchor codesample | ltr rtl',
+                                        toolbar_mode: 'sliding',
+                                        document_base_url: '{{url("/")}}',
+                                        relative_urls: true,
+                                        convert_urls: false,
+                                        valid_elements: '*[*]',
+                                        file_picker_callback(callback, value, meta) {
+                                            let x = window.innerWidth || document.documentElement.clientWidth;
+                                            let y = window.innerHeight || document.documentElement.clientHeight;
+                                            tinymce.activeEditor.windowManager.openUrl({
+                                                url: '{{url("/dashboard/mediamanager")}}',
+                                                title: '{{ __("Media Library") }}',
+                                                width: x * 0.8,
+                                                height: y * 0.8,
+                                                onMessage: (api, message) => callback(message.content, { text: message.text })
+                                            });
+                                        },
+                                        setup: function (editor) {
+                                            editor.on('keyup change', function () {
+                                                const id = parseInt(editor.id.replace('editor_', ''));
+                                                const b = blocksNew.find(b => b.id === id);
+                                                if (b) b.value = editor.getContent();
+                                                syncContent();
+                                            });
+                                        }
+                                    });
+                                }
+
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const form = document.querySelector('form');
+                                    if (form) form.addEventListener('submit', syncContent);
+                                });
+                                </script>
+                                <!-- ---------------Block System------------------- -->
+                            <!-- </div> -->
+                            <!-- <input type="text" name="content" value="#" class="form-control form-control-user" aria-label="Dollar amount (with dot and two decimal places)"> -->
                         </div>
+                    </div>
 
                     <div class="border p-3">
                         <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: excerpt</label>
@@ -176,7 +459,7 @@
                         <div id="option_3DynamicField" class="mt-2"></div>
                     </div>
 
-                    <div class="border p-3 mt-3">
+                    <div class="border p-3 mt-3 mb-3">
                         <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: option_4</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -199,23 +482,582 @@
                         <div id="option_4DynamicField" class="mt-2"></div>
                     </div>                    
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: more_option_1 like Positions</label>
+                    <!-- <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: more_option_1 like Positions</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
                             <span class="input-group-text">more_option_1</span>
                         </div>
                         <input type="text" name="more_option_1" class="form-control form-control-user" value="#">
+                    </div> -->
+
+                    <div class="border p-3 mb-3">
+                        <div class="card mb-2">
+                            <div class="card-header d-flex align-items-center justify-content-between py-2 px-3" style="background:#f8f9fa">
+                                <div class="d-flex align-items-center gap-2">
+                                    <label for="basic-url">Mutiple Fields: `more_option_1` <a href="https://larapress.org/en/documentation/block-multiple-fields" target="_blank">Learn More</a></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+
+                            <!-- ---------------Block System: more_option_1------------------- -->
+                            <div id="mo1BlockArea"></div>
+
+                            <div class="text-center mt-2">
+                                <button type="button" class="btn btn-primary btn-user btn-block" onclick="mo1OpenBlockModal()">
+                                    ➕ Add Multi Block
+                                </button>
+                            </div>
+
+                            <input type="hidden" name="more_option_1" value="#" id="mo1ContentIF">
+
+                            <!-- Type Picker Modal -->
+                            <div id="mo1BlockTypeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+                                <div style="background:#fff;border-radius:12px;padding:24px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,.15)">
+                                    <h6 class="mb-1 fw-semibold">Choose block type</h6>
+                                    <p class="text-muted small mb-3">Select the kind of content to add</p>
+                                    <div class="row g-2 mb-3" id="mo1TypePickerGrid">
+                                        <!-- filled by JS -->
+                                    </div>
+
+                                    <div id="mo1BlockLabelRow" style="display:none;" class="mb-3">
+                                        <label class="form-label small fw-semibold">Field Label</label>
+                                        <input type="text" id="mo1BlockLabelInput" class="form-control form-control-sm"
+                                            placeholder="e.g. Title, Description, Cover Image...">
+                                    </div>
+
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <p class="btn btn-outline-secondary btn-sm mr-2" onclick="mo1CloseBlockModal()">Cancel</p>
+                                        <p class="btn btn-primary btn-sm" onclick="mo1ConfirmBlock()">Add Block</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                            let mo1Blocks = [];
+                            let mo1SelectedBlockType = null;
+                            let mo1BlockIdCounter = 0;
+
+                            const MO1_BLOCK_TYPES = [
+                                { type: 'text',     label: 'Text',        icon: '🔤', badge: 'primary' },
+                                { type: 'textarea', label: 'Rich Editor',  icon: '📝', badge: 'success' },
+                                { type: 'image',    label: 'Image URL',    icon: '🖼️', badge: 'warning' },
+                                { type: 'date',     label: 'Date',         icon: '📅', badge: 'danger' },
+                                { type: 'color',    label: 'Color',        icon: '🎨', badge: 'info' },
+                                { type: 'number',   label: 'Number',       icon: '🔢', badge: 'secondary' },
+                            ];
+
+                            function mo1OpenBlockModal() {
+                                mo1SelectedBlockType = null;
+                                document.getElementById('mo1BlockLabelRow').style.display = 'none';
+                                document.getElementById('mo1BlockLabelInput').value = '';
+
+                                const grid = document.getElementById('mo1TypePickerGrid');
+                                grid.innerHTML = MO1_BLOCK_TYPES.map(t => `
+                                    <div class="col-4 mb-3">
+                                        <div class="card border mo1-type-card text-center py-3 px-2" style="cursor:pointer"
+                                            data-type="${t.type}" onclick="mo1SelectBlockType('${t.type}', this)">
+                                            <div style="font-size:24px">${t.icon}</div>
+                                            <div class="small mt-1">${t.label}</div>
+                                        </div>
+                                    </div>
+                                `).join('');
+                                document.getElementById('mo1BlockTypeModal').style.display = 'flex';
+                            }
+
+                            function mo1CloseBlockModal() {
+                                document.getElementById('mo1BlockTypeModal').style.display = 'none';
+                            }
+
+                            function mo1SelectBlockType(type, el) {
+                                mo1SelectedBlockType = type;
+                                document.querySelectorAll('.mo1-type-card').forEach(c => {
+                                    c.classList.remove('border-primary', 'shadow-sm');
+                                });
+                                el.classList.add('border-primary', 'shadow-sm');
+                                document.getElementById('mo1BlockLabelRow').style.display = 'block';
+                                document.getElementById('mo1BlockLabelInput').focus();
+                            }
+
+                            function mo1ConfirmBlock() {
+                                if (!mo1SelectedBlockType) {
+                                    alert('Please select a block type.');
+                                    return;
+                                }
+                                const label = document.getElementById('mo1BlockLabelInput').value.trim();
+                                if (!label) {
+                                    alert('Please enter a field label.');
+                                    return;
+                                }
+                                const id = ++mo1BlockIdCounter;
+                                mo1Blocks.push({ id, type: mo1SelectedBlockType, value: '', label });
+                                mo1CloseBlockModal();
+                                mo1RenderBlocks();
+                            }
+
+                            function mo1RemoveBlock(id) {
+                                mo1Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo1_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                mo1Blocks = mo1Blocks.filter(b => b.id !== id);
+                                mo1RenderBlocks();
+                            }
+
+                            function mo1MoveBlock(id, dir) {
+                                mo1Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo1_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                const i = mo1Blocks.findIndex(b => b.id === id);
+                                const swapIdx = dir === 'up' ? i - 1 : i + 1;
+                                if (swapIdx < 0 || swapIdx >= mo1Blocks.length) return;
+                                [mo1Blocks[i], mo1Blocks[swapIdx]] = [mo1Blocks[swapIdx], mo1Blocks[i]];
+                                mo1RenderBlocks();
+                            }
+
+                            function mo1SyncContent() {
+                                mo1Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo1_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                document.getElementById('mo1ContentIF').value =
+                                    mo1Blocks.map(b => `<!--block--><!--type:${b.type}--><!--label:${b.label}-->${b.value}`).join('');
+                            }
+
+                            function mo1RenderBlocks() {
+                                // Only remove TinyMCE instances belonging to mo1
+                                mo1Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo1_editor_' + b.id);
+                                        if (ed) ed.remove();
+                                    }
+                                });
+                                // Also clean up any orphaned mo1 editors
+                                document.querySelectorAll('.mo1-tinymce-block').forEach(el => {
+                                    const ed = tinymce.get(el.id);
+                                    if (ed) ed.remove();
+                                });
+
+                                const area = document.getElementById('mo1BlockArea');
+                                area.innerHTML = '';
+
+                                mo1Blocks.forEach(b => {
+                                    let fieldHTML = '';
+
+                                    if (b.type === 'text') {
+                                        fieldHTML = `<input type="text" class="form-control form-control-user labelBalloon"
+                                            placeholder="Enter text..."
+                                            value="${mo1EscHtml(b.value)}"
+                                            onchange="mo1UpdateBlockVal(${b.id}, this.value)">`;
+
+                                    } else if (b.type === 'textarea') {
+                                        fieldHTML = `<textarea id="mo1_editor_${b.id}" class="mo1-tinymce-block form-control"
+                                            style="height:300px">${mo1EscHtml(b.value)}</textarea>`;
+
+                                    } else if (b.type === 'image') {
+                                        fieldHTML = `
+                                            <input type="text" class="form-control form-control-user labelBalloon mb-2"
+                                                placeholder="https://example.com/image.jpg"
+                                                value="${mo1EscHtml(b.value)}"
+                                                onchange="mo1UpdateBlockVal(${b.id}, this.value)">
+                                            ${b.value ? `<img src="${mo1EscHtml(b.value)}" style="max-height:120px;border-radius:6px;border:1px solid #ddd">` : ''}`;
+
+                                    } else if (b.type === 'date') {
+                                        fieldHTML = `<input type="date" class="form-control form-control-user labelBalloon"
+                                            value="${mo1EscHtml(b.value)}"
+                                            onchange="mo1UpdateBlockVal(${b.id}, this.value)">`;
+
+                                    } else if (b.type === 'color') {
+                                        fieldHTML = `
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="color" class="form-control form-control-color"
+                                                    value="${b.value || '#3B82F6'}"
+                                                    oninput="mo1UpdateBlockVal(${b.id}, this.value); document.getElementById('mo1ColorHex_${b.id}').textContent = this.value">
+                                                <span id="mo1ColorHex_${b.id}" class="text-muted small">${b.value || '#3B82F6'}</span>
+                                            </div>`;
+
+                                    } else if (b.type === 'number') {
+                                        fieldHTML = `<input type="number" class="form-control form-control-user labelBalloon"
+                                            placeholder="0"
+                                            value="${mo1EscHtml(b.value)}"
+                                            onchange="mo1UpdateBlockVal(${b.id}, this.value)">`;
+                                    }
+
+                                    const typeBadges = {
+                                        text:'primary text-white', textarea:'success text-white', image:'warning text-white',
+                                        date:'danger text-white', color:'info text-white', number:'secondary text-white'
+                                    };
+                                    const typeLabels = {
+                                        text:'Text', textarea:'Rich Editor', image:'Image',
+                                        date:'Date', color:'Color', number:'Number'
+                                    };
+
+                                    area.innerHTML += `
+                                    <div class="card mb-2" data-block-id="${b.id}">
+                                        <div class="card-header d-flex align-items-center justify-content-between py-2 px-3"
+                                            style="background:#f8f9fa">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="fw-semibold small badge bg-${typeBadges[b.type]}">${mo1EscHtml(b.label)}</span>
+                                            </div>
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="mr-1 btn btn-sm badge bg-${typeBadges[b.type]}">Type: ${typeLabels[b.type]}</button>
+                                                <button type="button" class="mr-1 btn btn-outline-secondary btn-sm"
+                                                    onclick="mo1MoveBlock(${b.id},'up')">↑</button>
+                                                <button type="button" class="mr-1 btn btn-outline-secondary btn-sm"
+                                                    onclick="mo1MoveBlock(${b.id},'down')">↓</button>
+                                                <button type="button" class="mr-1 btn btn-outline-danger btn-sm"
+                                                    onclick="mo1RemoveBlock(${b.id})">Delete</button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-2 px-3 d-none">${fieldHTML}</div>
+                                    </div>`;
+                                });
+
+                                mo1SyncContent();
+                                mo1InitBlockEditors();
+                            }
+
+                            function mo1UpdateBlockVal(id, val) {
+                                const b = mo1Blocks.find(b => b.id === id);
+                                if (b) b.value = val;
+                                mo1SyncContent();
+                            }
+
+                            function mo1EscHtml(str) {
+                                return String(str || '')
+                                    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+                                    .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                            }
+
+                            function mo1InitBlockEditors() {
+                                const textareaBlocks = mo1Blocks.filter(b => b.type === 'textarea');
+                                if (!textareaBlocks.length) return;
+
+                                tinymce.init({
+                                    selector: '.mo1-tinymce-block',
+                                    height: 300,
+                                    directionality: '',
+                                    plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons',
+                                    menubar: 'file edit view insert format tools table help',
+                                    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | fullscreen preview | insertfile image media template link anchor codesample | ltr rtl',
+                                    toolbar_mode: 'sliding',
+                                    document_base_url: '{{url("/")}}',
+                                    relative_urls: true,
+                                    convert_urls: false,
+                                    valid_elements: '*[*]',
+                                    file_picker_callback(callback, value, meta) {
+                                        let x = window.innerWidth || document.documentElement.clientWidth;
+                                        let y = window.innerHeight || document.documentElement.clientHeight;
+                                        tinymce.activeEditor.windowManager.openUrl({
+                                            url: '{{url("/dashboard/mediamanager")}}',
+                                            title: '{{ __("Media Library") }}',
+                                            width: x * 0.8,
+                                            height: y * 0.8,
+                                            onMessage: (api, message) => callback(message.content, { text: message.text })
+                                        });
+                                    },
+                                    setup: function (editor) {
+                                        editor.on('keyup change', function () {
+                                            const id = parseInt(editor.id.replace('mo1_editor_', ''));
+                                            const b = mo1Blocks.find(b => b.id === id);
+                                            if (b) b.value = editor.getContent();
+                                            mo1SyncContent();
+                                        });
+                                    }
+                                });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const form = document.querySelector('form');
+                                if (form) form.addEventListener('submit', mo1SyncContent);
+                            });
+                            </script>
+                            <!-- ---------------Block System: more_option_1------------------- -->
+
+                        </div>
+                    </div>
+                    
+                    <!-- more_option_2 -->
+                     <div class="border p-3 mb-3">
+                        <div class="card mb-2">
+                            <div class="card-header d-flex align-items-center justify-content-between py-2 px-3" style="background:#f8f9fa">
+                                <div class="d-flex align-items-center gap-2">
+                                    <label>Mutiple Fields: `more_option_2` <a href="https://larapress.org/en/documentation/block-multiple-fields" target="_blank">Learn More</a></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+
+                            <!-- ---------------Block System: more_option_2------------------- -->
+                            <div id="mo2BlockArea"></div>
+
+                            <div class="text-center mt-2">
+                                <button type="button" class="btn btn-primary btn-user btn-block" onclick="mo2OpenBlockModal()">
+                                    ➕ Add Multi Block
+                                </button>
+                            </div>
+
+                            <input type="hidden" name="more_option_2" value="#" id="mo2ContentIF">
+
+                            <!-- Type Picker Modal -->
+                            <div id="mo2BlockTypeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+                                <div style="background:#fff;border-radius:12px;padding:24px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,.15)">
+                                    <h6 class="mb-1 fw-semibold">Choose block type</h6>
+                                    <p class="text-muted small mb-3">Select the kind of content to add</p>
+                                    <div class="row g-2 mb-3" id="mo2TypePickerGrid"></div>
+
+                                    <div id="mo2BlockLabelRow" style="display:none;" class="mb-3">
+                                        <label class="form-label small fw-semibold">Field Label</label>
+                                        <input type="text" id="mo2BlockLabelInput" class="form-control form-control-sm"
+                                            placeholder="e.g. Title, Description, Cover Image...">
+                                    </div>
+
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <p class="btn btn-outline-secondary btn-sm mr-2" onclick="mo2CloseBlockModal()">Cancel</p>
+                                        <p class="btn btn-primary btn-sm" onclick="mo2ConfirmBlock()">Add Block</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                            let mo2Blocks = [];
+                            let mo2SelectedBlockType = null;
+                            let mo2BlockIdCounter = 0;
+
+                            const MO2_BLOCK_TYPES = [
+                                { type: 'text',     label: 'Text',        icon: '🔤', badge: 'primary text-white'   },
+                                { type: 'textarea', label: 'Rich Editor',  icon: '📝', badge: 'success text-white'   },
+                                { type: 'image',    label: 'Image URL',    icon: '🖼️', badge: 'warning text-white'   },
+                                { type: 'date',     label: 'Date',         icon: '📅', badge: 'danger text-white'    },
+                                { type: 'color',    label: 'Color',        icon: '🎨', badge: 'info text-white'      },
+                                { type: 'number',   label: 'Number',       icon: '🔢', badge: 'secondary text-white' },
+                            ];
+
+                            function mo2OpenBlockModal() {
+                                mo2SelectedBlockType = null;
+                                document.getElementById('mo2BlockLabelRow').style.display = 'none';
+                                document.getElementById('mo2BlockLabelInput').value = '';
+                                const grid = document.getElementById('mo2TypePickerGrid');
+                                grid.innerHTML = MO2_BLOCK_TYPES.map(t => `
+                                    <div class="col-4 mb-3">
+                                        <div class="card border mo2-type-card text-center py-3 px-2" style="cursor:pointer"
+                                            data-type="${t.type}" onclick="mo2SelectBlockType('${t.type}', this)">
+                                            <div style="font-size:24px">${t.icon}</div>
+                                            <div class="small mt-1">${t.label}</div>
+                                        </div>
+                                    </div>
+                                `).join('');
+                                document.getElementById('mo2BlockTypeModal').style.display = 'flex';
+                            }
+
+                            function mo2CloseBlockModal() {
+                                document.getElementById('mo2BlockTypeModal').style.display = 'none';
+                            }
+
+                            function mo2SelectBlockType(type, el) {
+                                mo2SelectedBlockType = type;
+                                document.querySelectorAll('.mo2-type-card').forEach(c =>
+                                    c.classList.remove('border-primary', 'shadow-sm')
+                                );
+                                el.classList.add('border-primary', 'shadow-sm');
+                                document.getElementById('mo2BlockLabelRow').style.display = 'block';
+                                document.getElementById('mo2BlockLabelInput').focus();
+                            }
+
+                            function mo2ConfirmBlock() {
+                                if (!mo2SelectedBlockType) { alert('Please select a block type.'); return; }
+                                const label = document.getElementById('mo2BlockLabelInput').value.trim();
+                                if (!label) { alert('Please enter a field label.'); return; }
+                                const id = ++mo2BlockIdCounter;
+                                mo2Blocks.push({ id, type: mo2SelectedBlockType, value: '', label });
+                                mo2CloseBlockModal();
+                                mo2RenderBlocks();
+                            }
+
+                            function mo2RemoveBlock(id) {
+                                mo2Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo2_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                mo2Blocks = mo2Blocks.filter(b => b.id !== id);
+                                mo2RenderBlocks();
+                            }
+
+                            function mo2MoveBlock(id, dir) {
+                                mo2Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo2_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                const i = mo2Blocks.findIndex(b => b.id === id);
+                                const swapIdx = dir === 'up' ? i - 1 : i + 1;
+                                if (swapIdx < 0 || swapIdx >= mo2Blocks.length) return;
+                                [mo2Blocks[i], mo2Blocks[swapIdx]] = [mo2Blocks[swapIdx], mo2Blocks[i]];
+                                mo2RenderBlocks();
+                            }
+
+                            function mo2SyncContent() {
+                                mo2Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo2_editor_' + b.id);
+                                        if (ed) b.value = ed.getContent();
+                                    }
+                                });
+                                document.getElementById('mo2ContentIF').value =
+                                    mo2Blocks.map(b => `<!--block--><!--type:${b.type}--><!--label:${b.label}-->${b.value}`).join('');
+                            }
+
+                            function mo2RenderBlocks() {
+                                mo2Blocks.forEach(b => {
+                                    if (b.type === 'textarea') {
+                                        const ed = tinymce.get('mo2_editor_' + b.id);
+                                        if (ed) ed.remove();
+                                    }
+                                });
+                                document.querySelectorAll('.mo2-tinymce-block').forEach(el => {
+                                    const ed = tinymce.get(el.id);
+                                    if (ed) ed.remove();
+                                });
+
+                                const area = document.getElementById('mo2BlockArea');
+                                area.innerHTML = '';
+
+                                const typeBadges = { text:'primary text-white', textarea:'success text-white', image:'warning text-white', date:'danger text-white', color:'info text-white', number:'secondary text-white' };
+                                const typeLabels  = { text:'Text', textarea:'Rich Editor', image:'Image', date:'Date', color:'Color', number:'Number' };
+
+                                mo2Blocks.forEach(b => {
+                                    let fieldHTML = '';
+
+                                    if (b.type === 'text') {
+                                        fieldHTML = `<input type="text" class="form-control"
+                                            placeholder="Enter text..." value="${mo2EscHtml(b.value)}"
+                                            onchange="mo2UpdateBlockVal(${b.id}, this.value)">`;
+
+                                    } else if (b.type === 'textarea') {
+                                        fieldHTML = `<textarea id="mo2_editor_${b.id}" class="mo2-tinymce-block form-control"
+                                            style="height:300px">${b.value}</textarea>`;
+
+                                    } else if (b.type === 'image') {
+                                        const imgSrc = b.value.replace(/"/g, '&quot;');
+                                        fieldHTML = `
+                                            <input type="text" class="form-control mb-2"
+                                                placeholder="https://example.com/image.jpg"
+                                                value="${mo2EscHtml(b.value)}"
+                                                onchange="mo2UpdateBlockVal(${b.id}, this.value)">
+                                            ${b.value ? `<img src="${imgSrc}" style="max-height:120px;border-radius:6px;border:1px solid #ddd">` : ''}`;
+
+                                    } else if (b.type === 'date') {
+                                        fieldHTML = `<input type="date" class="form-control"
+                                            value="${mo2EscHtml(b.value)}"
+                                            onchange="mo2UpdateBlockVal(${b.id}, this.value)">`;
+
+                                    } else if (b.type === 'color') {
+                                        const colorVal = b.value || '#3B82F6';
+                                        fieldHTML = `
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="color" class="form-control form-control-color"
+                                                    value="${colorVal}"
+                                                    oninput="mo2UpdateBlockVal(${b.id}, this.value); document.getElementById('mo2ColorHex_${b.id}').textContent = this.value">
+                                                <span id="mo2ColorHex_${b.id}" class="text-muted small">${colorVal}</span>
+                                            </div>`;
+
+                                    } else if (b.type === 'number') {
+                                        fieldHTML = `<input type="number" class="form-control"
+                                            placeholder="0" value="${mo2EscHtml(b.value)}"
+                                            onchange="mo2UpdateBlockVal(${b.id}, this.value)">`;
+                                    }
+
+                                    area.innerHTML += `
+                                    <div class="card mb-2" data-block-id="${b.id}">
+                                        <div class="card-header d-flex align-items-center justify-content-between py-2 px-3" style="background:#f8f9fa">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="fw-semibold small badge bg-${typeBadges[b.type]}">${mo2EscHtml(b.label)}</span>
+                                            </div>
+                                            <div class="d-flex gap-1">
+                                                <button type="button" class="mr-1 btn btn-sm badge bg-${typeBadges[b.type]}">Type: ${typeLabels[b.type]}</button>
+                                                <button type="button" class="mr-1 btn btn-outline-secondary btn-sm" onclick="mo2MoveBlock(${b.id},'up')">↑</button>
+                                                <button type="button" class="mr-1 btn btn-outline-secondary btn-sm" onclick="mo2MoveBlock(${b.id},'down')">↓</button>
+                                                <button type="button" class="mr-1 btn btn-outline-danger btn-sm" onclick="mo2RemoveBlock(${b.id})">Delete</button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-2 px-3 d-none">${fieldHTML}</div>
+                                    </div>`;
+                                });
+
+                                mo2SyncContent();
+                                mo2InitBlockEditors();
+                            }
+
+                            function mo2UpdateBlockVal(id, val) {
+                                const b = mo2Blocks.find(b => b.id === id);
+                                if (b) b.value = val;
+                                mo2SyncContent();
+                            }
+
+                            function mo2EscHtml(str) {
+                                return String(str || '')
+                                    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+                                    .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                            }
+
+                            function mo2InitBlockEditors() {
+                                if (!mo2Blocks.filter(b => b.type === 'textarea').length) return;
+                                tinymce.init({
+                                    selector: '.mo2-tinymce-block',
+                                    height: 300,
+                                    plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap emoticons',
+                                    menubar: 'file edit view insert format tools table help',
+                                    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | fullscreen preview | insertfile image media template link anchor codesample | ltr rtl',
+                                    toolbar_mode: 'sliding',
+                                    document_base_url: '{{url("/")}}',
+                                    relative_urls: true,
+                                    convert_urls: false,
+                                    valid_elements: '*[*]',
+                                    file_picker_callback(callback, value, meta) {
+                                        let x = window.innerWidth || document.documentElement.clientWidth;
+                                        let y = window.innerHeight || document.documentElement.clientHeight;
+                                        tinymce.activeEditor.windowManager.openUrl({
+                                            url: '{{url("/dashboard/mediamanager")}}',
+                                            title: '{{ __("Media Library") }}',
+                                            width: x * 0.8, height: y * 0.8,
+                                            onMessage: (api, message) => callback(message.content, { text: message.text })
+                                        });
+                                    },
+                                    setup: function (editor) {
+                                        editor.on('keyup change', function () {
+                                            const id = parseInt(editor.id.replace('mo2_editor_', ''));
+                                            const b = mo2Blocks.find(b => b.id === id);
+                                            if (b) b.value = editor.getContent();
+                                            mo2SyncContent();
+                                        });
+                                    }
+                                });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const form = document.querySelector('form');
+                                if (form) form.addEventListener('submit', mo2SyncContent);
+                            });
+                            </script>
+                            <!-- ---------------Block System: more_option_2------------------- -->
+
+                        </div>
                     </div>
 
-                    <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: more_option_2</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            <span class="input-group-text">more_option_2</span>
-                        </div>
-                        <input type="text" name="more_option_2" class="form-control form-control-user" value="#">
-                    </div>
+                     
 
                     <label for="basic-url">If you visible this fields please input your placeholder. Turn off # Code: gallery_img</label>
                     <div class="input-group mb-3">

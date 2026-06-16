@@ -66,7 +66,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="floatingInput" class="form-label">Theme folder Name</label>
-                                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="theme_url">
+                                            <select class="form-control form-control-user form-select form-select-sm custom-select" aria-label=".form-select-sm example" name="theme_url">
                                                 <option value="default" selected>No theme set</option> 
                                                 <?php
                                                     $foler_names = [];
@@ -112,7 +112,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="floatingInput" class="form-label">Home Page Name</label>
-                                            <select class="form-control" class="form-select form-select-sm" aria-label=".form-select-sm example" name="home_url">
+                                            <select class="form-control form-control-user form-select form-select-sm custom-select" aria-label=".form-select-sm example" name="home_url">
                                                 <option value="0" selected>No Home page set</option>
                                                 @foreach($posts as $post)
                                                 <option value="{{ $post->id }}" {{ $post->id == $settingsAdmin->home_url ? 'selected' : '' }}>{{ $post->title }}</option>
@@ -120,20 +120,39 @@
                                             </select>
                                         </div>
                                     </div>  
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="editor" class="form-label">Editor Choose</label>
+                                            <div class="form-group">
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label form-label mr-1" for="editor1">Classic </label>
+                                                    <input class="form-check-input" type="radio" name="editor" id="editor1" value="classic" {{ $settings->editor == "classic" ? 'checked' : ''}}>                                    
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <label class="form-check-label form-label mr-1" for="editor2">Visual </label>
+                                                    <input class="form-check-input" type="radio" name="editor" id="editor2" value="visual" {{ $settings->editor == "visual" ? 'checked' : ''}}>                                    
+                                                </div>
+                                            </div>                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">  
+                                            <label for="editor" class="form-label">Two Factor Authentication</label>                      
+                                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                                <select class="form-control form-control-user form-select form-select-sm custom-select" aria-label=".form-select-sm example" name="twofa">
+                                                <option value="1" {{ $settings->twofa == "1" ? 'selected' : ''}}>Enable</option>
+                                                <option value="0" {{ $settings->twofa == "0" ? 'selected' : ''}}>Disable</option>
+                                                </select>
+                                            </div> 
+                                        </div> 
+                                    </div>
+
                                 </div>  
-                                <div class="form-group">
-                                    <label for="editor" class="form-label">Editor Choose</label>
-                                    <div class="form-group">
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label form-label mr-1" for="editor1">Classic </label>
-                                            <input class="form-check-input" type="radio" name="editor" id="editor1" value="classic" {{ $settings->editor == "classic" ? 'checked' : ''}}>                                    
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label form-label mr-1" for="editor2">Visual </label>
-                                            <input class="form-check-input" type="radio" name="editor" id="editor2" value="visual" {{ $settings->editor == "visual" ? 'checked' : ''}}>                                    
-                                        </div>
-                                    </div>                            
-                                </div>
+                                
+
+                                
+
 
                             </div>
                         </div>

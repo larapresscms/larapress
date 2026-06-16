@@ -17,7 +17,7 @@
                     </a> 
                     <h1 class="h4 text-gray-900 mb-4">Enter OTP</h1>
                     <p class="text-gray-900 mb-4" id="timer"></p>
-                    {{session('2fa_otp')}}
+                  
                 </div>
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -35,7 +35,7 @@
                     </div>
                 @endif
                 
-                <form method="POST" action="/verify-otp" class="user">
+                <form method="POST" action="{{ url('/verify-otp') }}" class="user">
                     @csrf
                     <div class="form-group">
                         <input type="text" name="otp" class="form-control form-control-user"

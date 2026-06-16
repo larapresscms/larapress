@@ -66,14 +66,15 @@ class AuthController extends Controller
                 'site_logo' => '',
                 'sub_title' => '', 
                 'fav_icon' => '',  
-                'dashboard_color' => '', 
-                'text_color' => '', 
-                'text_hover' => '', 
+                'dashboard_color' => '#1d2327', 
+                'text_color' => '#00da00', 
+                'text_hover' => '#fff', 
                 'theme_url' => 'default',
                 'home_url' => '',
                 'editor' => 'classic',
                 'header' => 'header',
-                'footer' => 'footer'
+                'footer' => 'footer',
+                'twofa' => '0'
             ];
             Settings::create($settingsdata);
 
@@ -86,12 +87,37 @@ class AuthController extends Controller
                 'category_id' => 'Categories',
                 'title'=> 'Title',
                 'content'=> 'Description', 
-                'excerpt'=> 'Excerpt',
+                'excerpt'=> [
+                'type' => 'none',
+                'label' => 'none',
+                'values' => 'none',
+                'required' => '1'
+                ],
                 'thumbnail_path'=> 'Thumbnails', 
-                'option_1'=> 'Option 1',
-                'option_2'=> 'Option 2',
-                'option_3'=> 'Option 3',
-                'option_4'=> 'Option 4',
+                'option_1'=> [
+                    'type' => 'none',
+                    'label' => 'none',
+                    'values' => 'none',
+                    'required' => '1'
+                ],
+                'option_2'=>  [
+                    'type' => 'none',
+                    'label' => 'none',
+                    'values' => 'none',
+                    'required' => '1'
+                ],
+                'option_3'=>  [
+                    'type' => 'none',
+                    'label' => 'none',
+                    'values' => 'none',
+                    'required' => '1'
+                ],
+                'option_4'=>  [
+                    'type' => 'none',
+                    'label' => 'none',
+                    'values' => 'none',
+                    'required' => '1'
+                ],
                 'more_option_1'=> 'Extra Fields',
                 'more_option_2'=> 'Extra Fields',
                 'gallery_img'=> 'Gallery',
@@ -104,7 +130,7 @@ class AuthController extends Controller
                 'pt_content_css' => '',
                 'pt_thumbnail_path' => '',
                 'paginate' => '100',
-                'template' => 1
+                'template' => 'single'
             ];
             Posttype::create($posttypedata);            
             
@@ -215,13 +241,12 @@ class AuthController extends Controller
             Cache::forget($cacheKey);
             Cache::forget($lockoutKey);
              
-            //otp--------------
-            
+            //otp-------------- 
+            $settingsAdmin = Settings::get()->first();     
+            if($settingsAdmin->twofa == '1'){ 
                 // Clear session
                 session()->forget(['2fa_otp', '2fa_user_id', '2fa_expires_at']);
-
-                $user = auth()->user();
-                
+                $user = auth()->user();                
                 // Generate OTP
                 $otp = rand(100000, 999999);
                 // Store in session (NO DATABASE)
@@ -229,23 +254,13 @@ class AuthController extends Controller
                     '2fa_user_id' => $user->id,
                     '2fa_otp' => $otp,
                     '2fa_expires_at' => now()->addMinutes(2)->timestamp
-                ]);
-                
-                //dd(now());
-                
-                // auth()->logout();
+                ]);    
                 // Send OTP (email example)
-                mail($user->email, "BDHONDA OTP Code", "Your OTP is: $otp");
-                
-                //Auth::guard('web')->logout(); // logs out without destroying session
-                
+                mail($user->email, "OTP Code", "Your OTP is: $otp");                 
                 // Logout AFTER setting session
                 Auth::logout();  
-                
-                $settingsAdmin = Settings::get()->first();
                 return view('admin.user.front.verification',compact('settingsAdmin'));
-                //return redirect('/verify-otp');
-            
+            }               
             //otp--------------
 
              //user login check if usr is active----------------useless part
