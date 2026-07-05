@@ -152,41 +152,18 @@ class HomeController extends Controller
             $this->setErrorMessage('Database connection failed');            
             return view('admin.install.setup');
         }
-    }
-
-    
+    }    
 
     //=======================================Dont Touch==========================================
 
-
     public function index(){
-        //check env------------------------------        
-        $dbName = env('DB_DATABASE');
-        $dbUser = env('DB_USERNAME');
+         // check DB config------------------------------
+        $dbName = config('database.connections.mysql.database');
+        $dbUser = config('database.connections.mysql.username');
         if (empty($dbName) || empty($dbUser)) {
             return view('admin.install.setup');
         }
         try {
-            // 3️⃣ Try connecting to MySQL *without selecting DB first*
-            $pdo = new \PDO(
-                "mysql:host=" . env('DB_HOST') . ";port=" . env('DB_PORT'),
-                env('DB_USERNAME'),
-                env('DB_PASSWORD'),
-                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-            );
-            // 4️⃣ Check if the database already exists
-            $stmt = $pdo->query("
-                SELECT SCHEMA_NAME 
-                FROM INFORMATION_SCHEMA.SCHEMATA 
-                WHERE SCHEMA_NAME = " . $pdo->quote($dbName)
-            );
-            $exists = $stmt->fetchColumn();
-            if ($exists) {
-                // return response()->json([
-                //     'status' => 'exists',
-                //     'message' => "Database already exists",
-                // ]);
-            }                        
         
             //-----------Main Query---------------        
 
@@ -213,17 +190,12 @@ class HomeController extends Controller
             }
         //-----------Main Query End---------------
 
-       } catch (\PDOException $e) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Database connection failed: ' . $e->getMessage(),
-            // ]);
+       } catch (\Illuminate\Database\QueryException $e) {
+        Log::error('DB connection/query failed in index(): ' . $e->getMessage());
+        $this->setErrorMessage('Database connection failed');
+        return view('admin.install.setup');
+    }
 
-            $this->setErrorMessage('Database connection failed');            
-            return view('admin.install.setup');
-        }
-
-    } 
     public function handleDynamicRoute(Request $request)
     {
         try{
