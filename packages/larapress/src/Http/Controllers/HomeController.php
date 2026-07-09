@@ -194,7 +194,7 @@ class HomeController extends Controller
         Log::error('DB connection/query failed in index(): ' . $e->getMessage());
         $this->setErrorMessage('Database connection failed');
         return view('admin.install.setup');
-    }
+    }}
 
     public function handleDynamicRoute(Request $request)
     {
